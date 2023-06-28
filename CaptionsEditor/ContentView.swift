@@ -22,6 +22,7 @@ struct ContentView: View {
             VStack {
                 ForEach($document.captions.items) { $caption in
                     Text(caption.contents)
+                    Divider()
                 }
             }
         }

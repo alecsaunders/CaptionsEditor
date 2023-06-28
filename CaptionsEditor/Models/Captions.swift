@@ -29,7 +29,11 @@ struct Captions: Identifiable {
 extension Captions {
     func captions(fromText text: String) -> [Caption] {
         let textLines = self.textToLines(fullText: text)
-        return self.captionsFromTextLines(textLines: textLines)
+        let cueLinesCollection = cueLines(fromTextLines: textLines)
+        
+        var captions: [Caption] = []
+        captions = cueLinesCollection.map { Caption(contents: $0.joined(separator: "\n")) }
+        return captions
     }
     
     func textToLines(fullText text: String) -> [String] {
@@ -40,18 +44,24 @@ extension Captions {
         return textLines
     }
     
-    func captionsFromTextLines(textLines: [String]) -> [Caption] {
-        var captions: [Caption] = []
-        
+    func cueLines(fromTextLines textLines: [String]) -> [[String]] {
+        var cleanLines: [String] = []
         for line in textLines {
-            if line.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "webvtt" {
-                print("Found Webvtt line")
-                print(line)
-            } else {
-                captions.append(Caption(contents: line))
+            if line.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) != "webvtt" {
+                cleanLines.append(line)
             }
         }
-        
-        return captions
+
+        var cueLinesCollection: [[String]] = []
+        var cueLines: [String] = []
+        for line in cleanLines {
+            if line.trimmingCharacters(in: .whitespaces).isEmpty {
+                cueLinesCollection.append(cueLines)
+                cueLines = []
+            } else {
+                cueLines.append(line)
+            }
+        }
+        return cueLinesCollection
     }
 }
