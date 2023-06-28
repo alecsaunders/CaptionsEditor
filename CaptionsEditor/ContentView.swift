@@ -20,8 +20,10 @@ struct ContentView: View {
     var body: some View {
         ScrollView {
             VStack {
-                ForEach($document.captions.items) { $caption in
-                    Text(caption.contents)
+                ForEach($document.captions.cues) { $caption in
+                    Text(caption.cueId ?? "no id")
+                    Text(caption.timestampLine ?? "not found")
+                    Text(caption.text)
                     Divider()
                 }
             }

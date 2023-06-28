@@ -11,18 +11,19 @@ import Foundation
 /// - Tag: DataModel
 struct Cue: Identifiable {
     var id = UUID()
-//    var cueId: Int
-    var contents: String
+    var cueId: String?
+    var timestampLine: String?
+    var text: String
 }
 
 
 struct Captions: Identifiable {
     var id = UUID()
-    var items: [Cue] = []
+    var cues: [Cue] = []
     
     init(id: UUID = UUID(), fromText text: String) {
         self.id = id
-        self.items = self.cues(fromText: text)
+        self.cues = self.cues(fromText: text)
     }
 }
 
@@ -32,7 +33,7 @@ extension Captions {
         let cueLinesCollection = cueLines(fromTextLines: textLines)
         
         var captions: [Cue] = []
-        captions = cueLinesCollection.map { Cue(contents: $0.joined(separator: "\n")) }
+        captions = cueLinesCollection.map { cue(fromCueLines: $0) }
         return captions
     }
     
@@ -56,8 +57,10 @@ extension Captions {
         var cueLines: [String] = []
         for line in cleanLines {
             if line.trimmingCharacters(in: .whitespaces).isEmpty {
-                cueLinesCollection.append(cueLines)
-                cueLines = []
+                if !cueLines.isEmpty {
+                    cueLinesCollection.append(cueLines)
+                    cueLines = []
+                }
             } else {
                 cueLines.append(line)
             }
@@ -65,7 +68,48 @@ extension Captions {
         return cueLinesCollection
     }
     
-    func cue(fromCueLines: [String]) {
+    func cue(fromCueLines cueLines: [String]) -> Cue {
+        let id: String? = cueId(fromCueLines: cueLines)
+        let timestampLine: String? = timestampLine(fromCueLines: cueLines)
+        let text: String = cueText(fromCueLines: cueLines)
         
+        return Cue(cueId: id, timestampLine: timestampLine, text: text)
+    }
+    
+    func cueId(fromCueLines cueLines: [String]) -> String? {
+        if let firstLine = cueLines.first {
+            if firstLine.contains("-->") {
+                return nil
+            } else {
+                return firstLine
+            }
+        }
+        return nil
+    }
+    
+    func timestampLine(fromCueLines cueLines: [String]) -> String? {
+        for line in cueLines {
+            if line.contains("-->") {
+                return line
+            }
+        }
+        return nil
+    }
+           
+    func cueText(fromCueLines cueLines: [String]) -> String {
+        var foundTimestampLine = false
+        var cueText = ""
+        for line in cueLines {
+            if foundTimestampLine {
+                if cueText.isEmpty {
+                    cueText = line
+                } else {
+                    cueText = "\(cueText)\n\(line)"
+                }
+            } else if line.contains("-->") {
+                foundTimestampLine = true
+            }
+        }
+        return cueText.trimmingCharacters(in: .newlines)
     }
 }
