@@ -9,7 +9,7 @@ import Foundation
 
 
 /// - Tag: DataModel
-struct Caption: Identifiable {
+struct Cue: Identifiable {
     var id = UUID()
 //    var cueId: Int
     var contents: String
@@ -18,21 +18,21 @@ struct Caption: Identifiable {
 
 struct Captions: Identifiable {
     var id = UUID()
-    var items: [Caption] = []
+    var items: [Cue] = []
     
     init(id: UUID = UUID(), fromText text: String) {
         self.id = id
-        self.items = self.captions(fromText: text)
+        self.items = self.cues(fromText: text)
     }
 }
 
 extension Captions {
-    func captions(fromText text: String) -> [Caption] {
+    func cues(fromText text: String) -> [Cue] {
         let textLines = self.textToLines(fullText: text)
         let cueLinesCollection = cueLines(fromTextLines: textLines)
         
-        var captions: [Caption] = []
-        captions = cueLinesCollection.map { Caption(contents: $0.joined(separator: "\n")) }
+        var captions: [Cue] = []
+        captions = cueLinesCollection.map { Cue(contents: $0.joined(separator: "\n")) }
         return captions
     }
     
@@ -63,5 +63,9 @@ extension Captions {
             }
         }
         return cueLinesCollection
+    }
+    
+    func cue(fromCueLines: [String]) {
+        
     }
 }
