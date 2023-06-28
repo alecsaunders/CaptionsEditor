@@ -21,10 +21,16 @@ struct ContentView: View {
         ScrollView {
             VStack {
                 ForEach($document.captions.cues) { $caption in
-                    Text(caption.cueId ?? "no id")
-                    Text(caption.timestampLine ?? "not found")
-                    Text(caption.text)
-                    Divider()
+                    VStack {
+                        Text(caption.cueId ?? "no id")
+                        HStack {
+                            Text(caption.startTimestamp.text)
+                            Text(" --> ")
+                            Text(caption.endTimestamp.text)
+                        }
+                        Text(caption.text)
+                        Divider()
+                    }
                 }
             }
         }

@@ -12,8 +12,22 @@ import Foundation
 struct Cue: Identifiable {
     var id = UUID()
     var cueId: String?
-    var timestampLine: String?
+    var startTimestamp: Timestamp
+    var endTimestamp: Timestamp
     var text: String
+}
+
+
+struct Timestamp {
+    var text: String
+    
+    init() {
+        self.text = "00:00:00.000"
+    }
+    
+    init(text: String) {
+        self.text = text
+    }
 }
 
 
@@ -70,10 +84,12 @@ extension Captions {
     
     func cue(fromCueLines cueLines: [String]) -> Cue {
         let id: String? = cueId(fromCueLines: cueLines)
-        let timestampLine: String? = timestampLine(fromCueLines: cueLines)
+        let timestampLine: String = timestampLine(fromCueLines: cueLines) ?? ""
+        let startTimestamp = startTimestamp(fromTimestampLine: timestampLine)
+        let endTimestamp = endTimestamp(fromTimestampLine: timestampLine)
         let text: String = cueText(fromCueLines: cueLines)
         
-        return Cue(cueId: id, timestampLine: timestampLine, text: text)
+        return Cue(cueId: id, startTimestamp: startTimestamp, endTimestamp: endTimestamp, text: text)
     }
     
     func cueId(fromCueLines cueLines: [String]) -> String? {
@@ -94,6 +110,24 @@ extension Captions {
             }
         }
         return nil
+    }
+    
+    func startTimestamp(fromTimestampLine tsLine: String) -> Timestamp {
+        let timestampStr: String = String(tsLine.split(separator: "-->").first ?? "")
+        return timestamp(fromString: timestampStr)
+    }
+    
+    func endTimestamp(fromTimestampLine tsLine: String) -> Timestamp {
+        let timestampStr: String = String(tsLine.split(separator: "-->").last ?? "")
+        return timestamp(fromString: timestampStr)
+    }
+    
+    func timestamp(fromString tsString: String) -> Timestamp {
+        if !tsString.isEmpty {
+            return Timestamp(text: tsString)
+        }
+        return Timestamp()
+        
     }
            
     func cueText(fromCueLines cueLines: [String]) -> String {
