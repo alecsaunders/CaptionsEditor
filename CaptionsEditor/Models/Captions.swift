@@ -11,6 +11,7 @@ import Foundation
 /// - Tag: DataModel
 struct Caption: Identifiable {
     var id = UUID()
+//    var cueId: Int
     var contents: String
 }
 
@@ -19,19 +20,18 @@ struct Captions: Identifiable {
     var id = UUID()
     var items: [Caption] = []
     
-    init(id: UUID = UUID(), items: [String]) {
-        self.id = id
-        self.items = self.captionsFromTextLines(textLines: items)
-    }
-    
     init(id: UUID = UUID(), fromText text: String) {
         self.id = id
-        let textLines = self.textToLines(fullText: text)
-        self.items = self.captionsFromTextLines(textLines: textLines)
+        self.items = self.captions(fromText: text)
     }
 }
 
 extension Captions {
+    func captions(fromText text: String) -> [Caption] {
+        let textLines = self.textToLines(fullText: text)
+        return self.captionsFromTextLines(textLines: textLines)
+    }
+    
     func textToLines(fullText text: String) -> [String] {
         var textLines: [String] = []
         text.enumerateLines { line, stop in
@@ -41,6 +41,17 @@ extension Captions {
     }
     
     func captionsFromTextLines(textLines: [String]) -> [Caption] {
-        return textLines.map { Caption(contents: $0) }
+        var captions: [Caption] = []
+        
+        for line in textLines {
+            if line.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "webvtt" {
+                print("Found Webvtt line")
+                print(line)
+            } else {
+                captions.append(Caption(contents: line))
+            }
+        }
+        
+        return captions
     }
 }

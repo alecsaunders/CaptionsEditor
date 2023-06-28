@@ -20,7 +20,7 @@ class CaptionsEditorDocument: ReferenceFileDocument {
     @Published var captions: Captions
 
     init() {
-        captions = Captions(items: [""])
+        captions = Captions(fromText: "WebVTT\n\n1\n1 --> 2\nsometext")
     }
 
     static var readableContentTypes: [UTType] { [.webVTTDocumentType] }
@@ -31,7 +31,6 @@ class CaptionsEditorDocument: ReferenceFileDocument {
         else {
             throw CocoaError(.fileReadCorruptFile)
         }
-        print("String: \(string)")
         captions = Captions(fromText: string)
     }
     

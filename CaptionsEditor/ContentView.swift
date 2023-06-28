@@ -18,9 +18,11 @@ struct ContentView: View {
     @State private var selection = Set<UUID>()
 
     var body: some View {
-        VStack {
-            ForEach($document.captions.items) { $caption in
-                Text(caption.contents)
+        ScrollView {
+            VStack {
+                ForEach($document.captions.items) { $caption in
+                    Text(caption.contents)
+                }
             }
         }
     }
