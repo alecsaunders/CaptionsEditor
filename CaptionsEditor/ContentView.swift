@@ -8,15 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
-    @Binding var document: CaptionsEditorDocument
+    /// The document that the environment stores.
+    @EnvironmentObject var document: CaptionsEditorDocument
+    /// The undo manager that the environment stores.
+    /// - Tag: UndoManager
+    @Environment(\.undoManager) var undoManager
+    
+    /// The internal selection state.
+    @State private var selection = Set<UUID>()
 
     var body: some View {
-        TextEditor(text: $document.text)
+        VStack {
+            ForEach($document.captions.items) { $caption in
+                Text(caption.contents)
+            }
+        }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(document: .constant(CaptionsEditorDocument()))
+        ContentView().environmentObject(CaptionsEditorDocument())
     }
 }

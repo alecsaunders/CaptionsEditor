@@ -10,8 +10,8 @@ import SwiftUI
 @main
 struct CaptionsEditorApp: App {
     var body: some Scene {
-        DocumentGroup(newDocument: CaptionsEditorDocument()) { file in
-            ContentView(document: file.$document)
+        DocumentGroup(newDocument: { CaptionsEditorDocument() }) { configuration in
+            ContentView()
         }
     }
 }

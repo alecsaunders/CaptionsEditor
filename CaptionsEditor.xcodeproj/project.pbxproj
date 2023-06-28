@@ -15,6 +15,7 @@
 		70A0F22F2A4CB14B004317A5 /* CaptionsEditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A0F22E2A4CB14B004317A5 /* CaptionsEditorTests.swift */; };
 		70A0F2392A4CB14B004317A5 /* CaptionsEditorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A0F2382A4CB14B004317A5 /* CaptionsEditorUITests.swift */; };
 		70A0F23B2A4CB14B004317A5 /* CaptionsEditorUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A0F23A2A4CB14B004317A5 /* CaptionsEditorUITestsLaunchTests.swift */; };
+		70A0F2482A4CB2C4004317A5 /* Captions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A0F2472A4CB2C4004317A5 /* Captions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		70A0F2342A4CB14B004317A5 /* CaptionsEditorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CaptionsEditorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		70A0F2382A4CB14B004317A5 /* CaptionsEditorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionsEditorUITests.swift; sourceTree = "<group>"; };
 		70A0F23A2A4CB14B004317A5 /* CaptionsEditorUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionsEditorUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		70A0F2472A4CB2C4004317A5 /* Captions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Captions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 				70A0F2192A4CB14A004317A5 /* CaptionsEditorApp.swift */,
 				70A0F21B2A4CB14A004317A5 /* CaptionsEditorDocument.swift */,
 				70A0F21D2A4CB14A004317A5 /* ContentView.swift */,
+				70A0F2492A4CB2EA004317A5 /* Models */,
 				70A0F21F2A4CB14B004317A5 /* Assets.xcassets */,
 				70A0F2242A4CB14B004317A5 /* Info.plist */,
 				70A0F2252A4CB14B004317A5 /* CaptionsEditor.entitlements */,
@@ -132,6 +135,14 @@
 				70A0F23A2A4CB14B004317A5 /* CaptionsEditorUITestsLaunchTests.swift */,
 			);
 			path = CaptionsEditorUITests;
+			sourceTree = "<group>";
+		};
+		70A0F2492A4CB2EA004317A5 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				70A0F2472A4CB2C4004317A5 /* Captions.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -266,6 +277,7 @@
 			files = (
 				70A0F21C2A4CB14A004317A5 /* CaptionsEditorDocument.swift in Sources */,
 				70A0F21A2A4CB14A004317A5 /* CaptionsEditorApp.swift in Sources */,
+				70A0F2482A4CB2C4004317A5 /* Captions.swift in Sources */,
 				70A0F21E2A4CB14A004317A5 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
