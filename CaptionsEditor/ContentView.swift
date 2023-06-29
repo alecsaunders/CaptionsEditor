@@ -21,14 +21,7 @@ struct ContentView: View {
         NavigationView {
             List {
                 ForEach($document.captions.cues, id: \.id) { $cue in
-                    VStack {
-                        HStack {
-                            cueIdPlayButton(cue: $cue)
-                            TimestampView(cue: $cue)
-                        }
-                        TextEditor(text: $cue.text)
-                        Divider()
-                    }
+                    CueRow(cue: $cue)
                 }
                     .onDelete(perform: onDelete)
             }

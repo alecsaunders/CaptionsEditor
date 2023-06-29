@@ -50,19 +50,6 @@ class CaptionsEditorDocument: ReferenceFileDocument {
 // Provide operations on the checklist document.
 extension CaptionsEditorDocument {
     
-    /// Toggles an item's checked status, and registers an undo action.
-    /// - Tag: PerformToggle
-    func toggleItem(_ item: String, undoManager: UndoManager? = nil) {
-//        let index = checklist.items.firstIndex(of: item)!
-//
-//        checklist.items[index].isChecked.toggle()
-//
-//        undoManager?.registerUndo(withTarget: self) { doc in
-//            // Because it calls itself, this is redoable, as well.
-//            doc.toggleItem(item, undoManager: undoManager)
-//        }
-    }
-    
     /// Adds a new item, and registers an undo action.
     func addItem(title: String, undoManager: UndoManager? = nil) {
 //        checklist.addItem(title: title)

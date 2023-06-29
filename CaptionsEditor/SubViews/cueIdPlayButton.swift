@@ -10,10 +10,19 @@ import SwiftUI
 struct cueIdPlayButton: View {
     @Binding var cue: Cue
     var body: some View {
-        Text(cue.cueId ?? "no id")
-            .font(.system(size: 12))
-            .foregroundColor(.secondary)
-            .frame(width: 30, alignment: .leading)
+        HStack(alignment: .bottom, spacing: 1.5) {
+            Text(cue.cueId ?? "no id")
+                .font(.system(size: 12))
+                .foregroundColor(.secondary)
+            Label("", systemImage: "play.circle")
+        }
+            .onSubmit {
+                print("on submit")
+            }
+            .onTapGesture {
+                print("on tap")
+            }
+            .frame(width: 48, alignment: .leading)
     }
 }
 
