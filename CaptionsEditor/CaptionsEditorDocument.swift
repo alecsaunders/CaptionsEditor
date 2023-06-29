@@ -100,30 +100,29 @@ extension CaptionsEditorDocument {
     }
     
     /// Replaces the existing items with a new set of items.
-    func replaceItems(with newItems: [String], undoManager: UndoManager? = nil, animation: Animation? = .default) {
-//        let oldItems = checklist.items
-//
-//        withAnimation(animation) {
-//            checklist.items = newItems
-//        }
-//
-//        undoManager?.registerUndo(withTarget: self) { doc in
-//                // Because you recurse here, redo support is automatic.
-//            doc.replaceItems(with: oldItems, undoManager: undoManager, animation: animation)
-//        }
+    func replaceItems(with newItems: [Cue], undoManager: UndoManager? = nil, animation: Animation? = .default) {
+        let oldItems = captions.cues
+
+        withAnimation(animation) {
+            captions.cues = newItems
+        }
+
+        undoManager?.registerUndo(withTarget: self) { doc in
+                // Because you recurse here, redo support is automatic.
+            doc.replaceItems(with: oldItems, undoManager: undoManager, animation: animation)
+        }
     }
 
     /// Deletes the items at a specified set of offsets, and registers an undo action.
     func delete(offsets: IndexSet, undoManager: UndoManager? = nil) {
-//        let oldItems = checklist.items
-//        withAnimation {
-//            checklist.items.remove(atOffsets: offsets)
-//        }
-//
-//        undoManager?.registerUndo(withTarget: self) { doc in
-//            // Use the replaceItems symmetric undoable-redoable function.
-//            doc.replaceItems(with: oldItems, undoManager: undoManager)
-//        }
+        let oldItems = captions.cues
+        withAnimation {
+            captions.cues.remove(atOffsets: offsets)
+        }
+
+        undoManager?.registerUndo(withTarget: self) { doc in
+            doc.replaceItems(with: oldItems, undoManager: undoManager)
+        }
     }
     
     /// Relocates the specified items, and registers an undo action.

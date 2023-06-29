@@ -19,16 +19,25 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            List($document.captions.cues) { $cue in
-                HStack {
-                    cueIdPlayButton(cue: $cue)
-                    TimestampView(cue: $cue)
+            List {
+                ForEach($document.captions.cues, id: \.id) { $cue in
+                    VStack {
+                        HStack {
+                            cueIdPlayButton(cue: $cue)
+                            TimestampView(cue: $cue)
+                        }
+                        TextEditor(text: $cue.text)
+                        Divider()
+                    }
                 }
-                TextEditor(text: $cue.text)
-                Divider()
+                    .onDelete(perform: onDelete)
             }
                 .frame(minWidth: 280, maxWidth: 400)
         }
+    }
+    
+    func onDelete(offsets: IndexSet) {
+        document.delete(offsets: offsets, undoManager: undoManager)
     }
 }
 
