@@ -26,23 +26,25 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            List {
-                ForEach($document.captions.cues, id: \.id) { $cue in
-                    CueRow(cue: $cue, selectedCue: $selectedCue) { oldText in
-                        document.registerUndoTextChange(for: $cue.wrappedValue, oldText: oldText, undoManager: undoManager)
-                    }
-                    .onHover { isHovering in
-                        if isHovering {
-                            selectedCue = cue
-                        } else {
-                            selectedCue = nil
+            ScrollView {
+                LazyVStack {
+                    ForEach($document.captions.cues, id: \.id) { $cue in
+                        CueRow(cue: $cue, selectedCue: $selectedCue) { oldText in
+                            document.registerUndoTextChange(for: $cue.wrappedValue, oldText: oldText, undoManager: undoManager)
                         }
+                        .onHover { isHovering in
+                            if isHovering {
+                                selectedCue = cue
+                            } else {
+                                selectedCue = nil
+                            }
+                        }
+                        .id(cue.id)
                     }
-                    .id(cue.id)
-                }
                     .onDelete(perform: onDelete)
-            }
+                }
                 .frame(minWidth: 310, maxWidth: 400)
+            }
             PlayerView()
         }
         .onAppear() {
