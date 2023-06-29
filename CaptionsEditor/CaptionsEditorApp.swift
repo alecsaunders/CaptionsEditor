@@ -13,5 +13,6 @@ struct CaptionsEditorApp: App {
         DocumentGroup(newDocument: { CaptionsEditorDocument() }) { configuration in
             ContentView(file: configuration)
         }
+        .windowToolbarStyle(.unified(showsTitle: false))
     }
 }

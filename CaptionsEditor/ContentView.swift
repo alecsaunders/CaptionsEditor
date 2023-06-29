@@ -19,7 +19,8 @@ struct ContentView: View {
     
     @StateObject private var playerController = PlayerController()
     @State var selectedCue: Cue?
-    @State private var scrollTarget: Int?
+    @State var searchText: String = ""
+    @State private var scrollTarget: UUID?
     @State private var searchResults: [Cue] = []
 
     var body: some View {
@@ -39,10 +40,35 @@ struct ContentView: View {
                                 }
                             }
                             .id(cue.id)
+                            .contextMenu {
+                                Button("Delete row") {
+                                    print("Delete row")
+//                                    self.document.captions.cues.removeAll { $0.id == cue.id }
+                                }
+                            }
+                            .searchable(text: $searchText) {
+                                SearchView(searchResults: $searchResults, scrollTarget: $scrollTarget)
+                            }
                         }
                         .onDelete(perform: onDelete)
                     }
                     .frame(minWidth: 310, maxWidth: 400)
+                    .onChange(of: scrollTarget) { target in
+                        if let target = target {
+                            scrollTarget = nil
+
+                            withAnimation {
+                                proxy.scrollTo(target, anchor: .top)
+                            }
+                        }
+                    }
+                    .onChange(of: searchText) { newValue in
+                        if searchText.isEmpty {
+                            searchResults = []
+                        } else {
+                            searchResults = document.captions.cues.filter { $0.text.lowercased().contains(searchText.lowercased())}
+                        }
+                    }
                 }
             }
             PlayerView()
