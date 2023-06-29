@@ -19,7 +19,7 @@ struct ContentView: View {
     /// The internal selection state.
     @State private var selection = Set<UUID>()
     
-    @State var playerController = PlayerController()
+    @StateObject private var playerController = PlayerController()
 
     var body: some View {
         NavigationView {
@@ -39,9 +39,12 @@ struct ContentView: View {
                     .onDelete(perform: onDelete)
             }
                 .frame(minWidth: 310, maxWidth: 400)
-            PlayerView(playerController: $playerController)
+            PlayerView()
         }
         .toolbar {
+            Button("Seek") {
+                playerController.jumpToPosition(atTimestamp: 500)
+            }
             Button {
                 playerController.chooseVideoURL()
             } label: {
@@ -49,6 +52,7 @@ struct ContentView: View {
             }
                 .buttonStyle(.bordered)
         }
+        .environmentObject(playerController)
     }
     
     func onDelete(offsets: IndexSet) {

@@ -9,11 +9,11 @@ import Foundation
 import AVKit
 
 
-struct PlayerController {
-    var player: AVPlayer?
+class PlayerController: ObservableObject {
+    @Published var player: AVPlayer?
     var URL: URL?
     
-    mutating func chooseVideoURL() {
+    func chooseVideoURL() {
         let panel = NSOpenPanel()
         panel.allowedContentTypes = [.video, .mpeg4Movie, .mpeg2Video]
         panel.allowsMultipleSelection = false
@@ -27,7 +27,7 @@ struct PlayerController {
         }
     }
     
-    mutating func loadPlayer() {
+    func loadPlayer() {
         guard let videoURL = self.URL else { return }
 
         let mixComposition = AVMutableComposition()
@@ -62,5 +62,9 @@ struct PlayerController {
         let playerItem = AVPlayerItem(asset: mixComposition)
 
         player = AVPlayer(playerItem: playerItem)
+    }
+    
+    func jumpToPosition(atTimestamp timestamp: Double) {
+        player?.seek(to:  CMTime(value: Int64(500 * 1000), timescale: 1000), toleranceBefore: .zero, toleranceAfter: .zero)
     }
 }

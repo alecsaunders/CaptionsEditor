@@ -9,7 +9,7 @@ import SwiftUI
 import AVKit
 
 struct PlayerView: View {
-    @Binding var playerController: PlayerController
+    @EnvironmentObject var playerController: PlayerController
     
     var body: some View {
         VStack {
@@ -20,6 +20,6 @@ struct PlayerView: View {
 
 struct PlayerView_Previews: PreviewProvider {
     static var previews: some View {
-        PlayerView(playerController: .constant(PlayerController()))
+        PlayerView()
     }
 }
