@@ -49,18 +49,7 @@ struct ContentView: View {
             playerController.subsURL = file.fileURL
         }
         .toolbar {
-            Button {
-                playerController.loadPlayer()
-            } label: {
-                Image(systemName: "arrow.clockwise")
-            }
-                .keyboardShortcut("r", modifiers: .command)
-            Button {
-                playerController.chooseVideoURL()
-            } label: {
-                Label("Load Movie", systemImage: "film")
-            }
-                .buttonStyle(.bordered)
+            ToolbarView()
         }
         .environmentObject(playerController)
     }
