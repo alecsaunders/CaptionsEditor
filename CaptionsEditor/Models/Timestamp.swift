@@ -20,17 +20,22 @@ struct Timestamp {
     init(_ initText: String) {
         self.value = 0.0
         var text = initText.trimmingCharacters(in: .whitespaces)
-        text.replace(",", with: ".")
-        let parts = text.split(separator: ".")
-        let hmsStr = parts[0]
-        let milliseconds = Double(parts[1])!
         
-        var hmsParts = hmsStr.split(separator: ":")
-        let seconds = Double(hmsParts.popLast()!)!
-        let minutes = Double(hmsParts.popLast()!)!
-        let hours = Double(hmsParts.popLast() ?? "0")!
-        
-        self.value = (hours * 60.0 * 60.0) + (minutes * 60.0) + (seconds) + (milliseconds / 1000)
+        if text.contains(":") && (text.contains(".") || text.contains(",")) {
+            text.replace(",", with: ".")
+            let parts = text.split(separator: ".")
+            let hmsStr = parts[0]
+            let milliseconds = Double(parts[1])!
+            
+            var hmsParts = hmsStr.split(separator: ":")
+            let seconds = Double(hmsParts.popLast()!)!
+            let minutes = Double(hmsParts.popLast()!)!
+            let hours = Double(hmsParts.popLast() ?? "0")!
+            
+            self.value = (hours * 60.0 * 60.0) + (minutes * 60.0) + (seconds) + (milliseconds / 1000)
+        } else {
+            self.value = 0.0
+        }
         self.stringValue = self.value.toTimestampString()
     }
 }

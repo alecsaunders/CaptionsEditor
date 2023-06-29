@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct cueIdPlayButton: View {
+struct CueIdPlayButton: View {
     @Binding var cue: Cue
     var body: some View {
         HStack(alignment: .bottom, spacing: 1.5) {
@@ -22,12 +22,12 @@ struct cueIdPlayButton: View {
             .onTapGesture {
                 print("on tap")
             }
-            .frame(width: 48, alignment: .leading)
+            .frame(width: 55, alignment: .leading)
     }
 }
 
 struct cueIdPlayButton_Previews: PreviewProvider {
     static var previews: some View {
-        cueIdPlayButton(cue: .constant(Cue()))
+        CueIdPlayButton(cue: .constant(Cue()))
     }
 }

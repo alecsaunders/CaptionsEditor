@@ -31,12 +31,10 @@ struct Cue: Identifiable {
 }
 
 
-struct Captions: Identifiable {
-    var id = UUID()
+struct Captions {
     var cues: [Cue] = []
     
-    init(id: UUID = UUID(), fromText text: String) {
-        self.id = id
+    init(fromText text: String) {
         self.cues = self.cues(fromText: text)
     }
 }
@@ -79,6 +77,7 @@ extension Captions {
                 cueLines.append(line)
             }
         }
+        cueLinesCollection.append(cueLines)
         return cueLinesCollection
     }
     

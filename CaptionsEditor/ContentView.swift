@@ -25,7 +25,7 @@ struct ContentView: View {
                 }
                     .onDelete(perform: onDelete)
             }
-                .frame(minWidth: 280, maxWidth: 400)
+                .frame(minWidth: 300, maxWidth: 400)
         }
     }
     

@@ -12,7 +12,7 @@ struct CueRow: View {
     var body: some View {
         VStack {
             HStack {
-                cueIdPlayButton(cue: $cue)
+                CueIdPlayButton(cue: $cue)
                 TimestampView(cue: $cue)
             }
             TextField("\(cue.id)", text: $cue.text)

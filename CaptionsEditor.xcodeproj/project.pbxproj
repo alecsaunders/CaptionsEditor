@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		709D0FD02A4D2B540036B147 /* TimeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709D0FCF2A4D2B540036B147 /* TimeButtonView.swift */; };
-		709D0FD22A4D3BF40036B147 /* cueIdPlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709D0FD12A4D3BF40036B147 /* cueIdPlayButton.swift */; };
+		709D0FD22A4D3BF40036B147 /* CueIdPlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709D0FD12A4D3BF40036B147 /* CueIdPlayButton.swift */; };
 		709D0FD42A4D41CB0036B147 /* CueRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709D0FD32A4D41CB0036B147 /* CueRow.swift */; };
 		70A0F21A2A4CB14A004317A5 /* CaptionsEditorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A0F2192A4CB14A004317A5 /* CaptionsEditorApp.swift */; };
 		70A0F21C2A4CB14A004317A5 /* CaptionsEditorDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A0F21B2A4CB14A004317A5 /* CaptionsEditorDocument.swift */; };
@@ -42,7 +42,7 @@
 
 /* Begin PBXFileReference section */
 		709D0FCF2A4D2B540036B147 /* TimeButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeButtonView.swift; sourceTree = "<group>"; };
-		709D0FD12A4D3BF40036B147 /* cueIdPlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cueIdPlayButton.swift; sourceTree = "<group>"; };
+		709D0FD12A4D3BF40036B147 /* CueIdPlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueIdPlayButton.swift; sourceTree = "<group>"; };
 		709D0FD32A4D41CB0036B147 /* CueRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueRow.swift; sourceTree = "<group>"; };
 		70A0F2162A4CB14A004317A5 /* CaptionsEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CaptionsEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		70A0F2192A4CB14A004317A5 /* CaptionsEditorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionsEditorApp.swift; sourceTree = "<group>"; };
@@ -161,7 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				709D0FD32A4D41CB0036B147 /* CueRow.swift */,
-				709D0FD12A4D3BF40036B147 /* cueIdPlayButton.swift */,
+				709D0FD12A4D3BF40036B147 /* CueIdPlayButton.swift */,
 				70A0F24C2A4D28EE004317A5 /* TimestampView.swift */,
 				709D0FCF2A4D2B540036B147 /* TimeButtonView.swift */,
 			);
@@ -302,7 +302,7 @@
 				70A0F24B2A4CF31A004317A5 /* Timestamp.swift in Sources */,
 				70A0F21A2A4CB14A004317A5 /* CaptionsEditorApp.swift in Sources */,
 				70A0F2482A4CB2C4004317A5 /* Captions.swift in Sources */,
-				709D0FD22A4D3BF40036B147 /* cueIdPlayButton.swift in Sources */,
+				709D0FD22A4D3BF40036B147 /* CueIdPlayButton.swift in Sources */,
 				709D0FD02A4D2B540036B147 /* TimeButtonView.swift in Sources */,
 				709D0FD42A4D41CB0036B147 /* CueRow.swift in Sources */,
 				70A0F21E2A4CB14A004317A5 /* ContentView.swift in Sources */,
