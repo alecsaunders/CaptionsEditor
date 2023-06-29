@@ -18,6 +18,8 @@ struct ContentView: View {
     
     /// The internal selection state.
     @State private var selection = Set<UUID>()
+    
+    @State var playerController = PlayerController()
 
     var body: some View {
         NavigationView {
@@ -37,6 +39,15 @@ struct ContentView: View {
                     .onDelete(perform: onDelete)
             }
                 .frame(minWidth: 310, maxWidth: 400)
+            PlayerView(playerController: $playerController)
+        }
+        .toolbar {
+            Button {
+                playerController.chooseVideoURL()
+            } label: {
+                Label("Load Movie", systemImage: "film")
+            }
+                .buttonStyle(.bordered)
         }
     }
     
