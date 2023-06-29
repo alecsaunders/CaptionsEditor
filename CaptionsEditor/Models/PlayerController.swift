@@ -64,7 +64,12 @@ class PlayerController: ObservableObject {
         player = AVPlayer(playerItem: playerItem)
     }
     
-    func jumpToPosition(atTimestamp timestamp: Double) {
-        player?.seek(to:  CMTime(value: Int64(500 * 1000), timescale: 1000), toleranceBefore: .zero, toleranceAfter: .zero)
+    func jumpToPosition(atTimestamp timestampValue: Double) {
+        if let thePlayer = player {
+            thePlayer.seek(to:  CMTime(value: Int64(timestampValue * 1000), timescale: 1000), toleranceBefore: .zero, toleranceAfter: .zero)
+            if thePlayer.rate == 0 {
+                thePlayer.play()
+            }
+        }
     }
 }

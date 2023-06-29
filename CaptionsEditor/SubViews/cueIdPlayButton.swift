@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct CueIdPlayButton: View {
+    @EnvironmentObject var playerController: PlayerController
     @Binding var cue: Cue
     @Binding var selectedCue: Cue?
+    
     var body: some View {
         HStack(alignment: .bottom, spacing: 1.5) {
             Text(cue.cueId ?? "no id")
@@ -19,7 +21,7 @@ struct CueIdPlayButton: View {
                 .foregroundColor(cue.cueId == selectedCue?.cueId ? Color.blue : Color.clear)
         }
             .onTapGesture {
-                print("on tap")
+                playerController.jumpToPosition(atTimestamp: cue.startTimestamp.value)
             }
             .frame(width: 55, height: 16, alignment: .leading)
     }
