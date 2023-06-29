@@ -20,7 +20,7 @@ struct CueRow: View {
         VStack {
             VStack {
                 HStack {
-                    CueIdPlayButton(cue: $cue)
+                    CueIdPlayButton(cue: $cue, selectedCue: $selectedCue)
                     TimestampView(cue: $cue)
                 }
                 TextField("\(cue.id)", text: $cue.text, axis: .vertical)
