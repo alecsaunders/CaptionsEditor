@@ -9,12 +9,16 @@ import Foundation
 
 
 /// - Tag: DataModel
-struct Cue: Identifiable {
+struct Cue: Identifiable, Equatable {
     var id = UUID()
     var cueId: String?
     var startTimestamp: Timestamp
     var endTimestamp: Timestamp
     var text: String
+    
+    static func == (lhs: Cue, rhs: Cue) -> Bool {
+        lhs.id == rhs.id
+    }
     
     init(cueId: String? = nil, startTimestamp: Timestamp, endTimestamp: Timestamp, text: String) {
         self.cueId = cueId

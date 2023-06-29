@@ -127,22 +127,22 @@ extension CaptionsEditorDocument {
     }
     
     /// Registers an undo action and a redo action for a title change.
-    func registerUndoTitleChange(for item: String, oldTitle: String, undoManager: UndoManager?) {
-//        let index = checklist.items.firstIndex(of: item)!
-//
-//        // The change has already happened, so save the collection of new items.
-//        let newItems = checklist.items
-//
-//        // Register the undo action.
-//        undoManager?.registerUndo(withTarget: self) { doc in
-//            doc.checklist.items[index].title = oldTitle
-//
-//            // Register the redo action.
-//            undoManager?.registerUndo(withTarget: self) { doc in
-//                // Use the replaceItems symmetric undoable-redoable function.
-//                doc.replaceItems(with: newItems, undoManager: undoManager, animation: nil)
-//            }
-//        }
+    func registerUndoTitleChange(for item: Cue, oldText: String, undoManager: UndoManager?) {
+        let index = captions.cues.firstIndex(of: item)!
+
+        // The change has already happened, so save the collection of new items.
+        let newItems = captions.cues
+
+        // Register the undo action.
+        undoManager?.registerUndo(withTarget: self) { doc in
+            doc.captions.cues[index].text = oldText
+
+            // Register the redo action.
+            undoManager?.registerUndo(withTarget: self) { doc in
+                // Use the replaceItems symmetric undoable-redoable function.
+                doc.replaceItems(with: newItems, undoManager: undoManager, animation: nil)
+            }
+        }
     }
 
 }

@@ -21,7 +21,9 @@ struct ContentView: View {
         NavigationView {
             List {
                 ForEach($document.captions.cues, id: \.id) { $cue in
-                    CueRow(cue: $cue)
+                    CueRow(cue: $cue) { oldText in
+                        document.registerUndoTitleChange(for: $cue.wrappedValue, oldText: oldText, undoManager: undoManager)
+                    }
                 }
                     .onDelete(perform: onDelete)
             }
