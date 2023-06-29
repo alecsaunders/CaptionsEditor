@@ -127,7 +127,7 @@ extension CaptionsEditorDocument {
     }
     
     /// Registers an undo action and a redo action for a title change.
-    func registerUndoTitleChange(for item: Cue, oldText: String, undoManager: UndoManager?) {
+    func registerUndoTextChange(for item: Cue, oldText: String, undoManager: UndoManager?) {
         let index = captions.cues.firstIndex(of: item)!
 
         // The change has already happened, so save the collection of new items.

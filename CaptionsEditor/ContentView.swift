@@ -22,7 +22,7 @@ struct ContentView: View {
             List {
                 ForEach($document.captions.cues, id: \.id) { $cue in
                     CueRow(cue: $cue) { oldText in
-                        document.registerUndoTitleChange(for: $cue.wrappedValue, oldText: oldText, undoManager: undoManager)
+                        document.registerUndoTextChange(for: $cue.wrappedValue, oldText: oldText, undoManager: undoManager)
                     }
                 }
                     .onDelete(perform: onDelete)
