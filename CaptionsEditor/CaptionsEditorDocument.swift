@@ -61,31 +61,6 @@ extension CaptionsEditorDocument {
 //        }
     }
     
-    /// Deletes the item at an index, and registers an undo action.
-    func deleteItem(index: Int, undoManager: UndoManager? = nil) {
-//        let oldItems = checklist.items
-//        withAnimation {
-//            _ = checklist.items.remove(at: index)
-//        }
-//
-//        undoManager?.registerUndo(withTarget: self) { doc in
-//            // Use the replaceItems symmetric undoable-redoable function.
-//            doc.replaceItems(with: oldItems, undoManager: undoManager)
-//        }
-    }
-    
-    /// Deletes the items with specified IDs.
-    func deleteItems(withIDs ids: [UUID], undoManager: UndoManager? = nil) {
-//        var indexSet: IndexSet = IndexSet()
-//
-//        let enumerated = checklist.items.enumerated()
-//        for (index, item) in enumerated where ids.contains(item.id) {
-//            indexSet.insert(index)
-//        }
-//
-//        delete(offsets: indexSet, undoManager: undoManager)
-    }
-    
     /// Replaces the existing items with a new set of items.
     func replaceItems(with newItems: [Cue], undoManager: UndoManager? = nil, animation: Animation? = .default) {
         let oldItems = captions.cues
