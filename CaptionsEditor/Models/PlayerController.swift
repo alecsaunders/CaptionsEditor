@@ -13,6 +13,7 @@ class PlayerController: ObservableObject {
     @Published var player: AVPlayer?
     var videoURL: URL?
     var subsURL: URL?
+    private var mix: AVMutableComposition = AVMutableComposition()
     
     func chooseVideoURL() {
         let panel = NSOpenPanel()
@@ -29,43 +30,66 @@ class PlayerController: ObservableObject {
     }
     
     func loadPlayer() {
-        guard let videoURL = self.videoURL else { return }
+        if let thePlayer = player {
+            let currentTime = thePlayer.currentTime()
+            let isPlaying = thePlayer.rate > 0
+            thePlayer.pause()
+            
+            let textTrack = mix.tracks(withMediaType: .text)[0]
+            mix.removeTrack(textTrack)
+            
+            addSubtitleTrackToMix(withDuration: thePlayer.currentItem!.duration)
+            
+            let playerItem = AVPlayerItem(asset: mix)
+            thePlayer.replaceCurrentItem(with: playerItem)
+            
+            self.jumpToPosition(atTimestamp: currentTime.seconds)
+            if isPlaying {
+                thePlayer.play()
+            }
+            print("Replace current item")
+        } else {
+            guard let videoURL = self.videoURL else { return }
 
-        let mixComposition = AVMutableComposition()
+            mix = AVMutableComposition()
 
-        // 1 - Video Track
-        let videoAsset = AVURLAsset(url: videoURL)
-        let videoTrack = mixComposition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid)
-        do {
-            try videoTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: videoAsset.duration), of: videoAsset.tracks(withMediaType: .video)[0], at: .zero)
-        } catch {
-            print(error)
+            // 1 - Video Track
+            let videoAsset = AVURLAsset(url: videoURL)
+            let videoTrack = mix.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid)
+            do {
+                try videoTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: videoAsset.duration), of: videoAsset.tracks(withMediaType: .video)[0], at: .zero)
+            } catch {
+                print(error)
+            }
+
+            // 2 - Audio track
+            let audioTrack = mix.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)
+            do {
+                try audioTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: videoAsset.duration), of: videoAsset.tracks(withMediaType: .audio)[0], at: .zero)
+            } catch {
+                print(error)
+            }
+
+            // 3 - Subtitle track
+            addSubtitleTrackToMix(withDuration: videoAsset.duration)
+            
+            // 4 - Set up player
+            let playerItem = AVPlayerItem(asset: mix)
+
+            player = AVPlayer(playerItem: playerItem)
         }
-
-        // 2 - Audio track
-        let audioTrack = mixComposition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)
-        do {
-            try audioTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: videoAsset.duration), of: videoAsset.tracks(withMediaType: .audio)[0], at: .zero)
-        } catch {
-            print(error)
-        }
-
-        // 3 - Subtitle track
+    }
+    
+    private func addSubtitleTrackToMix(withDuration: CMTime) {
         if let subsURL = subsURL {
             let subtitleAsset = AVURLAsset(url: subsURL)
-            let subtitleTrack = mixComposition.addMutableTrack(withMediaType: .text, preferredTrackID: kCMPersistentTrackID_Invalid)
+            let subtitleTrack = mix.addMutableTrack(withMediaType: .text, preferredTrackID: kCMPersistentTrackID_Invalid)
             do {
-                print("Add subtitletrack")
-                try subtitleTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: videoAsset.duration), of: subtitleAsset.tracks(withMediaType: .text)[0], at: .zero)
+                try subtitleTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: withDuration), of: subtitleAsset.tracks(withMediaType: .text)[0], at: .zero)
             } catch {
                 print(error)
             }
         }
-
-        // 4 - Set up player
-        let playerItem = AVPlayerItem(asset: mixComposition)
-
-        player = AVPlayer(playerItem: playerItem)
     }
     
     func jumpToPosition(atTimestamp timestampValue: Double) {

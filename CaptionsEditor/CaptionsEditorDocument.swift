@@ -18,6 +18,7 @@ class CaptionsEditorDocument: ReferenceFileDocument {
     typealias Snapshot = Captions
     
     @Published var captions: Captions
+    @EnvironmentObject var playerController: PlayerController
 
     init() {
         captions = Captions(fromText: "WebVTT\n\n1\n1 --> 2\nsometext")
@@ -26,10 +27,6 @@ class CaptionsEditorDocument: ReferenceFileDocument {
     static var readableContentTypes: [UTType] { [.webVTTDocumentType] }
 
     required init(configuration: ReadConfiguration) throws {
-        print(configuration.file.filename)
-        print(configuration.file.fileAttributes)
-        print(configuration.contentType)
-        
         guard let data = configuration.file.regularFileContents,
               let string = String(data: data, encoding: .utf8)
         else {
@@ -71,6 +68,8 @@ extension CaptionsEditorDocument {
         withAnimation(animation) {
             captions.cues = newItems
         }
+        
+        playerController.loadPlayer()
 
         undoManager?.registerUndo(withTarget: self) { doc in
                 // Because you recurse here, redo support is automatic.

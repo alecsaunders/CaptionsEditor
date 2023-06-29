@@ -38,6 +38,7 @@ struct ContentView: View {
                             selectedCue = nil
                         }
                     }
+                    .id(cue.id)
                 }
                     .onDelete(perform: onDelete)
             }
@@ -48,6 +49,12 @@ struct ContentView: View {
             playerController.subsURL = file.fileURL
         }
         .toolbar {
+            Button {
+                playerController.loadPlayer()
+            } label: {
+                Image(systemName: "arrow.clockwise")
+            }
+                .keyboardShortcut("r", modifiers: .command)
             Button {
                 playerController.chooseVideoURL()
             } label: {
