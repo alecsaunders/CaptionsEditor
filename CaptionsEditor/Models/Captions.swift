@@ -57,7 +57,8 @@ struct Captions {
 extension String {
     init(_ captions: Captions) {
         let cueList = captions.cues.map { String($0) }
-        self = cueList.joined(separator: "\n\n")
+        let cueContents = cueList.joined(separator: "\n\n")
+        self = "WEBVTT\n\n\(cueContents)"
     }
 }
 

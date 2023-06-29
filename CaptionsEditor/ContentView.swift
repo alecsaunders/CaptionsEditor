@@ -10,6 +10,9 @@ import SwiftUI
 struct ContentView: View {
     /// The document that the environment stores.
     @EnvironmentObject var document: CaptionsEditorDocument
+    
+    var file: ReferenceFileDocumentConfiguration<CaptionsEditorDocument>
+    
     /// The undo manager that the environment stores.
     /// - Tag: UndoManager
     @Environment(\.undoManager) var undoManager
@@ -41,6 +44,9 @@ struct ContentView: View {
                 .frame(minWidth: 310, maxWidth: 400)
             PlayerView()
         }
+        .onAppear() {
+            playerController.subsURL = file.fileURL
+        }
         .toolbar {
             Button {
                 playerController.chooseVideoURL()
@@ -57,8 +63,8 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView().environmentObject(CaptionsEditorDocument())
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView().environmentObject(CaptionsEditorDocument())
+//    }
+//}

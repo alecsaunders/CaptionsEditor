@@ -11,7 +11,8 @@ import AVKit
 
 class PlayerController: ObservableObject {
     @Published var player: AVPlayer?
-    var URL: URL?
+    var videoURL: URL?
+    var subsURL: URL?
     
     func chooseVideoURL() {
         let panel = NSOpenPanel()
@@ -21,14 +22,14 @@ class PlayerController: ObservableObject {
         panel.canChooseFiles = true
         if panel.runModal() == .OK {
             if let fileUrl = panel.url {
-                self.URL = fileUrl
+                self.videoURL = fileUrl
                 self.loadPlayer()
             }
         }
     }
     
     func loadPlayer() {
-        guard let videoURL = self.URL else { return }
+        guard let videoURL = self.videoURL else { return }
 
         let mixComposition = AVMutableComposition()
 
@@ -49,14 +50,17 @@ class PlayerController: ObservableObject {
             print(error)
         }
 
-//        // 3 - Subtitle track
-//        let subtitleAsset = AVURLAsset(url: subsUrl)
-//        let subtitleTrack = mixComposition.addMutableTrack(withMediaType: .text, preferredTrackID: kCMPersistentTrackID_Invalid)
-//        do {
-//            try subtitleTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: videoAsset.duration), of: subtitleAsset.tracks(withMediaType: .text)[0], at: .zero)
-//        } catch {
-//            print(error)
-//        }
+        // 3 - Subtitle track
+        if let subsURL = subsURL {
+            let subtitleAsset = AVURLAsset(url: subsURL)
+            let subtitleTrack = mixComposition.addMutableTrack(withMediaType: .text, preferredTrackID: kCMPersistentTrackID_Invalid)
+            do {
+                print("Add subtitletrack")
+                try subtitleTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: videoAsset.duration), of: subtitleAsset.tracks(withMediaType: .text)[0], at: .zero)
+            } catch {
+                print(error)
+            }
+        }
 
         // 4 - Set up player
         let playerItem = AVPlayerItem(asset: mixComposition)

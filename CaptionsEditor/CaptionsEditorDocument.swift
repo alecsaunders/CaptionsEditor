@@ -26,6 +26,10 @@ class CaptionsEditorDocument: ReferenceFileDocument {
     static var readableContentTypes: [UTType] { [.webVTTDocumentType] }
 
     required init(configuration: ReadConfiguration) throws {
+        print(configuration.file.filename)
+        print(configuration.file.fileAttributes)
+        print(configuration.contentType)
+        
         guard let data = configuration.file.regularFileContents,
               let string = String(data: data, encoding: .utf8)
         else {
@@ -40,7 +44,6 @@ class CaptionsEditorDocument: ReferenceFileDocument {
     }
     
     func fileWrapper(snapshot: Captions, configuration: WriteConfiguration) throws -> FileWrapper {
-//        let data = text.data(using: .utf8)!
         let data = String(snapshot).data(using: .utf8)!
         return .init(regularFileWithContents: data)
     }
