@@ -15,18 +15,18 @@ struct Cue: Identifiable {
     var startTimestamp: Timestamp
     var endTimestamp: Timestamp
     var text: String
-}
-
-
-struct Timestamp {
-    var text: String
     
-    init() {
-        self.text = "00:00:00.000"
+    init(cueId: String? = nil, startTimestamp: Timestamp, endTimestamp: Timestamp, text: String) {
+        self.cueId = cueId
+        self.startTimestamp = startTimestamp
+        self.endTimestamp = endTimestamp
+        self.text = text
     }
     
-    init(text: String) {
-        self.text = text
+    init() {
+        self.startTimestamp = Timestamp()
+        self.endTimestamp = Timestamp()
+        self.text = ""
     }
 }
 
@@ -124,7 +124,7 @@ extension Captions {
     
     func timestamp(fromString tsString: String) -> Timestamp {
         if !tsString.isEmpty {
-            return Timestamp(text: tsString)
+            return Timestamp(tsString)
         }
         return Timestamp()
         

@@ -18,20 +18,17 @@ struct ContentView: View {
     @State private var selection = Set<UUID>()
 
     var body: some View {
-        ScrollView {
-            VStack {
-                ForEach($document.captions.cues) { $caption in
-                    VStack {
-                        Text(caption.cueId ?? "no id")
-                        HStack {
-                            Text(caption.startTimestamp.text)
-                            Text(" --> ")
-                            Text(caption.endTimestamp.text)
-                        }
-                        Text(caption.text)
-                        Divider()
-                    }
+        NavigationView {
+            List($document.captions.cues) { $cue in
+                HStack {
+                    Text(cue.cueId ?? "no id")
+                        .font(.system(size: 12))
+                        .foregroundColor(.secondary)
+                        .frame(width: 30, alignment: .leading)
+                    TimestampView(cue: $cue)
                 }
+                TextEditor(text: $cue.text)
+                Divider()
             }
         }
     }
