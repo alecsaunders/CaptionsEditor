@@ -18,9 +18,6 @@ struct CueIdPlayButton: View {
             Label("", systemImage: "play.circle")
                 .foregroundColor(cue.cueId == selectedCue?.cueId ? Color.blue : Color.clear)
         }
-            .onSubmit {
-                print("on submit")
-            }
             .onTapGesture {
                 print("on tap")
             }

@@ -29,12 +29,14 @@ struct ContentView: View {
                     .onHover { isHovering in
                         if isHovering {
                             selectedCue = cue
+                        } else {
+                            selectedCue = nil
                         }
                     }
                 }
                     .onDelete(perform: onDelete)
             }
-                .frame(minWidth: 305, maxWidth: 400)
+                .frame(minWidth: 310, maxWidth: 400)
         }
     }
     
