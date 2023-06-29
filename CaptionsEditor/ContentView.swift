@@ -17,33 +17,33 @@ struct ContentView: View {
     /// - Tag: UndoManager
     @Environment(\.undoManager) var undoManager
     
-    @State var selectedCue: Cue?
-    
-    /// The internal selection state.
-    @State private var selection = Set<UUID>()
-    
     @StateObject private var playerController = PlayerController()
+    @State var selectedCue: Cue?
+    @State private var scrollTarget: Int?
+    @State private var searchResults: [Cue] = []
 
     var body: some View {
         NavigationView {
             ScrollView {
-                LazyVStack {
-                    ForEach($document.captions.cues, id: \.id) { $cue in
-                        CueRow(cue: $cue, selectedCue: $selectedCue) { oldText in
-                            document.registerUndoTextChange(for: $cue.wrappedValue, oldText: oldText, undoManager: undoManager)
-                        }
-                        .onHover { isHovering in
-                            if isHovering {
-                                selectedCue = cue
-                            } else {
-                                selectedCue = nil
+                ScrollViewReader { (proxy: ScrollViewProxy) in
+                    LazyVStack {
+                        ForEach($document.captions.cues, id: \.id) { $cue in
+                            CueRow(cue: $cue, selectedCue: $selectedCue) { oldText in
+                                document.registerUndoTextChange(for: $cue.wrappedValue, oldText: oldText, undoManager: undoManager)
                             }
+                            .onHover { isHovering in
+                                if isHovering {
+                                    selectedCue = cue
+                                } else {
+                                    selectedCue = nil
+                                }
+                            }
+                            .id(cue.id)
                         }
-                        .id(cue.id)
+                        .onDelete(perform: onDelete)
                     }
-                    .onDelete(perform: onDelete)
+                    .frame(minWidth: 310, maxWidth: 400)
                 }
-                .frame(minWidth: 310, maxWidth: 400)
             }
             PlayerView()
         }
