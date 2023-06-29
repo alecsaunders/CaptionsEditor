@@ -21,15 +21,13 @@ struct ContentView: View {
         NavigationView {
             List($document.captions.cues) { $cue in
                 HStack {
-                    Text(cue.cueId ?? "no id")
-                        .font(.system(size: 12))
-                        .foregroundColor(.secondary)
-                        .frame(width: 30, alignment: .leading)
+                    cueIdPlayButton(cue: $cue)
                     TimestampView(cue: $cue)
                 }
                 TextEditor(text: $cue.text)
                 Divider()
             }
+                .frame(minWidth: 280, maxWidth: 400)
         }
     }
 }
