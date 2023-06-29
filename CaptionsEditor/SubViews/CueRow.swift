@@ -25,6 +25,7 @@ struct CueRow: View {
                 }
                 TextField("\(cue.id)", text: $cue.text, axis: .vertical)
                     .textFieldStyle(.plain)
+                    .lineLimit(3)
                     .focused($isTitleFieldFocused)
                     .onChange(of: isTitleFieldFocused) { newValue in
                         if isTitleFieldFocused {

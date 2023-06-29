@@ -42,9 +42,6 @@ struct ContentView: View {
             PlayerView()
         }
         .toolbar {
-            Button("Seek") {
-                playerController.jumpToPosition(atTimestamp: 500)
-            }
             Button {
                 playerController.chooseVideoURL()
             } label: {
