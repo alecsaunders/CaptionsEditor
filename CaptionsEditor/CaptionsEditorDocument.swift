@@ -41,7 +41,7 @@ class CaptionsEditorDocument: ReferenceFileDocument {
     
     func fileWrapper(snapshot: Captions, configuration: WriteConfiguration) throws -> FileWrapper {
 //        let data = text.data(using: .utf8)!
-        let data = "Some text".data(using: .utf8)!
+        let data = String(snapshot).data(using: .utf8)!
         return .init(regularFileWithContents: data)
     }
 }

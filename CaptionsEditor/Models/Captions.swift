@@ -34,12 +34,30 @@ struct Cue: Identifiable, Equatable {
     }
 }
 
+extension String {
+    init(_ cue: Cue) {
+        var cueText = ""
+        if let cueId = cue.cueId {
+            cueText = "\(cueId)\n"
+        }
+        cueText += "\(cue.startTimestamp.stringValue) --> \(cue.endTimestamp.stringValue)\n"
+        cueText += cue.text
+        self = cueText
+    }
+}
 
 struct Captions {
     var cues: [Cue] = []
     
     init(fromText text: String) {
         self.cues = self.cues(fromText: text)
+    }
+}
+
+extension String {
+    init(_ captions: Captions) {
+        let cueList = captions.cues.map { String($0) }
+        self = cueList.joined(separator: "\n\n")
     }
 }
 
