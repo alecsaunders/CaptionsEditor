@@ -9,8 +9,17 @@ import SwiftUI
 
 struct ToolbarView: View {
     @EnvironmentObject var playerController: PlayerController
+    @Binding var captions: Captions
+    @Binding var scrollTarget: UUID?
     
     var body: some View {
+        Button {
+            if let targetCue = captions.cue(atTime: playerController.player?.currentItem?.currentTime()) {
+                scrollTarget = targetCue.id
+            }
+        } label: {
+            Image(systemName: "arrow.right.to.line")
+        }
         Button {
             playerController.loadPlayer()
         } label: {
@@ -28,6 +37,6 @@ struct ToolbarView: View {
 
 struct ToolbarView_Previews: PreviewProvider {
     static var previews: some View {
-        ToolbarView()
+        ToolbarView(captions: .constant(Captions(fromText: "")), scrollTarget: .constant(UUID()))
     }
 }

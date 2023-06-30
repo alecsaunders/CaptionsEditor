@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreMedia
 
 
 /// - Tag: DataModel
@@ -51,6 +52,27 @@ struct Captions {
     
     init(fromText text: String) {
         self.cues = self.cues(fromText: text)
+    }
+    
+    func cue(atTime: CMTime?) -> Cue? {
+        if cues.isEmpty {
+            return nil
+        }
+        var theCue = cues[0]
+        if let time = atTime?.seconds {
+            for (cIdx, cue) in self.cues.enumerated() {
+                if cIdx == 0 {
+                    continue
+                }
+                
+                let prevCue = self.cues[cIdx - 1]
+                
+                if time > prevCue.endTimestamp.value && time <= cue.endTimestamp.value {
+                    theCue = cue
+                }
+            }
+        }
+        return theCue
     }
 }
 

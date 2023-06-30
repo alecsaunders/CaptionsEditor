@@ -77,7 +77,7 @@ struct ContentView: View {
             playerController.subsURL = file.fileURL
         }
         .toolbar {
-            ToolbarView()
+            ToolbarView(captions: $document.captions, scrollTarget: $scrollTarget)
         }
         .environmentObject(playerController)
     }
