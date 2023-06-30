@@ -32,6 +32,7 @@ struct ContentView: View {
                             CueRow(cue: $cue, selectedCue: $selectedCue) { oldText in
                                 document.registerUndoTextChange(for: $cue.wrappedValue, oldText: oldText, undoManager: undoManager)
                             }
+                            .id(cue.id)
 //                            .searchable(text: $searchText, placement: .sidebar) {
 //                                SearchView(searchResults: $searchResults, scrollTarget: $scrollTarget)
 //                            }
@@ -43,7 +44,6 @@ struct ContentView: View {
                                     selectedCue = nil
                                 }
                             }
-                            .id(cue.id)
                             .contextMenu {
                                 Button("Delete row") {
                                     document.deleteItem(withID: cue.id, undoManager: undoManager)
