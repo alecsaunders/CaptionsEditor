@@ -43,7 +43,6 @@ struct ContentView: View {
                             .contextMenu {
                                 Button("Delete row") {
                                     print("Delete row")
-//                                    self.document.captions.cues.removeAll { $0.id == cue.id }
                                 }
                             }
                             .searchable(text: $searchText) {

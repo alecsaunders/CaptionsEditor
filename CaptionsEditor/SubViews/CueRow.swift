@@ -38,10 +38,14 @@ struct CueRow: View {
                         onTextCommit(oldText)
                     }
             }
-            .padding([.top, .leading, .trailing], 4)
-            .padding([.bottom], 10)
+            .padding([.leading, .trailing])
+            .padding([.top, .bottom], 6)
             .background(cue.id == selectedCue?.id ? Color.secondary.opacity(0.07) : Color.clear)
-                .cornerRadius(7)
+            .cornerRadius(7)
+            .padding([.leading, .trailing], 6)
+            
+//            .padding([.top, .leading, .trailing], 4)
+//            .padding([.bottom], 10)
             Divider()
         }
     }
