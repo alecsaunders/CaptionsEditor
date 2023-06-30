@@ -46,7 +46,7 @@ struct ContentView: View {
                             .id(cue.id)
                             .contextMenu {
                                 Button("Delete row") {
-                                    print("Delete row")
+                                    document.deleteItem(withID: cue.id, undoManager: undoManager)
                                 }
                             }
                         }

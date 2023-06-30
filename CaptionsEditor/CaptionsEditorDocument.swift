@@ -68,13 +68,23 @@ extension CaptionsEditorDocument {
         withAnimation(animation) {
             captions.cues = newItems
         }
-        
-        playerController.loadPlayer()
 
         undoManager?.registerUndo(withTarget: self) { doc in
                 // Because you recurse here, redo support is automatic.
             doc.replaceItems(with: oldItems, undoManager: undoManager, animation: animation)
         }
+    }
+    
+    /// Deletes the items with specified IDs.
+    func deleteItem(withID id: UUID, undoManager: UndoManager? = nil) {
+        var indexSet: IndexSet = IndexSet()
+
+        let enumerated = captions.cues.enumerated()
+        for (index, item) in enumerated where id == item.id {
+            indexSet.insert(index)
+        }
+
+        delete(offsets: indexSet, undoManager: undoManager)
     }
 
     /// Deletes the items at a specified set of offsets, and registers an undo action.
