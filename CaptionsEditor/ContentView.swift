@@ -32,6 +32,10 @@ struct ContentView: View {
                             CueRow(cue: $cue, selectedCue: $selectedCue) { oldText in
                                 document.registerUndoTextChange(for: $cue.wrappedValue, oldText: oldText, undoManager: undoManager)
                             }
+//                            .searchable(text: $searchText, placement: .sidebar) {
+//                                SearchView(searchResults: $searchResults, scrollTarget: $scrollTarget)
+//                            }
+                            .navigationTitle("Searching")
                             .onHover { isHovering in
                                 if isHovering {
                                     selectedCue = cue
@@ -44,9 +48,6 @@ struct ContentView: View {
                                 Button("Delete row") {
                                     print("Delete row")
                                 }
-                            }
-                            .searchable(text: $searchText) {
-                                SearchView(searchResults: $searchResults, scrollTarget: $scrollTarget)
                             }
                         }
                         .onDelete(perform: onDelete)

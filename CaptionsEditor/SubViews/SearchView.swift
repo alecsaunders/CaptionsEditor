@@ -35,7 +35,6 @@ struct SearchView: View {
                  }
              }
          }
-             .frame(height: 200)
      }
 }
 
