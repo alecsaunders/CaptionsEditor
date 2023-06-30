@@ -9,17 +9,19 @@ import SwiftUI
 
 struct TimestampView: View {
     @Binding var cue: Cue
+    @Binding var showTimePopover: Bool
+    
     var body: some View {
         HStack(spacing: 4.0) {
-            TimeButtonView(cue: $cue, start: true)
+            TimeButtonView(cue: $cue, showTimePopover: $showTimePopover, start: true)
             Text("-->")
-            TimeButtonView(cue: $cue, start: false)
+            TimeButtonView(cue: $cue, showTimePopover: $showTimePopover, start: false)
         }
     }
 }
 
 struct TimestampView_Previews: PreviewProvider {
     static var previews: some View {
-        TimestampView(cue: .constant(Cue()))
+        TimestampView(cue: .constant(Cue()), showTimePopover: .constant(false))
     }
 }

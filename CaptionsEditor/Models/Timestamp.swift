@@ -12,8 +12,8 @@ struct Timestamp {
     var value: Double
     var stringValue: String
     
-    init() {
-        self.value = 0.0
+    init(_ initValue: Double = 0.0) {
+        self.value = initValue
         self.stringValue = self.value.toTimestampString()
     }
     

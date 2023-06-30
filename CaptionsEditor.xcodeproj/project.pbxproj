@@ -25,6 +25,8 @@
 		70A0F2482A4CB2C4004317A5 /* Captions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A0F2472A4CB2C4004317A5 /* Captions.swift */; };
 		70A0F24B2A4CF31A004317A5 /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A0F24A2A4CF31A004317A5 /* Timestamp.swift */; };
 		70A0F24D2A4D28EE004317A5 /* TimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A0F24C2A4D28EE004317A5 /* TimestampView.swift */; };
+		70B138972A4F69CF00576273 /* TimeShiftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B138962A4F69CF00576273 /* TimeShiftView.swift */; };
+		70B138992A4F6EEC00576273 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B138982A4F6EEC00576273 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +70,8 @@
 		70A0F2472A4CB2C4004317A5 /* Captions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Captions.swift; sourceTree = "<group>"; };
 		70A0F24A2A4CF31A004317A5 /* Timestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timestamp.swift; sourceTree = "<group>"; };
 		70A0F24C2A4D28EE004317A5 /* TimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampView.swift; sourceTree = "<group>"; };
+		70B138962A4F69CF00576273 /* TimeShiftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeShiftView.swift; sourceTree = "<group>"; };
+		70B138982A4F6EEC00576273 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +127,7 @@
 				70A0F21D2A4CB14A004317A5 /* ContentView.swift */,
 				70A0F24E2A4D2979004317A5 /* SubViews */,
 				70A0F2492A4CB2EA004317A5 /* Models */,
+				70B1389A2A4F6EF000576273 /* Extensions */,
 				70A0F21F2A4CB14B004317A5 /* Assets.xcassets */,
 				70A0F2242A4CB14B004317A5 /* Info.plist */,
 				70A0F2252A4CB14B004317A5 /* CaptionsEditor.entitlements */,
@@ -176,8 +181,17 @@
 				709D0FD12A4D3BF40036B147 /* CueIdPlayButton.swift */,
 				70A0F24C2A4D28EE004317A5 /* TimestampView.swift */,
 				709D0FCF2A4D2B540036B147 /* TimeButtonView.swift */,
+				70B138962A4F69CF00576273 /* TimeShiftView.swift */,
 			);
 			path = SubViews;
+			sourceTree = "<group>";
+		};
+		70B1389A2A4F6EF000576273 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				70B138982A4F6EEC00576273 /* Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -311,6 +325,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				70A0F21C2A4CB14A004317A5 /* CaptionsEditorDocument.swift in Sources */,
+				70B138992A4F6EEC00576273 /* Extensions.swift in Sources */,
 				70A0F24B2A4CF31A004317A5 /* Timestamp.swift in Sources */,
 				70401B9A2A4E405700162E6B /* ToolbarView.swift in Sources */,
 				70A0F21A2A4CB14A004317A5 /* CaptionsEditorApp.swift in Sources */,
@@ -320,6 +335,7 @@
 				709D0FD02A4D2B540036B147 /* TimeButtonView.swift in Sources */,
 				70401B9C2A4E455100162E6B /* SearchView.swift in Sources */,
 				709D0FD42A4D41CB0036B147 /* CueRow.swift in Sources */,
+				70B138972A4F69CF00576273 /* TimeShiftView.swift in Sources */,
 				70A0F21E2A4CB14A004317A5 /* ContentView.swift in Sources */,
 				70401B982A4E0E6600162E6B /* PlayerController.swift in Sources */,
 				70A0F24D2A4D28EE004317A5 /* TimestampView.swift in Sources */,

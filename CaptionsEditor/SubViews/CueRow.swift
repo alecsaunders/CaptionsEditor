@@ -10,6 +10,7 @@ import SwiftUI
 struct CueRow: View {
     @Binding var cue: Cue
     @Binding var selectedCue: Cue?
+    @State var showTimePopover: Bool = false
     @FocusState private var isTitleFieldFocused: Bool
     
     var onTextCommit: (_ oldText: String) -> Void
@@ -21,7 +22,7 @@ struct CueRow: View {
             VStack {
                 HStack(spacing: 0) {
                     CueIdPlayButton(cue: $cue, selectedCue: $selectedCue)
-                    TimestampView(cue: $cue)
+                    TimestampView(cue: $cue, showTimePopover: $showTimePopover)
                 }
                 TextField("\(cue.id)", text: $cue.text, axis: .vertical)
                     .textFieldStyle(.plain)
@@ -43,6 +44,9 @@ struct CueRow: View {
                 .background(cue.id == selectedCue?.id ? Color.secondary.opacity(0.07) : Color.clear)
                 .cornerRadius(7)
                 .padding([.leading, .trailing], 6)
+                .popover(isPresented: $showTimePopover) {
+                    TimeShiftView(cue: $cue)
+                }
             Divider()
         }
     }
