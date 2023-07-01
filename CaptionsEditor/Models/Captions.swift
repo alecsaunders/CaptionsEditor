@@ -47,7 +47,7 @@ extension String {
     }
 }
 
-struct Captions {
+class Captions {
     var cues: [Cue] = []
     
     init(fromText text: String) {
@@ -73,6 +73,27 @@ struct Captions {
             }
         }
         return theCue
+    }
+    
+    func shiftTimestamps(withValue: Double, atCueWithId cueID: UUID, start: Bool) {
+        var atOrAfterCue = false
+        for (cIdx, cue) in cues.enumerated() {
+            if cue.id == cueID {
+                atOrAfterCue = true
+                if start {
+                    cues[cIdx].startTimestamp.add(withValue)
+                }
+                cues[cIdx].endTimestamp.add(withValue)
+            }
+            if !atOrAfterCue {
+                continue
+            }
+            
+            if cue.id != cueID {
+                cues[cIdx].startTimestamp.add(withValue)
+                cues[cIdx].endTimestamp.add(withValue)
+            }
+        }
     }
 }
 

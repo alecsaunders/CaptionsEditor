@@ -38,6 +38,10 @@ struct Timestamp {
         }
         self.stringValue = self.value.toTimestampString()
     }
+    
+    mutating func add(_ addValue: Double) {
+        self.value += addValue
+    }
 }
 
 

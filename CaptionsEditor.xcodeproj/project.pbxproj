@@ -27,6 +27,7 @@
 		70A0F24D2A4D28EE004317A5 /* TimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A0F24C2A4D28EE004317A5 /* TimestampView.swift */; };
 		70B138972A4F69CF00576273 /* TimeShiftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B138962A4F69CF00576273 /* TimeShiftView.swift */; };
 		70B138992A4F6EEC00576273 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B138982A4F6EEC00576273 /* Extensions.swift */; };
+		70B1389C2A4F71DD00576273 /* ShiftControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B1389B2A4F71DD00576273 /* ShiftControls.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +73,7 @@
 		70A0F24C2A4D28EE004317A5 /* TimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampView.swift; sourceTree = "<group>"; };
 		70B138962A4F69CF00576273 /* TimeShiftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeShiftView.swift; sourceTree = "<group>"; };
 		70B138982A4F6EEC00576273 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		70B1389B2A4F71DD00576273 /* ShiftControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftControls.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +169,7 @@
 				70401B972A4E0E6600162E6B /* PlayerController.swift */,
 				70A0F2472A4CB2C4004317A5 /* Captions.swift */,
 				70A0F24A2A4CF31A004317A5 /* Timestamp.swift */,
+				70B1389B2A4F71DD00576273 /* ShiftControls.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -324,6 +327,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70B1389C2A4F71DD00576273 /* ShiftControls.swift in Sources */,
 				70A0F21C2A4CB14A004317A5 /* CaptionsEditorDocument.swift in Sources */,
 				70B138992A4F6EEC00576273 /* Extensions.swift in Sources */,
 				70A0F24B2A4CF31A004317A5 /* Timestamp.swift in Sources */,

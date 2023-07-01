@@ -11,6 +11,8 @@ struct CueRow: View {
     @Binding var cue: Cue
     @Binding var selectedCue: Cue?
     @State var showTimePopover: Bool = false
+    @State var showPopover: Bool = false
+    @State var shiftControls: ShiftControls = ShiftControls()
     @FocusState private var isTitleFieldFocused: Bool
     
     var onTextCommit: (_ oldText: String) -> Void
@@ -22,7 +24,7 @@ struct CueRow: View {
             VStack {
                 HStack(spacing: 0) {
                     CueIdPlayButton(cue: $cue, selectedCue: $selectedCue)
-                    TimestampView(cue: $cue, showTimePopover: $showTimePopover)
+                    TimestampView(cue: $cue, showPopover: $showPopover, shiftControls: $shiftControls)
                 }
                 TextField("\(cue.id)", text: $cue.text, axis: .vertical)
                     .textFieldStyle(.plain)
@@ -44,8 +46,8 @@ struct CueRow: View {
                 .background(cue.id == selectedCue?.id ? Color.secondary.opacity(0.07) : Color.clear)
                 .cornerRadius(7)
                 .padding([.leading, .trailing], 6)
-                .popover(isPresented: $showTimePopover) {
-                    TimeShiftView(cue: $cue)
+                .popover(isPresented: $showPopover, attachmentAnchor: .point(UnitPoint(x: shiftControls.start ? 0.4 : 0.75, y: UnitPoint.top.y))) {
+                    TimeShiftView(cue: $cue, start: shiftControls.start)
                 }
             Divider()
         }
