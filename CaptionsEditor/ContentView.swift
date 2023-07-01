@@ -15,6 +15,7 @@ struct ContentView: View {
     /// - Tag: UndoManager
     @Environment(\.undoManager) var undoManager
     
+    @EnvironmentObject var playerController: PlayerController
     @State var selectedCue: Cue?
     @State var searchText: String = ""
     @State private var scrollTarget: UUID?
@@ -72,6 +73,10 @@ struct ContentView: View {
         }
         .toolbar {
             ToolbarView(captions: $document.captions, scrollTarget: $scrollTarget)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { newValue in
+            playerController.player?.pause()
+            playerController.player = nil
         }
     }
     
