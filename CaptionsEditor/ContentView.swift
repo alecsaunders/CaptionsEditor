@@ -11,13 +11,10 @@ struct ContentView: View {
     /// The document that the environment stores.
     @EnvironmentObject var document: CaptionsEditorDocument
     
-    var file: ReferenceFileDocumentConfiguration<CaptionsEditorDocument>
-    
     /// The undo manager that the environment stores.
     /// - Tag: UndoManager
     @Environment(\.undoManager) var undoManager
     
-    @StateObject private var playerController = PlayerController()
     @State var selectedCue: Cue?
     @State var searchText: String = ""
     @State private var scrollTarget: UUID?
@@ -73,13 +70,9 @@ struct ContentView: View {
             }
             PlayerView()
         }
-        .onAppear() {
-            playerController.subsURL = file.fileURL
-        }
         .toolbar {
             ToolbarView(captions: $document.captions, scrollTarget: $scrollTarget)
         }
-        .environmentObject(playerController)
     }
     
     func onDelete(offsets: IndexSet) {

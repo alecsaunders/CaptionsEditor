@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct CaptionsEditorApp: App {
+    @StateObject private var playerController = PlayerController()
     var body: some Scene {
         DocumentGroup(newDocument: { CaptionsEditorDocument() }) { configuration in
-            ContentView(file: configuration)
+            ContentView()
+                .onAppear() {
+                    playerController.subsURL = configuration.fileURL
+                }
+                .environmentObject(playerController)
         }
         .windowToolbarStyle(.unified(showsTitle: false))
     }
