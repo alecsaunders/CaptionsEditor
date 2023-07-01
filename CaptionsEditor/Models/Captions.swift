@@ -95,7 +95,6 @@ class Captions {
                     cues[cIdx].startTimestamp.add(withValue)
                 }
                 cues[cIdx].endTimestamp.add(withValue)
-                cues[cIdx] = Cue(cues[cIdx])
             }
             if !atOrAfterCue {
                 continue
@@ -104,7 +103,6 @@ class Captions {
             if cue.id != cueID {
                 cues[cIdx].startTimestamp.add(withValue)
                 cues[cIdx].endTimestamp.add(withValue)
-                cues[cIdx] = Cue(cues[cIdx])
             }
         }
     }

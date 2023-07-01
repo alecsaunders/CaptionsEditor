@@ -18,7 +18,6 @@ class CaptionsEditorDocument: ReferenceFileDocument {
     typealias Snapshot = Captions
     
     @Published var captions: Captions
-    @EnvironmentObject var playerController: PlayerController
 
     init() {
         captions = Captions(fromText: "WebVTT\n\n1\n1 --> 2\nsometext")
