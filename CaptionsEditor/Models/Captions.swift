@@ -57,7 +57,7 @@ extension String {
     }
 }
 
-class Captions {
+struct Captions{
     var id: UUID = UUID()
     var cues: [Cue] = []
     
@@ -86,7 +86,7 @@ class Captions {
         return theCue
     }
     
-    func shiftTimestamps(withValue: Double, atCueWithId cueID: UUID, start: Bool) {
+    mutating func shiftTimestamps(withValue: Double, atCueWithId cueID: UUID, start: Bool) {
         var atOrAfterCue = false
         for (cIdx, cue) in cues.enumerated() {
             if cue.id == cueID {
