@@ -47,7 +47,7 @@ struct CueRow: View {
                 .cornerRadius(7)
                 .padding([.leading, .trailing], 6)
                 .popover(isPresented: $showPopover, attachmentAnchor: .point(UnitPoint(x: shiftControls.start ? 0.4 : 0.75, y: UnitPoint.top.y))) {
-                    TimeShiftView(cue: $cue, start: shiftControls.start)
+                    TimeShiftView(cue: $cue, start: shiftControls.start, showPopover: $showPopover)
                 }
             Divider()
         }

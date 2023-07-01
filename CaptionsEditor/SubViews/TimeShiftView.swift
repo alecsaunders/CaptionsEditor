@@ -12,6 +12,7 @@ struct TimeShiftView: View {
     @Binding var cue: Cue
     @State var shiftValue: Double = 0.0
     var start: Bool
+    @Binding var showPopover: Bool
     var isPositive: Bool {
         Int(shiftValue * 10.0) >= 0
     }
@@ -23,7 +24,7 @@ struct TimeShiftView: View {
         VStack {
             HStack(spacing: 0.0) {
                 Text("New \(start ? "Start" : "End") Time: ")
-                Text(String(Timestamp(cue.startTimestamp.value + shiftValue)))
+                Text(String(Timestamp(start ? cue.startTimestamp.value : cue.endTimestamp.value + shiftValue)))
                     .font(.system(size: 13).monospacedDigit())
             }
             Divider()
@@ -55,6 +56,9 @@ struct TimeShiftView: View {
                 ControlGroup {
                     Button(shiftSymbol) {
                         document.captions.shiftTimestamps(withValue: shiftValue, atCueWithId: cue.id, start: start)
+                        let newCaptions = document.captions
+                        document.captions = newCaptions
+                        showPopover = false
                     }
                         .disabled(Int(shiftValue * 1000) == 0)
                     Menu("") {
@@ -62,23 +66,23 @@ struct TimeShiftView: View {
                         Button("\(start ? "start" : "end") and remaining…") {
 //                            shiftAllRemainingTimestamps()
 //                            shiftControlOpts.resetOptions()
+                            showPopover = false
                         }
                         Divider()
                         Button("\(start ? "start" : "end") only") {
 //                            self.shiftSingleTimestamp()
 //                            shiftControlOpts.resetOptions()
+                            showPopover = false
                         }
                         Button("both") {
 //                            self.shiftBothTimestamps()
 //                            shiftControlOpts.resetOptions()
+                            showPopover = false
                         }
                     }
                         .disabled(Int(shiftValue * 1000) == 0)
                 }
                     .frame(minWidth: 50)
-                    .onSubmit {
-                        print("Submitted")
-                    }
             }
         }
             .padding()
@@ -87,6 +91,6 @@ struct TimeShiftView: View {
 
 struct TimeShiftView_Previews: PreviewProvider {
     static var previews: some View {
-        TimeShiftView(cue: .constant(Cue()), start: true)
+        TimeShiftView(cue: .constant(Cue()), start: true, showPopover: .constant(false))
     }
 }
