@@ -28,7 +28,7 @@ struct ContentView: View {
             ScrollView {
                 ScrollViewReader { (proxy: ScrollViewProxy) in
                     LazyVStack {
-                        ForEach($document.captions.cues, id: \.id) { $cue in
+                        ForEach($document.captions.cues, id: \.self) { $cue in
                             CueRow(cue: $cue, selectedCue: $selectedCue) { oldText in
                                 document.registerUndoTextChange(for: $cue.wrappedValue, oldText: oldText, undoManager: undoManager)
                             }

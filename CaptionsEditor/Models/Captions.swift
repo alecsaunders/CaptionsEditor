@@ -10,7 +10,7 @@ import CoreMedia
 
 
 /// - Tag: DataModel
-struct Cue: Identifiable, Equatable {
+struct Cue: Identifiable, Equatable, Hashable {
     var id = UUID()
     var cueId: String?
     var startTimestamp: Timestamp
@@ -19,6 +19,10 @@ struct Cue: Identifiable, Equatable {
     
     static func == (lhs: Cue, rhs: Cue) -> Bool {
         lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
     
     init(cueId: String? = nil, startTimestamp: Timestamp, endTimestamp: Timestamp, text: String) {
@@ -35,6 +39,12 @@ struct Cue: Identifiable, Equatable {
     }
 }
 
+extension Cue {
+    init(_ cue: Cue) {
+        self = Cue(cueId: cue.cueId, startTimestamp: cue.startTimestamp, endTimestamp: cue.endTimestamp, text: cue.text)
+    }
+}
+
 extension String {
     init(_ cue: Cue) {
         var cueText = ""
@@ -48,6 +58,7 @@ extension String {
 }
 
 class Captions {
+    var id: UUID = UUID()
     var cues: [Cue] = []
     
     init(fromText text: String) {
@@ -84,6 +95,7 @@ class Captions {
                     cues[cIdx].startTimestamp.add(withValue)
                 }
                 cues[cIdx].endTimestamp.add(withValue)
+                cues[cIdx] = Cue(cues[cIdx])
             }
             if !atOrAfterCue {
                 continue
@@ -92,6 +104,7 @@ class Captions {
             if cue.id != cueID {
                 cues[cIdx].startTimestamp.add(withValue)
                 cues[cIdx].endTimestamp.add(withValue)
+                cues[cIdx] = Cue(cues[cIdx])
             }
         }
     }
