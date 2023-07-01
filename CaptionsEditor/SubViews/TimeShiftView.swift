@@ -56,8 +56,6 @@ struct TimeShiftView: View {
                 ControlGroup {
                     Button(shiftSymbol) {
                         document.captions.shiftTimestamps(withValue: shiftValue, atCueWithId: cue.id, start: start)
-                        let newCaptions = document.captions
-                        document.captions = newCaptions
                         showPopover = false
                     }
                         .disabled(Int(shiftValue * 1000) == 0)
