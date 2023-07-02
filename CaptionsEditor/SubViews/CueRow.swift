@@ -43,9 +43,6 @@ struct CueRow: View {
 //                        onTextCommit(oldText)
                         cue.text = tempText
                     }
-                    .onDisappear() {
-                        print("Dissapear")
-                    }
             }
                 .padding([.leading, .trailing])
                 .padding([.top, .bottom], 6)
