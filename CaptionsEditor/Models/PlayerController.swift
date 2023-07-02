@@ -40,7 +40,9 @@ class PlayerController: ObservableObject {
             let textTrack = mix.tracks(withMediaType: .text)[0]
             mix.removeTrack(textTrack)
             
-            addSubtitleTrackToMix(withDuration: thePlayer.currentItem!.duration)
+            Task {
+                await addSubtitleTrackToMix(withDuration: thePlayer.currentItem!.duration)
+            }
             
             let playerItem = AVPlayerItem(asset: mix)
             thePlayer.replaceCurrentItem(with: playerItem)
@@ -57,15 +59,8 @@ class PlayerController: ObservableObject {
             // 1 - Video Track
             let videoAsset = AVURLAsset(url: videoURL)
             let videoTrack = mix.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid)
-            var duration: CMTime = CMTime(seconds: 0, preferredTimescale: 1000)
             do {
-                duration = try await videoAsset.load(.duration)
-            } catch {
-                print("No duration")
-            }
-            
-            do {
-                try videoTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: duration), of: videoAsset.tracks(withMediaType: .video)[0], at: .zero)
+                try await videoTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: videoAsset.load(.duration)), of: videoAsset.loadTracks(withMediaType: .video)[0], at: .zero)
             } catch {
                 print(error)
             }
@@ -73,13 +68,17 @@ class PlayerController: ObservableObject {
             // 2 - Audio track
             let audioTrack = mix.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)
             do {
-                try audioTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: duration), of: videoAsset.tracks(withMediaType: .audio)[0], at: .zero)
+                try await audioTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: videoAsset.load(.duration)), of: videoAsset.loadTracks(withMediaType: .audio)[0], at: .zero)
             } catch {
                 print(error)
             }
 
             // 3 - Subtitle track
-            addSubtitleTrackToMix(withDuration: duration)
+            Task {
+                do {
+                    try await addSubtitleTrackToMix(withDuration: videoAsset.load(.duration))
+                }
+            }
             
             // 4 - Set up player
             let playerItem = AVPlayerItem(asset: mix)
@@ -90,12 +89,12 @@ class PlayerController: ObservableObject {
         }
     }
     
-    private func addSubtitleTrackToMix(withDuration: CMTime) {
+    private func addSubtitleTrackToMix(withDuration: CMTime) async {
         if let subsURL = subsURL {
             let subtitleAsset = AVURLAsset(url: subsURL)
             let subtitleTrack = mix.addMutableTrack(withMediaType: .text, preferredTrackID: kCMPersistentTrackID_Invalid)
             do {
-                try subtitleTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: withDuration), of: subtitleAsset.tracks(withMediaType: .text)[0], at: .zero)
+                try await subtitleTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: withDuration), of: subtitleAsset.loadTracks(withMediaType: .text)[0], at: .zero)
             } catch {
                 print(error)
             }
