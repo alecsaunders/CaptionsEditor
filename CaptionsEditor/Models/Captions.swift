@@ -92,17 +92,21 @@ struct Captions: Identifiable {
             if cue.id == cueID {
                 atOrAfterCue = true
                 if start {
-                    cues[cIdx].startTimestamp.add(withValue)
+                    let newStartTime = cues[cIdx].startTimestamp.add(withValue)
+                    cues[cIdx].startTimestamp = newStartTime
                 }
-                cues[cIdx].endTimestamp.add(withValue)
+                let newEndTime = cues[cIdx].endTimestamp.add(withValue)
+                cues[cIdx].endTimestamp = newEndTime
             }
             if !atOrAfterCue {
                 continue
             }
             
             if cue.id != cueID {
-                cues[cIdx].startTimestamp.add(withValue)
-                cues[cIdx].endTimestamp.add(withValue)
+                let newStartTime = cues[cIdx].startTimestamp.add(withValue)
+                cues[cIdx].startTimestamp = newStartTime
+                let newEndTime = cues[cIdx].endTimestamp.add(withValue)
+                cues[cIdx].endTimestamp = newEndTime
             }
         }
     }

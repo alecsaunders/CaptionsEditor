@@ -15,8 +15,6 @@ extension UTType {
 }
 
 struct CaptionsEditorDocument: FileDocument {
-    
-    
     var captions: Captions
 
     init() {
@@ -104,7 +102,6 @@ extension CaptionsEditorDocument {
 //            // Use the replaceItems symmetric undoable-redoable function.
 //            doc.replaceItems(with: oldItems, undoManager: undoManager)
 //        }
-//
     }
     
     /// Registers an undo action and a redo action for a title change.
