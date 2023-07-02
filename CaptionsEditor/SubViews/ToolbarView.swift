@@ -1,4 +1,4 @@
-//
+    //
 //  ToolbarView.swift
 //  CaptionsEditor
 //
@@ -21,7 +21,9 @@ struct ToolbarView: View {
             Image(systemName: "arrow.right.to.line")
         }
         Button {
-            playerController.loadPlayer()
+            Task {
+                await playerController.loadPlayer()
+            }
         } label: {
             Image(systemName: "arrow.clockwise")
         }

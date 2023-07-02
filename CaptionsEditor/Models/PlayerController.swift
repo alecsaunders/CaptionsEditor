@@ -24,12 +24,14 @@ class PlayerController: ObservableObject {
         if panel.runModal() == .OK {
             if let fileUrl = panel.url {
                 self.videoURL = fileUrl
-                self.loadPlayer()
+                Task {
+                    await self.loadPlayer()
+                }
             }
         }
     }
     
-    func loadPlayer() {
+    func loadPlayer() async {
         if let thePlayer = player {
             let currentTime = thePlayer.currentTime()
             let isPlaying = thePlayer.rate > 0
@@ -55,8 +57,15 @@ class PlayerController: ObservableObject {
             // 1 - Video Track
             let videoAsset = AVURLAsset(url: videoURL)
             let videoTrack = mix.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid)
+            var duration: CMTime = CMTime(seconds: 0, preferredTimescale: 1000)
             do {
-                try videoTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: videoAsset.duration), of: videoAsset.tracks(withMediaType: .video)[0], at: .zero)
+                duration = try await videoAsset.load(.duration)
+            } catch {
+                print("No duration")
+            }
+            
+            do {
+                try videoTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: duration), of: videoAsset.tracks(withMediaType: .video)[0], at: .zero)
             } catch {
                 print(error)
             }
@@ -64,18 +73,20 @@ class PlayerController: ObservableObject {
             // 2 - Audio track
             let audioTrack = mix.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)
             do {
-                try audioTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: videoAsset.duration), of: videoAsset.tracks(withMediaType: .audio)[0], at: .zero)
+                try audioTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: duration), of: videoAsset.tracks(withMediaType: .audio)[0], at: .zero)
             } catch {
                 print(error)
             }
 
             // 3 - Subtitle track
-            addSubtitleTrackToMix(withDuration: videoAsset.duration)
+            addSubtitleTrackToMix(withDuration: duration)
             
             // 4 - Set up player
             let playerItem = AVPlayerItem(asset: mix)
 
-            player = AVPlayer(playerItem: playerItem)
+            DispatchQueue.main.async {
+                self.player = AVPlayer(playerItem: playerItem)
+            }
         }
     }
     
