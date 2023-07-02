@@ -57,7 +57,7 @@ extension String {
     }
 }
 
-struct Captions{
+struct Captions: Identifiable {
     var id: UUID = UUID()
     var cues: [Cue] = []
     
