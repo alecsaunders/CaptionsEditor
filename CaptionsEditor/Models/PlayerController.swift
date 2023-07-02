@@ -47,7 +47,6 @@ class PlayerController: ObservableObject {
             if isPlaying {
                 thePlayer.play()
             }
-            print("Replace current item")
         } else {
             guard let videoURL = self.videoURL else { return }
 

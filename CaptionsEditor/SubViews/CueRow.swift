@@ -11,12 +11,13 @@ struct CueRow: View {
     @Binding var document: CaptionsEditorDocument
     @Binding var cue: Cue
     @Binding var selectedCue: Cue?
+    @State var tempText: String
     @State var showTimePopover: Bool = false
     @State var showPopover: Bool = false
     @State var shiftControls: ShiftControls = ShiftControls()
     @FocusState private var isTitleFieldFocused: Bool
     
-    var onTextCommit: (_ oldText: String) -> Void
+//    var onTextCommit: (_ oldText: String) -> Void
     
     @State private var oldText: String = ""
     
@@ -27,19 +28,23 @@ struct CueRow: View {
                     CueIdPlayButton(cue: $cue, selectedCue: $selectedCue)
                     TimestampView(cue: $cue, showPopover: $showPopover, shiftControls: $shiftControls)
                 }
-                TextField("\(cue.id)", text: $cue.text, axis: .vertical)
+                TextField("", text: $tempText, axis: .vertical)
                     .textFieldStyle(.plain)
                     .lineLimit(3)
                     .focused($isTitleFieldFocused)
                     .onChange(of: isTitleFieldFocused) { newValue in
                         if isTitleFieldFocused {
                             // The TextField is now focused.
-                            oldText = cue.text
+                            cue.text = tempText
                         }
                     }
                     .onSubmit {
                         // The commit handler registers an undo action using the old title.
-                        onTextCommit(oldText)
+//                        onTextCommit(oldText)
+                        cue.text = tempText
+                    }
+                    .onDisappear() {
+                        print("Dissapear")
                     }
             }
                 .padding([.leading, .trailing])
@@ -62,9 +67,9 @@ struct CueRow_Previews: PreviewProvider {
         @State private var document = CaptionsEditorDocument()
 
         var body: some View {
-            CueRow(document: .constant(CaptionsEditorDocument()), cue: .constant(Cue()), selectedCue: .constant(nil)) { oldText in
-                
-            }
+            CueRow(document: .constant(CaptionsEditorDocument()), cue: .constant(Cue()), selectedCue: .constant(nil), tempText: "temp text")// { oldText in
+//
+//            }
         }
     }
     
