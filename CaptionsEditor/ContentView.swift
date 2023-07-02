@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     /// The document that the environment stores.
-    @EnvironmentObject var document: CaptionsEditorDocument
+    @Binding var document: CaptionsEditorDocument
     
     /// The undo manager that the environment stores.
     /// - Tag: UndoManager
@@ -27,7 +27,7 @@ struct ContentView: View {
                 ScrollViewReader { (proxy: ScrollViewProxy) in
                     LazyVStack {
                         ForEach($document.captions.cues, id: \.self) { $cue in
-                            CueRow(cue: $cue, selectedCue: $selectedCue) { oldText in
+                            CueRow(document: $document, cue: $cue, selectedCue: $selectedCue) { oldText in
                                 document.registerUndoTextChange(for: $cue.wrappedValue, oldText: oldText, undoManager: undoManager)
                             }
                             .id(cue.id)

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CueRow: View {
+    @Binding var document: CaptionsEditorDocument
     @Binding var cue: Cue
     @Binding var selectedCue: Cue?
     @State var showTimePopover: Bool = false
@@ -47,7 +48,7 @@ struct CueRow: View {
                 .cornerRadius(7)
                 .padding([.leading, .trailing], 6)
                 .popover(isPresented: $showPopover, attachmentAnchor: .point(UnitPoint(x: shiftControls.start ? 0.4 : 0.75, y: UnitPoint.top.y))) {
-                    TimeShiftView(cue: $cue, start: shiftControls.start, showPopover: $showPopover)
+                    TimeShiftView(document: $document, cue: $cue, start: shiftControls.start, showPopover: $showPopover)
                 }
             Divider()
         }
@@ -58,10 +59,10 @@ struct CueRow_Previews: PreviewProvider {
     
     // Define a shim for the preview of ChecklistRow.
     struct RowContainer: View {
-        @StateObject private var document = CaptionsEditorDocument()
+        @State private var document = CaptionsEditorDocument()
 
         var body: some View {
-            CueRow(cue: .constant(Cue()), selectedCue: .constant(nil)) { oldText in
+            CueRow(document: .constant(CaptionsEditorDocument()), cue: .constant(Cue()), selectedCue: .constant(nil)) { oldText in
                 
             }
         }
