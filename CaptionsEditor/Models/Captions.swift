@@ -12,7 +12,7 @@ import CoreMedia
 /// - Tag: DataModel
 struct Cue: Identifiable, Equatable, Hashable {
     var id = UUID()
-    var cueId: String?
+    var cueId: Int
     var startTimestamp: Timestamp
     var endTimestamp: Timestamp
     var text: String
@@ -25,7 +25,7 @@ struct Cue: Identifiable, Equatable, Hashable {
         hasher.combine(id)
     }
     
-    init(cueId: String? = nil, startTimestamp: Timestamp, endTimestamp: Timestamp, text: String) {
+    init(cueId: Int, startTimestamp: Timestamp, endTimestamp: Timestamp, text: String) {
         self.cueId = cueId
         self.startTimestamp = startTimestamp
         self.endTimestamp = endTimestamp
@@ -33,6 +33,7 @@ struct Cue: Identifiable, Equatable, Hashable {
     }
     
     init() {
+        self.cueId = 1
         self.startTimestamp = Timestamp()
         self.endTimestamp = Timestamp()
         self.text = ""
@@ -47,10 +48,7 @@ extension Cue {
 
 extension String {
     init(_ cue: Cue) {
-        var cueText = ""
-        if let cueId = cue.cueId {
-            cueText = "\(cueId)\n"
-        }
+        var cueText = "\(cue.cueId)\n"
         cueText += "\(cue.startTimestamp.stringValue) --> \(cue.endTimestamp.stringValue)\n"
         cueText += cue.text
         self = cueText
@@ -163,7 +161,7 @@ extension Captions {
     }
     
     func cue(fromCueLines cueLines: [String]) -> Cue {
-        let id: String? = cueId(fromCueLines: cueLines)
+        let id: Int = cueId(fromCueLines: cueLines)
         let timestampLine: String = timestampLine(fromCueLines: cueLines) ?? ""
         let startTimestamp = startTimestamp(fromTimestampLine: timestampLine)
         let endTimestamp = endTimestamp(fromTimestampLine: timestampLine)
@@ -172,15 +170,15 @@ extension Captions {
         return Cue(cueId: id, startTimestamp: startTimestamp, endTimestamp: endTimestamp, text: text)
     }
     
-    func cueId(fromCueLines cueLines: [String]) -> String? {
+    func cueId(fromCueLines cueLines: [String]) -> Int {
         if let firstLine = cueLines.first {
             if firstLine.contains("-->") {
-                return nil
+                return 1
             } else {
-                return firstLine
+                return Int(firstLine.trimmingCharacters(in: .whitespacesAndNewlines)) ?? 1
             }
         }
-        return nil
+        return 1
     }
     
     func timestampLine(fromCueLines cueLines: [String]) -> String? {

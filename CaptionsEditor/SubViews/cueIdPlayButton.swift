@@ -14,7 +14,7 @@ struct CueIdPlayButton: View {
     
     var body: some View {
         HStack(alignment: .bottom, spacing: 1.5) {
-            Text(cue.cueId ?? "no id")
+            Text("\(cue.cueId)")
                 .font(.system(size: 12))
                 .foregroundColor(.secondary)
             Label("", systemImage: "play.circle")
