@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TimeShiftView: View {
-    @Binding var document: CaptionsEditorDocument
+    @EnvironmentObject var document: CaptionsEditorDocument
     @Binding var cue: Cue
     @State var shiftValue: Double = 0.0
     var start: Bool
@@ -89,6 +89,6 @@ struct TimeShiftView: View {
 
 struct TimeShiftView_Previews: PreviewProvider {
     static var previews: some View {
-        TimeShiftView(document: .constant(CaptionsEditorDocument()), cue: .constant(Cue()), start: true, showPopover: .constant(false))
+        TimeShiftView(cue: .constant(Cue()), start: true, showPopover: .constant(false))
     }
 }

@@ -11,8 +11,8 @@ import SwiftUI
 struct CaptionsEditorApp: App {
     @StateObject private var playerController = PlayerController()
     var body: some Scene {
-        DocumentGroup(newDocument: CaptionsEditorDocument()) { configuration in
-            ContentView(document: configuration.$document)
+        DocumentGroup(newDocument: { CaptionsEditorDocument() }) { configuration in
+            ContentView()
                 .onAppear() {
                     playerController.subsURL = configuration.fileURL
                 }

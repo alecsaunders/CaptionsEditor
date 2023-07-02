@@ -14,8 +14,9 @@ extension UTType {
     }
 }
 
-struct CaptionsEditorDocument: FileDocument {
-    var captions: Captions
+class CaptionsEditorDocument: ReferenceFileDocument {
+    typealias Snapshot = Captions
+    @Published var captions: Captions
 
     init() {
         captions = Captions(fromText: "WebVTT\n\n1\n1 --> 2\nsometext")
@@ -23,7 +24,7 @@ struct CaptionsEditorDocument: FileDocument {
 
     static var readableContentTypes: [UTType] { [.webVTTDocumentType] }
 
-    init(configuration: ReadConfiguration) throws {
+    required init(configuration: ReadConfiguration) throws {
         guard let data = configuration.file.regularFileContents,
               let string = String(data: data, encoding: .utf8)
         else {
@@ -32,8 +33,12 @@ struct CaptionsEditorDocument: FileDocument {
         captions = Captions(fromText: string)
     }
     
-    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        let data = String(captions).data(using: .utf8)!
+    func snapshot(contentType: UTType) throws -> Captions {
+        captions
+    }
+    
+    func fileWrapper(snapshot: Captions, configuration: WriteConfiguration) throws -> FileWrapper {
+        let data = String(snapshot).data(using: .utf8)!
         return .init(regularFileWithContents: data)
     }
 }

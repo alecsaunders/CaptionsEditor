@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CueRow: View {
-    @Binding var document: CaptionsEditorDocument
     @Binding var cue: Cue
     @Binding var selectedCue: Cue?
     @State var tempText: String
@@ -50,7 +49,7 @@ struct CueRow: View {
                 .cornerRadius(7)
                 .padding([.leading, .trailing], 6)
                 .popover(isPresented: $showPopover, attachmentAnchor: .point(UnitPoint(x: shiftControls.start ? 0.4 : 0.75, y: UnitPoint.top.y))) {
-                    TimeShiftView(document: $document, cue: $cue, start: shiftControls.start, showPopover: $showPopover)
+                    TimeShiftView(cue: $cue, start: shiftControls.start, showPopover: $showPopover)
                 }
             Divider()
         }
@@ -64,7 +63,7 @@ struct CueRow_Previews: PreviewProvider {
         @State private var document = CaptionsEditorDocument()
 
         var body: some View {
-            CueRow(document: .constant(CaptionsEditorDocument()), cue: .constant(Cue()), selectedCue: .constant(nil), tempText: "temp text")// { oldText in
+            CueRow(cue: .constant(Cue()), selectedCue: .constant(nil), tempText: "temp text")// { oldText in
 //
 //            }
         }
