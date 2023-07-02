@@ -16,7 +16,7 @@ struct CueRow: View {
     @State var shiftControls: ShiftControls = ShiftControls()
     @FocusState private var isTitleFieldFocused: Bool
     
-//    var onTextCommit: (_ oldText: String) -> Void
+    var onTextCommit: (_ oldText: String) -> Void
     
     @State private var oldText: String = ""
     
@@ -34,13 +34,15 @@ struct CueRow: View {
                     .onChange(of: isTitleFieldFocused) { newValue in
                         if isTitleFieldFocused {
                             // The TextField is now focused.
+                            onTextCommit(cue.text)
                             cue.text = tempText
                         }
                     }
                     .onSubmit {
-                        // The commit handler registers an undo action using the old title.
-//                        onTextCommit(oldText)
+//                        The commit handler registers an undo action using the old title.
+                        onTextCommit(cue.text)
                         cue.text = tempText
+                        isTitleFieldFocused = false
                     }
             }
                 .padding([.leading, .trailing])
@@ -63,9 +65,9 @@ struct CueRow_Previews: PreviewProvider {
         @State private var document = CaptionsEditorDocument()
 
         var body: some View {
-            CueRow(cue: .constant(Cue()), selectedCue: .constant(nil), tempText: "temp text")// { oldText in
-//
-//            }
+            CueRow(cue: .constant(Cue()), selectedCue: .constant(nil), tempText: "temp text") { oldText in
+
+            }
         }
     }
     

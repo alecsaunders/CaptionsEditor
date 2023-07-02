@@ -27,9 +27,9 @@ struct ContentView: View {
                 ScrollViewReader { (proxy: ScrollViewProxy) in
                     LazyVStack {
                         ForEach($document.captions.cues, id: \.self) { $cue in
-                            CueRow(cue: $cue, selectedCue: $selectedCue, tempText: cue.text) //{ oldText in
-//                                document.registerUndoTextChange(for: $cue.wrappedValue, oldText: oldText, undoManager: undoManager)
-//                            }
+                            CueRow(cue: $cue, selectedCue: $selectedCue, tempText: cue.text) { oldText in
+                                document.registerUndoTextChange(for: $cue.wrappedValue, oldText: oldText, undoManager: undoManager)
+                            }
                             .id(cue.id)
 //                            .searchable(text: $searchText, placement: .sidebar) {
 //                                SearchView(searchResults: $searchResults, scrollTarget: $scrollTarget)
