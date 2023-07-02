@@ -61,6 +61,7 @@ struct Captions: Identifiable {
     
     init(fromText text: String) {
         self.cues = self.cues(fromText: text)
+        self.resetCueIds()
     }
     
     func cue(atTime: CMTime?) -> Cue? {
@@ -223,5 +224,13 @@ extension Captions {
             }
         }
         return cueText.trimmingCharacters(in: .newlines)
+    }
+}
+
+extension Captions {
+    mutating func resetCueIds() {
+        for cIdx in 0..<cues.count {
+            cues[cIdx].cueId = cIdx + 1
+        }
     }
 }

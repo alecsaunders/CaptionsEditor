@@ -89,6 +89,7 @@ extension CaptionsEditorDocument {
         let oldItems = captions.cues
         withAnimation {
             captions.cues.remove(atOffsets: offsets)
+            captions.resetCueIds()
         }
 
         undoManager?.registerUndo(withTarget: self) { doc in
