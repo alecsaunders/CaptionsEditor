@@ -59,7 +59,7 @@ extension Double {
         let minStr = "\(minutes)".count == 2 ? "\(minutes)" : "0\(minutes)"
         let secStr = "\(seconds)".count == 2 ? "\(seconds)" : "0\(seconds)"
         var milStr = "\(milliseconds)".count == 3 ? "\(milliseconds)" : "0\(milliseconds)"
-        milStr = "\(milliseconds)".count == 3 ? "\(milliseconds)" : "0\(milliseconds)"
+        milStr = "\(milliseconds)".count == 3 ? "\(milliseconds)" : "0\(milStr)"
         
         return "\(hrStr):\(minStr):\(secStr).\(milStr)"
     }
