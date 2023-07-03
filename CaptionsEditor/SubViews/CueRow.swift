@@ -41,7 +41,7 @@ struct CueRow: View {
                         }
                     }
                     .onSubmit {
-//                        The commit handler registers an undo action using the old title.
+                        // The commit handler registers an undo action using the old title.
                         if cue.text != tempText {
                             onTextCommit(cue.text)
                         }
