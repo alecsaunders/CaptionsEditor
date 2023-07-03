@@ -18,6 +18,15 @@ struct CaptionsEditorApp: App {
                 }
                 .environmentObject(playerController)
         }
-        .windowToolbarStyle(.unified(showsTitle: false))
+        .commands {
+            CommandMenu("Find") {
+                Button("Find") {
+                    if let toolbar = NSApp.keyWindow?.toolbar,
+                        let search = toolbar.items.first(where: { $0.itemIdentifier.rawValue == "com.apple.SwiftUI.search" }) as? NSSearchToolbarItem {
+                        search.beginSearchInteraction()
+                    }
+                }.keyboardShortcut("f", modifiers: .command)
+            }
+        }
     }
 }

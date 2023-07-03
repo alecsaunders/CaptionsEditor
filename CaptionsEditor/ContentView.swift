@@ -31,10 +31,6 @@ struct ContentView: View {
                                 document.registerUndoTextChange(for: $cue.wrappedValue, oldText: oldText, undoManager: undoManager)
                             }
                             .id(cue.id)
-//                            .searchable(text: $searchText, placement: .sidebar) {
-//                                SearchView(searchResults: $searchResults, scrollTarget: $scrollTarget)
-//                            }
-                            .navigationTitle("Searching")
                             .onHover { isHovering in
                                 if isHovering {
                                     selectedCue = cue
@@ -85,6 +81,9 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { newValue in
             playerController.player?.pause()
             playerController.player = nil
+        }
+        .searchable(text: $searchText, placement: .sidebar) {
+            SearchView(searchResults: $searchResults, scrollTarget: $scrollTarget)
         }
     }
     
