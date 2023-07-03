@@ -48,14 +48,20 @@ class CaptionsEditorDocument: ReferenceFileDocument {
 extension CaptionsEditorDocument {
     
     /// Adds a new item, and registers an undo action.
-    func addItem(title: String, undoManager: UndoManager? = nil) {
-//        checklist.addItem(title: title)
-//        let count = checklist.items.count
-//        undoManager?.registerUndo(withTarget: self) { doc in
-//            withAnimation {
-//                doc.deleteItem(index: count - 1, undoManager: undoManager)
-//            }
-//        }
+    func addItem(atIndex: Int, undoManager: UndoManager? = nil) {
+        var newCue = Cue()
+        if atIndex > 0 {
+            let previousCue = captions.cues[atIndex - 1]
+            newCue = Cue(cueId: atIndex, startTimestamp: previousCue.endTimestamp.add(0.1), endTimestamp: previousCue.endTimestamp.add(1.1), text: "new subtitle")
+        }
+        captions.cues.insert(newCue, at: atIndex)
+        captions.resetCueIds()
+        
+        undoManager?.registerUndo(withTarget: self) { doc in
+            withAnimation {
+                doc.deleteItem(withID: newCue.id, undoManager: undoManager)
+            }
+        }
     }
     
     /// Replaces the existing items with a new set of items.

@@ -44,16 +44,19 @@ struct ContentView: View {
                             }
                             .contextMenu {
                                 Button("Add cue above...") {
-                                    print("Add cue")
+                                    document.addItem(atIndex: cue.cueId - 1, undoManager: undoManager)
                                 }
                                 Button("Add cue below...") {
-                                    print("Add cue")
+                                    document.addItem(atIndex: cue.cueId, undoManager: undoManager)
                                 }
                                 Divider()
                                 Button("Delete cue") {
                                     document.deleteItem(withID: cue.id, undoManager: undoManager)
                                 }
+                            } preview: {
+                                Image("turtlerock") // Loads the image from an asset catalog.
                             }
+                            
                         }
                         .onDelete(perform: onDelete)
                     }
