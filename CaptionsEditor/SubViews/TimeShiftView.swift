@@ -20,6 +20,10 @@ struct TimeShiftView: View {
         isPositive ? ">>" : "<<"
     }
     
+    /// The undo manager that the environment stores.
+    /// - Tag: UndoManager
+    @Environment(\.undoManager) var undoManager
+    
     var body: some View {
         VStack {
             HStack(spacing: 0.0) {
@@ -55,7 +59,7 @@ struct TimeShiftView: View {
 
                 ControlGroup {
                     Button(shiftSymbol) {
-                        document.captions.shiftTimestamps(withValue: shiftValue, atCueWithId: cue.id, start: start)
+                        document.shiftTimeValues(withValue: shiftValue, atCueWithId: cue.id, start: start, undoManager: undoManager)
                         showPopover = false
                     }
                         .disabled(Int(shiftValue * 1000) == 0)
