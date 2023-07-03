@@ -79,15 +79,15 @@ struct ContentView: View {
         .toolbar {
             ToolbarView(captions: $document.captions, scrollTarget: $scrollTarget, showTextEditorPopover: $showTextEditorPopover)
         }
-        .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { newValue in
-            playerController.player?.pause()
-            playerController.player = nil
-        }
-        .searchable(text: $searchText, placement: .sidebar) {
+        .searchable(text: $searchText) {
             SearchView(searchResults: $searchResults, scrollTarget: $scrollTarget)
         }
         .sheet(isPresented: $showTextEditorPopover) {
             FullTextView(showTextEditorPopover: $showTextEditorPopover)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { newValue in
+            playerController.player?.pause()
+            playerController.player = nil
         }
     }
     
