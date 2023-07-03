@@ -34,13 +34,17 @@ struct CueRow: View {
                     .onChange(of: isTextFieldFocused) { newValue in
                         if isTextFieldFocused {
                             // The TextField is now focused.
-                            onTextCommit(cue.text)
+                            if cue.text != tempText {
+                                onTextCommit(cue.text)
+                            }
                             cue.text = tempText
                         }
                     }
                     .onSubmit {
 //                        The commit handler registers an undo action using the old title.
-                        onTextCommit(cue.text)
+                        if cue.text != tempText {
+                            onTextCommit(cue.text)
+                        }
                         cue.text = tempText
                         isTextFieldFocused = false
                     }
