@@ -22,7 +22,7 @@ struct CueRow: View {
     
     var body: some View {
         VStack {
-            VStack {
+            VStack(alignment: .leading) {
                 HStack(spacing: 0) {
                     CueIdPlayButton(cue: $cue, selectedCue: $selectedCue)
                     TimestampView(cue: $cue, showPopover: $showPopover, shiftControls: $shiftControls)

@@ -14,8 +14,8 @@ struct CueIdPlayButton: View {
     
     var body: some View {
         HStack(alignment: .bottom, spacing: 1.5) {
-            Text("\(cue.cueId)")
-                .font(.system(size: 12))
+            Text(verbatim: "\(cue.cueId)")
+                .font(.system(size: 12).monospacedDigit())
                 .foregroundColor(.secondary)
             Label("", systemImage: "play.circle")
                 .foregroundColor(cue.cueId == selectedCue?.cueId ? Color.blue : Color.clear)
@@ -23,7 +23,6 @@ struct CueIdPlayButton: View {
             .onTapGesture {
                 playerController.jumpToPosition(atTimestamp: cue.startTimestamp.value)
             }
-            .frame(width: 55, height: 16, alignment: .leading)
     }
 }
 
