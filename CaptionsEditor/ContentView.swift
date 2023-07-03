@@ -53,8 +53,6 @@ struct ContentView: View {
                                 Button("Delete cue") {
                                     document.deleteItem(withID: cue.id, undoManager: undoManager)
                                 }
-                            } preview: {
-                                Image("turtlerock") // Loads the image from an asset catalog.
                             }
                             
                         }

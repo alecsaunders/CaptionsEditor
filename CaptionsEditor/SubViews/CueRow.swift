@@ -14,7 +14,7 @@ struct CueRow: View {
     @State var showTimePopover: Bool = false
     @State var showPopover: Bool = false
     @State var shiftControls: ShiftControls = ShiftControls()
-    @FocusState private var isTitleFieldFocused: Bool
+    @FocusState private var isTextFieldFocused: Bool
     
     var onTextCommit: (_ oldText: String) -> Void
     
@@ -30,9 +30,9 @@ struct CueRow: View {
                 TextField("", text: $tempText, axis: .vertical)
                     .textFieldStyle(.plain)
                     .lineLimit(3)
-                    .focused($isTitleFieldFocused)
-                    .onChange(of: isTitleFieldFocused) { newValue in
-                        if isTitleFieldFocused {
+                    .focused($isTextFieldFocused)
+                    .onChange(of: isTextFieldFocused) { newValue in
+                        if isTextFieldFocused {
                             // The TextField is now focused.
                             onTextCommit(cue.text)
                             cue.text = tempText
@@ -42,7 +42,7 @@ struct CueRow: View {
 //                        The commit handler registers an undo action using the old title.
                         onTextCommit(cue.text)
                         cue.text = tempText
-                        isTitleFieldFocused = false
+                        isTextFieldFocused = false
                     }
             }
                 .padding([.leading, .trailing])

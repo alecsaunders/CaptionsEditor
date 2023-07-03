@@ -49,7 +49,7 @@ extension CaptionsEditorDocument {
     
     /// Adds a new item, and registers an undo action.
     func addItem(atIndex: Int, undoManager: UndoManager? = nil) {
-        var newCue = Cue()
+        var newCue = Cue(cueId: 1, startTimestamp: Timestamp(0), endTimestamp: Timestamp(1.0), text: "new subtitle")
         if atIndex > 0 {
             let previousCue = captions.cues[atIndex - 1]
             newCue = Cue(cueId: atIndex, startTimestamp: previousCue.endTimestamp.add(0.1), endTimestamp: previousCue.endTimestamp.add(1.1), text: "new subtitle")
