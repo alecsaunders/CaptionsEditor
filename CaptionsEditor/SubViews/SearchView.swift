@@ -12,28 +12,20 @@ struct SearchView: View {
     @Binding var scrollTarget: UUID?
     
     var body: some View {
-         ScrollView {
+         ForEach($searchResults) { $searchCue in
              VStack {
-                 ForEach($searchResults) { $searchCue in
-                     VStack {
-//                         HStack {
-//                             Text("\(String(searchCue.timings.startTime))")
-//                                 .font(Font.system(size: 12, design: .monospaced))
-//                                 .fontWeight(.light)
-//                         }
-                         HStack {
-                             Text(searchCue.text)
-                             Spacer()
-                         }
-                             .padding(5)
-                         Divider()
-                     }
-                     .onTapGesture {
-                         print("Scroll to \(searchCue.id)")
-                         scrollTarget = searchCue.id
-                     }
+                 Text(searchCue.startTimestamp.stringValue)
+                     .font(Font.system(size: 12, design: .monospaced))
+                     .fontWeight(.light)
+                 HStack {
+                     Text(searchCue.text)
+                     Spacer()
                  }
+                 Divider()
              }
+                .onTapGesture {
+                    scrollTarget = searchCue.id
+                }
          }
      }
 }

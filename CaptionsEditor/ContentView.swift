@@ -65,13 +65,6 @@ struct ContentView: View {
                             }
                         }
                     }
-                    .onChange(of: searchText) { newValue in
-                        if searchText.isEmpty {
-                            searchResults = []
-                        } else {
-                            searchResults = document.captions.cues.filter { $0.text.lowercased().contains(searchText.lowercased())}
-                        }
-                    }
                 }
             }
             PlayerView()
@@ -81,6 +74,17 @@ struct ContentView: View {
         }
         .searchable(text: $searchText) {
             SearchView(searchResults: $searchResults, scrollTarget: $scrollTarget)
+        }
+        .onChange(of: searchText) { newValue in
+            if searchText.isEmpty {
+                searchResults = []
+            } else {
+                if searchText.count >= 2 {
+                    searchResults = document.captions.cues.filter { $0.text.lowercased().contains(searchText.lowercased())}
+                } else {
+                    searchResults = []
+                }
+            }
         }
         .sheet(isPresented: $showTextEditorPopover) {
             FullTextView(showTextEditorPopover: $showTextEditorPopover)
