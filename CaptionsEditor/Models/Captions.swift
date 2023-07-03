@@ -109,6 +109,28 @@ struct Captions: Identifiable {
             }
         }
     }
+    
+    mutating func shiftTimestamp(withValue: Double, atCueWithId cueID: UUID, start: Bool?) {
+        var cueIdx = 0
+        for (cIdx, cue) in cues.enumerated() {
+            if cue.id == cueID {
+                cueIdx = cIdx
+            }
+        }
+        
+        let newStartTime = cues[cueIdx].startTimestamp.add(withValue)
+        let newEndTime = cues[cueIdx].endTimestamp.add(withValue)
+        if let start = start {
+            if start {
+                cues[cueIdx].startTimestamp = newStartTime
+            } else {
+                cues[cueIdx].endTimestamp = newEndTime
+            }
+        } else {
+            cues[cueIdx].startTimestamp = newStartTime
+            cues[cueIdx].endTimestamp = newEndTime
+        }
+    }
 }
 
 extension String {

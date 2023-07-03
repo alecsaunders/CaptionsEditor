@@ -134,4 +134,17 @@ extension CaptionsEditorDocument {
             doc.replaceItems(with: oldItems, undoManager: undoManager)
         }
     }
+    
+    /// Registers timeshift, and registers an undo action.
+    func shiftTime(withValue: Double, atCueWithId cueID: UUID, start: Bool?, undoManager: UndoManager? = nil) {
+        let oldItems = captions.cues
+        
+        withAnimation {
+            captions.shiftTimestamp(withValue: withValue, atCueWithId: cueID, start: start)
+        }
+
+        undoManager?.registerUndo(withTarget: self) { doc in
+            doc.replaceItems(with: oldItems, undoManager: undoManager)
+        }
+    }
 }

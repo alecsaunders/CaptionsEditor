@@ -66,19 +66,16 @@ struct TimeShiftView: View {
                     Menu("") {
                         Text("Shift \(isPositive ? "forward" : "backward")")
                         Button("\(start ? "start" : "end") and remaining…") {
-//                            shiftAllRemainingTimestamps()
-//                            shiftControlOpts.resetOptions()
+                            document.shiftTime(withValue: shiftValue, atCueWithId: cue.id, start: start, undoManager: undoManager)
                             showPopover = false
                         }
                         Divider()
                         Button("\(start ? "start" : "end") only") {
-//                            self.shiftSingleTimestamp()
-//                            shiftControlOpts.resetOptions()
+                            document.shiftTime(withValue: shiftValue, atCueWithId: cue.id, start: start, undoManager: undoManager)
                             showPopover = false
                         }
                         Button("both") {
-//                            self.shiftBothTimestamps()
-//                            shiftControlOpts.resetOptions()
+                            document.shiftTime(withValue: shiftValue, atCueWithId: cue.id, start: nil, undoManager: undoManager)
                             showPopover = false
                         }
                     }
