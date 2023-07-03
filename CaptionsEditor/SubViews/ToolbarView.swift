@@ -11,6 +11,7 @@ struct ToolbarView: View {
     @EnvironmentObject var playerController: PlayerController
     @Binding var captions: Captions
     @Binding var scrollTarget: UUID?
+    @Binding var showTextEditorPopover: Bool
     
     var body: some View {
         Button {
@@ -29,6 +30,11 @@ struct ToolbarView: View {
         }
             .keyboardShortcut("r", modifiers: .command)
         Button {
+            showTextEditorPopover = true
+        } label: {
+            Image(systemName: "doc.text")
+        }
+        Button {
             playerController.chooseVideoURL()
         } label: {
             Label("Load Movie", systemImage: "film")
@@ -39,6 +45,6 @@ struct ToolbarView: View {
 
 struct ToolbarView_Previews: PreviewProvider {
     static var previews: some View {
-        ToolbarView(captions: .constant(Captions(fromText: "")), scrollTarget: .constant(UUID()))
+        ToolbarView(captions: .constant(Captions(fromText: "")), scrollTarget: .constant(UUID()), showTextEditorPopover: .constant(false))
     }
 }

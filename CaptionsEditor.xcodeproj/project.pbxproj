@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		70339A942A52900C00AC2998 /* FullTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70339A932A52900C00AC2998 /* FullTextView.swift */; };
 		70401B962A4E0AAE00162E6B /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70401B952A4E0AAE00162E6B /* PlayerView.swift */; };
 		70401B982A4E0E6600162E6B /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70401B972A4E0E6600162E6B /* PlayerController.swift */; };
 		70401B9A2A4E405700162E6B /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70401B992A4E405600162E6B /* ToolbarView.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		70339A932A52900C00AC2998 /* FullTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullTextView.swift; sourceTree = "<group>"; };
 		70401B952A4E0AAE00162E6B /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		70401B972A4E0E6600162E6B /* PlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerController.swift; sourceTree = "<group>"; };
 		70401B992A4E405600162E6B /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 		70A0F24E2A4D2979004317A5 /* SubViews */ = {
 			isa = PBXGroup;
 			children = (
+				70339A932A52900C00AC2998 /* FullTextView.swift */,
 				70401B9B2A4E455100162E6B /* SearchView.swift */,
 				70401B992A4E405600162E6B /* ToolbarView.swift */,
 				70401B952A4E0AAE00162E6B /* PlayerView.swift */,
@@ -327,6 +330,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70339A942A52900C00AC2998 /* FullTextView.swift in Sources */,
 				70B1389C2A4F71DD00576273 /* ShiftControls.swift in Sources */,
 				70A0F21C2A4CB14A004317A5 /* CaptionsEditorDocument.swift in Sources */,
 				70B138992A4F6EEC00576273 /* Extensions.swift in Sources */,

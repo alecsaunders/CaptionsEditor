@@ -20,6 +20,7 @@ struct ContentView: View {
     @State var searchText: String = ""
     @State private var scrollTarget: UUID?
     @State private var searchResults: [Cue] = []
+    @State var showTextEditorPopover: Bool = false
 
     var body: some View {
         NavigationView {
@@ -76,7 +77,7 @@ struct ContentView: View {
             PlayerView()
         }
         .toolbar {
-            ToolbarView(captions: $document.captions, scrollTarget: $scrollTarget)
+            ToolbarView(captions: $document.captions, scrollTarget: $scrollTarget, showTextEditorPopover: $showTextEditorPopover)
         }
         .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { newValue in
             playerController.player?.pause()
@@ -84,6 +85,9 @@ struct ContentView: View {
         }
         .searchable(text: $searchText, placement: .sidebar) {
             SearchView(searchResults: $searchResults, scrollTarget: $scrollTarget)
+        }
+        .sheet(isPresented: $showTextEditorPopover) {
+            FullTextView(showTextEditorPopover: $showTextEditorPopover)
         }
     }
     

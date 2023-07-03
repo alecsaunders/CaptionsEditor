@@ -17,6 +17,14 @@ extension UTType {
 class CaptionsEditorDocument: ReferenceFileDocument {
     typealias Snapshot = Captions
     @Published var captions: Captions
+    var text: String {
+        get {
+            String(captions)
+        }
+        set {
+            captions = Captions(fromText: newValue)
+        }
+    }
 
     init() {
         captions = Captions(fromText: "WebVTT\n\n1\n1 --> 2\nsometext")
