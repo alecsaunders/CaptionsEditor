@@ -48,6 +48,9 @@ struct CueRow: View {
                         cue.text = tempText
                         isTextFieldFocused = false
                     }
+                    .onReceive(NotificationCenter.default.publisher(for: NSTextField.textDidEndEditingNotification)) { obj in
+                        isTextFieldFocused = false
+                    }
             }
                 .padding([.leading, .trailing])
                 .padding([.top, .bottom], 6)
