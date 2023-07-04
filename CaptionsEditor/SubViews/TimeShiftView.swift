@@ -28,7 +28,7 @@ struct TimeShiftView: View {
         VStack {
             HStack(spacing: 0.0) {
                 Text("New \(start ? "Start" : "End") Time: ")
-                Text(String(Timestamp(start ? cue.startTimestamp.value : cue.endTimestamp.value + shiftValue)))
+                Text(String(Timestamp((start ? cue.startTimestamp.value : cue.endTimestamp.value) + shiftValue)))
                     .font(.system(size: 13).monospacedDigit())
             }
             Divider()
@@ -62,7 +62,6 @@ struct TimeShiftView: View {
                         document.shiftTimeValues(withValue: shiftValue, atCueWithId: cue.id, start: start, undoManager: undoManager)
                         showPopover = false
                     }
-                        .disabled(Int(shiftValue * 1000) == 0)
                     Menu("") {
                         Text("Shift \(isPositive ? "forward" : "backward")")
                         Button("\(start ? "start" : "end") and remaining…") {
@@ -79,9 +78,9 @@ struct TimeShiftView: View {
                             showPopover = false
                         }
                     }
-                        .disabled(Int(shiftValue * 1000) == 0)
                 }
                     .frame(minWidth: 50)
+                    .disabled(Int(shiftValue * 1000) == 0)
             }
         }
             .padding()
