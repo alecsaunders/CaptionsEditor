@@ -32,6 +32,7 @@ struct ContentView: View {
                                 document.registerUndoTextChange(for: $cue.wrappedValue, oldText: oldText, undoManager: undoManager)
                             }
                             .id(cue.id)
+                            .listStyle(.sidebar)
                             .onHover { isHovering in
                                 if isHovering {
                                     selectedCue = cue
@@ -51,19 +52,23 @@ struct ContentView: View {
                                     document.deleteItem(withID: cue.id, undoManager: undoManager)
                                 }
                             }
-                            
                         }
                     }
                     .frame(minWidth: 310, maxWidth: 400)
                     .onChange(of: scrollTarget) { target in
                         if let target = target {
                             scrollTarget = nil
-                            
                             withAnimation {
                                 proxy.scrollTo(target, anchor: .top)
                             }
                         }
                     }
+                }
+            }
+            .toolbar {
+                ToolbarItemGroup{
+                    Spacer()
+                    ToolbarSidebarView(showTextEditorPopover: $showTextEditorPopover)
                 }
             }
             .searchable(text: $searchText, prompt: "Search...") {
@@ -72,7 +77,7 @@ struct ContentView: View {
         } detail: {
             PlayerView()
                 .toolbar {
-                    ToolbarView(captions: $document.captions, scrollTarget: $scrollTarget, showTextEditorPopover: $showTextEditorPopover)
+                    ToolbarView(captions: $document.captions, scrollTarget: $scrollTarget)
                 }
         }
         .onChange(of: searchText) { newValue in
