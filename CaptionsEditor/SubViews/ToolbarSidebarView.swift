@@ -30,8 +30,8 @@ struct ToolbarSidebarView: View {
     }
 }
 
-//struct ToolbarSidebarView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ToolbarSidebarView()
-//    }
-//}
+struct ToolbarSidebarView_Previews: PreviewProvider {
+    static var previews: some View {
+        ToolbarSidebarView(showTextEditorPopover: .constant(false))
+    }
+}
