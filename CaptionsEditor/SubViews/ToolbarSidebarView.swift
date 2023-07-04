@@ -20,11 +20,13 @@ struct ToolbarSidebarView: View {
             Image(systemName: "arrow.clockwise")
         }
             .keyboardShortcut("r", modifiers: .command)
+            .help("Reload subtitle track on media")
         Button {
             showTextEditorPopover = true
         } label: {
             Image(systemName: "doc.text")
         }
+            .help("Show full text")
     }
 }
 

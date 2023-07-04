@@ -20,12 +20,13 @@ struct ToolbarView: View {
         } label: {
             Image(systemName: "arrow.right.to.line")
         }
+            .help("Scroll to nearest subtitle at playhead")
         Button {
             playerController.chooseVideoURL()
         } label: {
             Label("Load Movie", systemImage: "film")
         }
-            .buttonStyle(.bordered)
+            .help("Load movie from file")
     }
 }
 
