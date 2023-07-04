@@ -45,6 +45,15 @@ struct Timestamp {
     }
 }
 
+extension Timestamp {
+    static func < (left: Timestamp, right: Timestamp) -> Bool {
+        return left.value < right.value
+    }
+    
+    static func > (left: Timestamp, right: Timestamp) -> Bool {
+        return left.value > right.value
+    }
+}
 
 extension Double {
     func toTimestampString() -> String {

@@ -15,11 +15,13 @@ struct TimeButtonView: View {
     
     var body: some View {
         Button {
+            print(cue.isOverlapPrev)
             showPopover = true
             shiftControls.start = start
         } label: {
             Text(start ? cue.startTimestamp.stringValue : cue.endTimestamp.stringValue)
                 .font(.system(size: 13).monospacedDigit())
+                .foregroundColor(start ? cue.isOverlapPrev ? .red : .none : .none)
         }
             .buttonStyle(.borderless)
     }

@@ -16,6 +16,7 @@ struct Cue: Identifiable, Equatable, Hashable {
     var startTimestamp: Timestamp
     var endTimestamp: Timestamp
     var text: String
+    var isOverlapPrev: Bool = false
     
     static func == (lhs: Cue, rhs: Cue) -> Bool {
         lhs.id == rhs.id
@@ -25,7 +26,7 @@ struct Cue: Identifiable, Equatable, Hashable {
         hasher.combine(id)
     }
     
-    init(cueId: Int, startTimestamp: Timestamp, endTimestamp: Timestamp, text: String) {
+    init(cueId: Int, startTimestamp: Timestamp, endTimestamp: Timestamp, text: String, isOverlapPrev: Bool = false) {
         self.cueId = cueId
         self.startTimestamp = startTimestamp
         self.endTimestamp = endTimestamp
@@ -37,6 +38,10 @@ struct Cue: Identifiable, Equatable, Hashable {
         self.startTimestamp = Timestamp()
         self.endTimestamp = Timestamp()
         self.text = ""
+    }
+    
+    mutating func setOverlap(_ isOverlap: Bool = true) {
+        self.isOverlapPrev = isOverlap
     }
 }
 
@@ -146,9 +151,21 @@ extension Captions {
         let textLines = self.textToLines(fullText: text)
         let cueLinesCollection = cueLines(fromTextLines: textLines)
         
-        var captions: [Cue] = []
-        captions = cueLinesCollection.map { cue(fromCueLines: $0) }
-        return captions
+        var cues: [Cue] = []
+        cues = cueLinesCollection.map { cue(fromCueLines: $0) }
+        
+        var newCues: [Cue] = []
+        
+        for var (cIdx, cue) in cues.enumerated() {
+            if cIdx > 0 {
+                let prevCue = cues[cIdx - 1]
+                if cue.startTimestamp < prevCue.endTimestamp {
+                    cue.setOverlap()
+                }
+            }
+            newCues.append(cue)
+        }
+        return newCues
     }
     
     func textToLines(fullText text: String) -> [String] {
@@ -190,7 +207,7 @@ extension Captions {
         let endTimestamp = endTimestamp(fromTimestampLine: timestampLine)
         let text: String = cueText(fromCueLines: cueLines)
         
-        return Cue(cueId: id, startTimestamp: startTimestamp, endTimestamp: endTimestamp, text: text)
+        return Cue(cueId: id, startTimestamp: startTimestamp, endTimestamp: endTimestamp, text: text, isOverlapPrev: false)
     }
     
     func cueId(fromCueLines cueLines: [String]) -> Int {

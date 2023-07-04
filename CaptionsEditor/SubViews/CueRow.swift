@@ -54,7 +54,7 @@ struct CueRow: View {
             }
                 .padding([.leading, .trailing])
                 .padding([.top, .bottom], 6)
-                .background(cue.id == selectedCue?.id ? Color.secondary.opacity(0.07) : Color.clear)
+                .background(cue.isOverlapPrev ? Color.red.opacity(0.25) : cue.id == selectedCue?.id ? Color.secondary.opacity(0.07) : Color.clear)
                 .cornerRadius(7)
                 .padding([.leading, .trailing], 6)
                 .popover(isPresented: $showPopover, attachmentAnchor: .point(UnitPoint(x: shiftControls.start ? 0.32 : 0.67, y: UnitPoint.top.y))) {
