@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SearchView: View {
+    @Environment(\.dismissSearch) private var dismissSearch
     @Binding var searchResults: [Cue]
     @Binding var scrollTarget: UUID?
     
@@ -25,6 +26,7 @@ struct SearchView: View {
              }
                 .onTapGesture {
                     scrollTarget = searchCue.id
+                    dismissSearch()
                 }
          }
      }

@@ -23,7 +23,7 @@ struct ContentView: View {
     @State var showTextEditorPopover: Bool = false
 
     var body: some View {
-        NavigationView {
+        NavigationSplitView {
             ScrollView {
                 ScrollViewReader { (proxy: ScrollViewProxy) in
                     LazyVStack {
@@ -53,13 +53,12 @@ struct ContentView: View {
                             }
                             
                         }
-                        .onDelete(perform: onDelete)
                     }
                     .frame(minWidth: 310, maxWidth: 400)
                     .onChange(of: scrollTarget) { target in
                         if let target = target {
                             scrollTarget = nil
-
+                            
                             withAnimation {
                                 proxy.scrollTo(target, anchor: .top)
                             }
@@ -67,13 +66,14 @@ struct ContentView: View {
                     }
                 }
             }
+            .searchable(text: $searchText, prompt: "Search...") {
+                SearchView(searchResults: $searchResults, scrollTarget: $scrollTarget)
+            }
+        } detail: {
             PlayerView()
-        }
-        .toolbar {
-            ToolbarView(captions: $document.captions, scrollTarget: $scrollTarget, showTextEditorPopover: $showTextEditorPopover)
-        }
-        .searchable(text: $searchText) {
-            SearchView(searchResults: $searchResults, scrollTarget: $scrollTarget)
+                .toolbar {
+                    ToolbarView(captions: $document.captions, scrollTarget: $scrollTarget, showTextEditorPopover: $showTextEditorPopover)
+                }
         }
         .onChange(of: searchText) { newValue in
             if searchText.isEmpty {
@@ -94,14 +94,4 @@ struct ContentView: View {
             playerController.player = nil
         }
     }
-    
-    func onDelete(offsets: IndexSet) {
-        document.delete(offsets: offsets, undoManager: undoManager)
-    }
 }
-
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView().environmentObject(CaptionsEditorDocument())
-//    }
-//}
