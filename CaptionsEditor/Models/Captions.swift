@@ -93,6 +93,10 @@ struct Captions: Identifiable {
     mutating func shiftTimestamps(withValue: Double, atCueWithId cueID: UUID, start: Bool) {
         var atOrAfterCue = false
         for (cIdx, cue) in cues.enumerated() {
+            var previousCue = Cue()
+            if cIdx > 0 {
+                previousCue = cues[cIdx - 1]
+            }
             if cue.id == cueID {
                 atOrAfterCue = true
                 if start {
@@ -101,6 +105,9 @@ struct Captions: Identifiable {
                 }
                 let newEndTime = cues[cIdx].endTimestamp.add(withValue)
                 cues[cIdx].endTimestamp = newEndTime
+                if cues[cIdx].startTimestamp < previousCue.endTimestamp {
+                    cues[cIdx].setOverlap()
+                }
             }
             if !atOrAfterCue {
                 continue
@@ -111,6 +118,9 @@ struct Captions: Identifiable {
                 cues[cIdx].startTimestamp = newStartTime
                 let newEndTime = cues[cIdx].endTimestamp.add(withValue)
                 cues[cIdx].endTimestamp = newEndTime
+                if cues[cIdx].startTimestamp < previousCue.endTimestamp {
+                    cues[cIdx].setOverlap()
+                }
             }
         }
     }
@@ -134,6 +144,14 @@ struct Captions: Identifiable {
         } else {
             cues[cueIdx].startTimestamp = newStartTime
             cues[cueIdx].endTimestamp = newEndTime
+        }
+        
+        if cueIdx < cues.count + 1 {
+            if cues[cueIdx + 1].startTimestamp < cues[cueIdx].endTimestamp {
+                cues[cueIdx + 1].setOverlap()
+            } else {
+                cues[cueIdx + 1].setOverlap(false)
+            }
         }
     }
 }
