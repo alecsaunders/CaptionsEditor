@@ -30,6 +30,12 @@ struct CueRow: View {
                 TextField("", text: $tempText, axis: .vertical)
                     .textFieldStyle(.plain)
                     .lineLimit(3)
+                    .onAppear {
+                        // Remove focus on appear after 0.1 seconds
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            self.isTextFieldFocused = false
+                        }
+                    }
                     .focused($isTextFieldFocused)
                     .onChange(of: isTextFieldFocused) { newValue in
                         if isTextFieldFocused {
