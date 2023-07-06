@@ -108,6 +108,10 @@ struct Captions: Identifiable {
                 if cues[cIdx].startTimestamp < previousCue.endTimestamp {
                     cues[cIdx].setOverlap()
                 }
+                
+                if cues[cIdx].endTimestamp < cues[cIdx].startTimestamp {
+                    cues[cIdx].setOverlap()
+                }
             }
             if !atOrAfterCue {
                 continue
@@ -119,6 +123,10 @@ struct Captions: Identifiable {
                 let newEndTime = cues[cIdx].endTimestamp.add(withValue)
                 cues[cIdx].endTimestamp = newEndTime
                 if cues[cIdx].startTimestamp < previousCue.endTimestamp {
+                    cues[cIdx].setOverlap()
+                }
+                
+                if cues[cIdx].endTimestamp < cues[cIdx].startTimestamp {
                     cues[cIdx].setOverlap()
                 }
             }
@@ -153,6 +161,10 @@ struct Captions: Identifiable {
                 cues[cueIdx + 1].setOverlap(false)
             }
         }
+        
+        if cues[cueIdx].endTimestamp < cues[cueIdx].startTimestamp {
+            cues[cueIdx].setOverlap()
+        }
     }
 }
 
@@ -174,12 +186,15 @@ extension Captions {
         
         var newCues: [Cue] = []
         
-        for var (cIdx, cue) in cues.enumerated() {
+        for (cIdx, var cue) in cues.enumerated() {
             if cIdx > 0 {
                 let prevCue = cues[cIdx - 1]
                 if cue.startTimestamp < prevCue.endTimestamp {
                     cue.setOverlap()
                 }
+            }
+            if cue.endTimestamp < cue.startTimestamp {
+                cue.setOverlap()
             }
             newCues.append(cue)
         }
