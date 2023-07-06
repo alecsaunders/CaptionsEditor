@@ -90,7 +90,7 @@ struct Captions: Identifiable {
         return theCue
     }
     
-    func getIndex(forCueID cueID: UUID) -> Int {
+    private func getIndex(forCueID cueID: UUID) -> Int {
         var cIdx = 0
         for (_cIdx, cue) in cues.enumerated() {
             if cue.id == cueID {
@@ -174,7 +174,7 @@ extension String {
 }
 
 extension Captions {
-    func cues(fromText text: String) -> [Cue] {
+    private func cues(fromText text: String) -> [Cue] {
         let textLines = self.textToLines(fullText: text)
         let cueLinesCollection = cueLines(fromTextLines: textLines)
         
@@ -198,7 +198,7 @@ extension Captions {
         return newCues
     }
     
-    func textToLines(fullText text: String) -> [String] {
+    private func textToLines(fullText text: String) -> [String] {
         var textLines: [String] = []
         text.enumerateLines { line, stop in
             textLines.append(line)
@@ -206,7 +206,7 @@ extension Captions {
         return textLines
     }
     
-    func cueLines(fromTextLines textLines: [String]) -> [[String]] {
+    private func cueLines(fromTextLines textLines: [String]) -> [[String]] {
         var cleanLines: [String] = []
         for line in textLines {
             if line.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) != "webvtt" {
@@ -230,7 +230,7 @@ extension Captions {
         return cueLinesCollection
     }
     
-    func cue(fromCueLines cueLines: [String]) -> Cue {
+    private func cue(fromCueLines cueLines: [String]) -> Cue {
         let id: Int = cueId(fromCueLines: cueLines)
         let timestampLine: String = timestampLine(fromCueLines: cueLines) ?? ""
         let startTimestamp = startTimestamp(fromTimestampLine: timestampLine)
@@ -240,7 +240,7 @@ extension Captions {
         return Cue(cueId: id, startTimestamp: startTimestamp, endTimestamp: endTimestamp, text: text, isOverlapPrev: false)
     }
     
-    func cueId(fromCueLines cueLines: [String]) -> Int {
+    private func cueId(fromCueLines cueLines: [String]) -> Int {
         if let firstLine = cueLines.first {
             if firstLine.contains("-->") {
                 return 1
@@ -251,7 +251,7 @@ extension Captions {
         return 1
     }
     
-    func timestampLine(fromCueLines cueLines: [String]) -> String? {
+    private func timestampLine(fromCueLines cueLines: [String]) -> String? {
         for line in cueLines {
             if line.contains("-->") {
                 return line
@@ -260,17 +260,17 @@ extension Captions {
         return nil
     }
     
-    func startTimestamp(fromTimestampLine tsLine: String) -> Timestamp {
+    private func startTimestamp(fromTimestampLine tsLine: String) -> Timestamp {
         let timestampStr: String = String(tsLine.split(separator: "-->").first ?? "")
         return timestamp(fromString: timestampStr)
     }
     
-    func endTimestamp(fromTimestampLine tsLine: String) -> Timestamp {
+    private func endTimestamp(fromTimestampLine tsLine: String) -> Timestamp {
         let timestampStr: String = String(tsLine.split(separator: "-->").last ?? "")
         return timestamp(fromString: timestampStr)
     }
     
-    func timestamp(fromString tsString: String) -> Timestamp {
+    private func timestamp(fromString tsString: String) -> Timestamp {
         if !tsString.isEmpty {
             return Timestamp(tsString)
         }
@@ -278,7 +278,7 @@ extension Captions {
         
     }
            
-    func cueText(fromCueLines cueLines: [String]) -> String {
+    private func cueText(fromCueLines cueLines: [String]) -> String {
         var foundTimestampLine = false
         var cueText = ""
         for line in cueLines {
