@@ -109,9 +109,7 @@ struct Captions: Identifiable {
                     cues[cIdx].setOverlap()
                 }
                 
-                if cues[cIdx].endTimestamp < cues[cIdx].startTimestamp {
-                    cues[cIdx].setOverlap()
-                }
+                self.isTimeOverlapWithSelf(atIndex: cIdx)
             }
             if !atOrAfterCue {
                 continue
@@ -126,9 +124,7 @@ struct Captions: Identifiable {
                     cues[cIdx].setOverlap()
                 }
                 
-                if cues[cIdx].endTimestamp < cues[cIdx].startTimestamp {
-                    cues[cIdx].setOverlap()
-                }
+                self.isTimeOverlapWithSelf(atIndex: cIdx)
             }
         }
     }
@@ -162,8 +158,12 @@ struct Captions: Identifiable {
             }
         }
         
-        if cues[cueIdx].endTimestamp < cues[cueIdx].startTimestamp {
-            cues[cueIdx].setOverlap()
+        self.isTimeOverlapWithSelf(atIndex: cueIdx)
+    }
+    
+    mutating func isTimeOverlapWithSelf(atIndex idx: Int) {
+        if cues[idx].endTimestamp < cues[idx].startTimestamp {
+            cues[idx].setOverlap()
         }
     }
 }
