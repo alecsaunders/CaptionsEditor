@@ -90,80 +90,77 @@ struct Captions: Identifiable {
         return theCue
     }
     
+    func getIndex(forCueID cueID: UUID) -> Int {
+        var cIdx = 0
+        for (_cIdx, cue) in cues.enumerated() {
+            if cue.id == cueID {
+                cIdx = _cIdx
+            }
+        }
+        return cIdx
+    }
+    
     mutating func shiftTimestamps(withValue: Double, atCueWithId cueID: UUID, start: Bool) {
         var atOrAfterCue = false
-        for (cIdx, cue) in cues.enumerated() {
+        
+        let theIndex = self.getIndex(forCueID: cueID)
+        for cIdx in theIndex..<cues.count {
             var previousCue = Cue()
             if cIdx > 0 {
                 previousCue = cues[cIdx - 1]
             }
-            if cue.id == cueID {
+            if cues[cIdx].id == cueID {
                 atOrAfterCue = true
-                if start {
-                    let newStartTime = cues[cIdx].startTimestamp.add(withValue)
-                    cues[cIdx].startTimestamp = newStartTime
-                }
-                let newEndTime = cues[cIdx].endTimestamp.add(withValue)
-                cues[cIdx].endTimestamp = newEndTime
-                if cues[cIdx].startTimestamp < previousCue.endTimestamp {
-                    cues[cIdx].setOverlap()
-                }
-                
-                self.isTimeOverlapWithSelf(atIndex: cIdx)
+                self.shiftTimestamp(atIndex: cIdx, withValue: withValue, start: start)
             }
             if !atOrAfterCue {
                 continue
             }
             
-            if cue.id != cueID {
-                let newStartTime = cues[cIdx].startTimestamp.add(withValue)
-                cues[cIdx].startTimestamp = newStartTime
-                let newEndTime = cues[cIdx].endTimestamp.add(withValue)
-                cues[cIdx].endTimestamp = newEndTime
+            if cues[cIdx].id != cueID {
+                self.shiftTimestamp(atIndex: cIdx, withValue: withValue, start: nil)
                 if cues[cIdx].startTimestamp < previousCue.endTimestamp {
                     cues[cIdx].setOverlap()
                 }
-                
-                self.isTimeOverlapWithSelf(atIndex: cIdx)
             }
         }
     }
     
     mutating func shiftTimestamp(withValue: Double, atCueWithId cueID: UUID, start: Bool?) {
-        var cueIdx = 0
-        for (cIdx, cue) in cues.enumerated() {
-            if cue.id == cueID {
-                cueIdx = cIdx
-            }
-        }
-        
-        let newStartTime = cues[cueIdx].startTimestamp.add(withValue)
-        let newEndTime = cues[cueIdx].endTimestamp.add(withValue)
-        if let start = start {
-            if start {
-                cues[cueIdx].startTimestamp = newStartTime
-            } else {
-                cues[cueIdx].endTimestamp = newEndTime
-            }
-        } else {
-            cues[cueIdx].startTimestamp = newStartTime
-            cues[cueIdx].endTimestamp = newEndTime
-        }
-        
-        if cueIdx < cues.count + 1 {
-            if cues[cueIdx + 1].startTimestamp < cues[cueIdx].endTimestamp {
-                cues[cueIdx + 1].setOverlap()
-            } else {
-                cues[cueIdx + 1].setOverlap(false)
-            }
-        }
-        
-        self.isTimeOverlapWithSelf(atIndex: cueIdx)
+        let cIdx = self.getIndex(forCueID: cueID)
+        self.shiftTimestamp(atIndex: cIdx, withValue: withValue, start: start)
+        self.isEndTimeGreaterThanNextStartTime(atIndex: cIdx)
     }
     
-    mutating func isTimeOverlapWithSelf(atIndex idx: Int) {
+    mutating private func shiftTimestamp(atIndex idx: Int, withValue value: Double, start: Bool?) {
+        let newStartTime = cues[idx].startTimestamp.add(value)
+        let newEndTime = cues[idx].endTimestamp.add(value)
+        if let start = start {
+            if start {
+                cues[idx].startTimestamp = newStartTime
+            } else {
+                cues[idx].endTimestamp = newEndTime
+            }
+        } else {
+            cues[idx].startTimestamp = newStartTime
+            cues[idx].endTimestamp = newEndTime
+        }
+        self.isTimeOverlapWithSelf(atIndex: idx)
+    }
+    
+    mutating private func isTimeOverlapWithSelf(atIndex idx: Int) {
         if cues[idx].endTimestamp < cues[idx].startTimestamp {
             cues[idx].setOverlap()
+        }
+    }
+    
+    mutating func isEndTimeGreaterThanNextStartTime(atIndex idx: Int) {
+        if idx < cues.count - 1 {
+            if cues[idx + 1].startTimestamp < cues[idx].endTimestamp {
+                cues[idx + 1].setOverlap()
+            } else {
+                cues[idx + 1].setOverlap(false)
+            }
         }
     }
 }
