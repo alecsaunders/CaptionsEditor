@@ -109,11 +109,15 @@ struct Captions: Identifiable {
             if cIdx > 0 {
                 previousCue = cues[cIdx - 1]
             }
+            
             if cues[cIdx].id == cueID {
                 atOrAfterCue = true
                 self.shiftTimestamp(atIndex: cIdx, withValue: withValue, start: start)
+                if start {
+                    self.shiftTimestamp(atIndex: cIdx, withValue: withValue, start: false)
+                }
             }
-            if !atOrAfterCue {
+            else if !atOrAfterCue {
                 continue
             }
             
