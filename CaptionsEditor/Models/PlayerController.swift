@@ -107,6 +107,8 @@ class PlayerController: ObservableObject {
             if thePlayer.rate == 0 {
                 thePlayer.play()
             }
+        } else {
+            print("something happened")
         }
     }
 }
