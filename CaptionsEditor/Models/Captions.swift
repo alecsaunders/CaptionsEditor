@@ -90,7 +90,7 @@ struct Captions: Identifiable {
         return theCue
     }
     
-    private func getIndex(forCueID cueID: UUID) -> Int {
+    func getIndex(forCueID cueID: UUID) -> Int {
         var cIdx = 0
         for (_cIdx, cue) in cues.enumerated() {
             if cue.id == cueID {

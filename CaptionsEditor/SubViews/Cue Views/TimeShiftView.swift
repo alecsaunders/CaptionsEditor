@@ -65,7 +65,7 @@ struct TimeShiftView: View {
                     Menu("") {
                         Text("Shift \(isPositive ? "forward" : "backward")")
                         Button("\(start ? "start" : "end") and remaining…") {
-                            document.shiftTime(withValue: shiftValue, atCueWithId: cue.id, start: start, undoManager: undoManager)
+                            document.shiftTimeValues(withValue: shiftValue, atCueWithId: cue.id, start: start, undoManager: undoManager)
                             showPopover = false
                         }
                         Divider()
@@ -76,6 +76,15 @@ struct TimeShiftView: View {
                         Button("both") {
                             document.shiftTime(withValue: shiftValue, atCueWithId: cue.id, start: nil, undoManager: undoManager)
                             showPopover = false
+                        }
+                        if !start {
+                            Button("end and start of next") {
+                                document.shiftTime(withValue: shiftValue, atCueWithId: cue.id, start: false, undoManager: undoManager)
+                                let nextIndex = document.captions.getIndex(forCueID: cue.id) + 1
+                                let nextCue = document.captions.cues[nextIndex]
+                                document.shiftTime(withValue: shiftValue, atCueWithId: nextCue.id, start: true, undoManager: undoManager)
+                                showPopover = false
+                            }
                         }
                     }
                 }

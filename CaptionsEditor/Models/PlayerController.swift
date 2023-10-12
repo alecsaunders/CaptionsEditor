@@ -24,14 +24,12 @@ class PlayerController: ObservableObject {
         if panel.runModal() == .OK {
             if let fileUrl = panel.url {
                 self.videoURL = fileUrl
-                Task {
-                    await self.loadPlayer()
-                }
+                self.loadPlayer()
             }
         }
     }
     
-    func loadPlayer() async {
+    func loadPlayer() {
         if let thePlayer = player {
             let currentTime = thePlayer.currentTime()
             let isPlaying = thePlayer.rate > 0
@@ -40,9 +38,7 @@ class PlayerController: ObservableObject {
             let textTrack = mix.tracks(withMediaType: .text)[0]
             mix.removeTrack(textTrack)
             
-            Task {
-                await addSubtitleTrackToMix(withDuration: thePlayer.currentItem!.duration)
-            }
+            addSubtitleTrackToMix(withDuration: thePlayer.currentItem!.duration)
             
             let playerItem = AVPlayerItem(asset: mix)
             thePlayer.replaceCurrentItem(with: playerItem)
@@ -51,6 +47,7 @@ class PlayerController: ObservableObject {
             if isPlaying {
                 thePlayer.play()
             }
+            print("Replace current item")
         } else {
             guard let videoURL = self.videoURL else { return }
 
@@ -60,7 +57,7 @@ class PlayerController: ObservableObject {
             let videoAsset = AVURLAsset(url: videoURL)
             let videoTrack = mix.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid)
             do {
-                try await videoTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: videoAsset.load(.duration)), of: videoAsset.loadTracks(withMediaType: .video)[0], at: .zero)
+                try videoTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: videoAsset.duration), of: videoAsset.tracks(withMediaType: .video)[0], at: .zero)
             } catch {
                 print(error)
             }
@@ -68,33 +65,27 @@ class PlayerController: ObservableObject {
             // 2 - Audio track
             let audioTrack = mix.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)
             do {
-                try await audioTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: videoAsset.load(.duration)), of: videoAsset.loadTracks(withMediaType: .audio)[0], at: .zero)
+                try audioTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: videoAsset.duration), of: videoAsset.tracks(withMediaType: .audio)[0], at: .zero)
             } catch {
                 print(error)
             }
 
             // 3 - Subtitle track
-            Task {
-                do {
-                    try await addSubtitleTrackToMix(withDuration: videoAsset.load(.duration))
-                }
-            }
+            addSubtitleTrackToMix(withDuration: videoAsset.duration)
             
             // 4 - Set up player
             let playerItem = AVPlayerItem(asset: mix)
 
-            DispatchQueue.main.async {
-                self.player = AVPlayer(playerItem: playerItem)
-            }
+            player = AVPlayer(playerItem: playerItem)
         }
     }
     
-    private func addSubtitleTrackToMix(withDuration: CMTime) async {
+    private func addSubtitleTrackToMix(withDuration: CMTime) {
         if let subsURL = subsURL {
             let subtitleAsset = AVURLAsset(url: subsURL)
             let subtitleTrack = mix.addMutableTrack(withMediaType: .text, preferredTrackID: kCMPersistentTrackID_Invalid)
             do {
-                try await subtitleTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: withDuration), of: subtitleAsset.loadTracks(withMediaType: .text)[0], at: .zero)
+                try subtitleTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: withDuration), of: subtitleAsset.tracks(withMediaType: .text)[0], at: .zero)
             } catch {
                 print(error)
             }
@@ -107,8 +98,6 @@ class PlayerController: ObservableObject {
             if thePlayer.rate == 0 {
                 thePlayer.play()
             }
-        } else {
-            print("something happened")
         }
     }
 }
