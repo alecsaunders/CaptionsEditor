@@ -11,6 +11,7 @@ struct ToolbarView: View {
     @EnvironmentObject var playerController: PlayerController
     @Binding var captions: Captions
     @Binding var scrollTarget: UUID?
+    @State var slowMotion: Bool = false
     
     var body: some View {
         Button {
@@ -21,6 +22,17 @@ struct ToolbarView: View {
             Image(systemName: "arrow.right.to.line")
         }
             .help("Scroll to nearest subtitle at playhead")
+        Button {
+            slowMotion.toggle()
+            if slowMotion {
+                playerController.player?.rate = 0.4
+            } else {
+                playerController.player?.rate = 1.0
+            }
+        } label: {
+            Label("Slow", systemImage: slowMotion ? "play.fill" : "tortoise.fill")
+        }
+            .help("Load movie from file")
         Button {
             playerController.chooseVideoURL()
         } label: {
