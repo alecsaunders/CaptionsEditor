@@ -56,16 +56,15 @@ struct TimeShiftView: View {
                 }
                 .buttonStyle(.borderless)
                 Spacer()
-
-                ControlGroup {
-                    Button(shiftSymbol) {
-                        document.shiftTimeValues(withValue: shiftValue, atCueWithId: cue.id, start: start, undoManager: undoManager)
-                        showPopover = false
-                    }
-                    Menu("") {
+                Button(shiftSymbol) {
+                    document.shiftTimeValues(withValue: shiftValue, atCueWithId: cue.id, start: start, undoManager: undoManager)
+                    showPopover = false
+                }
+                    .disabled(Int(shiftValue * 1000) == 0)
+                    .contextMenu {
                         Text("Shift \(isPositive ? "forward" : "backward")")
                         Button("\(start ? "start" : "end") and remaining…") {
-                            document.shiftTimeValues(withValue: shiftValue, atCueWithId: cue.id, start: start, undoManager: undoManager)
+                            document.shiftTime(withValue: shiftValue, atCueWithId: cue.id, start: start, undoManager: undoManager)
                             showPopover = false
                         }
                         Divider()
@@ -80,16 +79,15 @@ struct TimeShiftView: View {
                         if !start {
                             Button("end and start of next") {
                                 document.shiftTime(withValue: shiftValue, atCueWithId: cue.id, start: false, undoManager: undoManager)
-                                let nextIndex = document.captions.getIndex(forCueID: cue.id) + 1
+                                let cueIndex = document.captions.getIndex(forCueID: cue.id)
+                                let nextIndex = cueIndex + 1
                                 let nextCue = document.captions.cues[nextIndex]
                                 document.shiftTime(withValue: shiftValue, atCueWithId: nextCue.id, start: true, undoManager: undoManager)
+                                document.captions.isEndTimeGreaterThanNextStartTime(atIndex: cueIndex)
                                 showPopover = false
                             }
                         }
                     }
-                }
-                    .frame(minWidth: 50)
-                    .disabled(Int(shiftValue * 1000) == 0)
             }
         }
             .padding()
