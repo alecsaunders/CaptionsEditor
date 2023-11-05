@@ -46,7 +46,8 @@ class CaptionsEditorDocument: ReferenceFileDocument {
     }
     
     func fileWrapper(snapshot: Captions, configuration: WriteConfiguration) throws -> FileWrapper {
-        let data = String(snapshot).data(using: .utf8)!
+        let snapStr = String(snapshot)
+        let data = snapStr.data(using: .utf8)!
         return .init(regularFileWithContents: data)
     }
 }
@@ -148,7 +149,7 @@ extension CaptionsEditorDocument {
         let oldItems = captions.cues
         
         withAnimation {
-            captions.shiftTimestamp(withValue: withValue, atCueWithId: cueID, start: start)
+            self.captions.shiftTimestamp(withValue: withValue, atCueWithId: cueID, start: start)
         }
 
         undoManager?.registerUndo(withTarget: self) { doc in

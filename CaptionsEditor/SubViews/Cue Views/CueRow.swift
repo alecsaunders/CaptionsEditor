@@ -7,10 +7,19 @@
 
 import SwiftUI
 
+
+struct TempText: Equatable {
+    var text: String
+    
+    static func == (lhs: TempText, rhs: TempText) -> Bool {
+        lhs.text == rhs.text
+    }
+}
+
 struct CueRow: View {
     @Binding var cue: Cue
     @Binding var selectedCue: Cue?
-    @State var tempText: String
+    @State var tempText: TempText
     @State var showTimePopover: Bool = false
     @State var showPopover: Bool = false
     @State var shiftControls: ShiftControls = ShiftControls()
@@ -27,7 +36,7 @@ struct CueRow: View {
                     CueIdPlayButton(cue: $cue, selectedCue: $selectedCue)
                     TimestampView(cue: $cue, showPopover: $showPopover, shiftControls: $shiftControls)
                 }
-                TextField("", text: $tempText, axis: .vertical)
+                TextField("", text: $tempText.text, axis: .vertical)
                     .textFieldStyle(.plain)
                     .lineLimit(3)
                     .onAppear {
@@ -40,18 +49,24 @@ struct CueRow: View {
                     .onChange(of: isTextFieldFocused) { newValue in
                         if isTextFieldFocused {
                             // The TextField is now focused.
-                            if cue.text != tempText {
+                            if cue.text != tempText.text {
                                 onTextCommit(cue.text)
                             }
-                            cue.text = tempText
+                            cue.text = tempText.text
+                        } else {
+                            onTextCommit(cue.text)
                         }
+                    }
+                    .onChange(of: tempText) { value in
+                        cue.text = tempText.text
+                        onTextCommit(cue.text)
                     }
                     .onSubmit {
                         // The commit handler registers an undo action using the old title.
-                        if cue.text != tempText {
+                        if cue.text != tempText.text {
                             onTextCommit(cue.text)
                         }
-                        cue.text = tempText
+                        cue.text = tempText.text
                         isTextFieldFocused = false
                     }
                     .onReceive(NotificationCenter.default.publisher(for: NSTextField.textDidEndEditingNotification)) { obj in
@@ -78,7 +93,7 @@ struct CueRow_Previews: PreviewProvider {
         @State private var document = CaptionsEditorDocument()
 
         var body: some View {
-            CueRow(cue: .constant(Cue()), selectedCue: .constant(nil), tempText: "temp text") { oldText in
+            CueRow(cue: .constant(Cue()), selectedCue: .constant(nil), tempText: TempText(text: "temp text")) { oldText in
 
             }
         }

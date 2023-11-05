@@ -181,16 +181,11 @@
 		70A0F24E2A4D2979004317A5 /* SubViews */ = {
 			isa = PBXGroup;
 			children = (
+				D13528E52AC485C10059034C /* Cue Views */,
+				D13528E42AC485B10059034C /* Toolbar */,
 				70339A932A52900C00AC2998 /* FullTextView.swift */,
 				70401B9B2A4E455100162E6B /* SearchView.swift */,
-				70401B992A4E405600162E6B /* ToolbarView.swift */,
-				70DC71392A53D9560048A5EF /* ToolbarSidebarView.swift */,
 				70401B952A4E0AAE00162E6B /* PlayerView.swift */,
-				709D0FD32A4D41CB0036B147 /* CueRow.swift */,
-				709D0FD12A4D3BF40036B147 /* CueIdPlayButton.swift */,
-				70A0F24C2A4D28EE004317A5 /* TimestampView.swift */,
-				709D0FCF2A4D2B540036B147 /* TimeButtonView.swift */,
-				70B138962A4F69CF00576273 /* TimeShiftView.swift */,
 			);
 			path = SubViews;
 			sourceTree = "<group>";
@@ -201,6 +196,27 @@
 				70B138982A4F6EEC00576273 /* Extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D13528E42AC485B10059034C /* Toolbar */ = {
+			isa = PBXGroup;
+			children = (
+				70401B992A4E405600162E6B /* ToolbarView.swift */,
+				70DC71392A53D9560048A5EF /* ToolbarSidebarView.swift */,
+			);
+			path = Toolbar;
+			sourceTree = "<group>";
+		};
+		D13528E52AC485C10059034C /* Cue Views */ = {
+			isa = PBXGroup;
+			children = (
+				709D0FD32A4D41CB0036B147 /* CueRow.swift */,
+				709D0FD12A4D3BF40036B147 /* CueIdPlayButton.swift */,
+				70A0F24C2A4D28EE004317A5 /* TimestampView.swift */,
+				709D0FCF2A4D2B540036B147 /* TimeButtonView.swift */,
+				70B138962A4F69CF00576273 /* TimeShiftView.swift */,
+			);
+			path = "Cue Views";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,7 +283,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					70A0F2152A4CB14A004317A5 = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -420,9 +436,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -480,9 +498,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -509,6 +529,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"CaptionsEditor/Preview Content\"";
 				DEVELOPMENT_TEAM = X869YCKBY8;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -537,6 +558,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"CaptionsEditor/Preview Content\"";
 				DEVELOPMENT_TEAM = X869YCKBY8;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -563,6 +585,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = X869YCKBY8;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
@@ -582,6 +605,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = X869YCKBY8;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
@@ -600,6 +624,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = X869YCKBY8;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -617,6 +642,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = X869YCKBY8;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
