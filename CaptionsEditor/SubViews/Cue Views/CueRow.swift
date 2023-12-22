@@ -71,6 +71,21 @@ struct CueRow: View {
                                 }
                                     .foregroundStyle(.primary)
                                     .buttonStyle(.borderless)
+                                Divider()
+                                Button(tempText.text.contains("<i>") ? "Remove Italics" : "Italicize text") {
+                                    if tempText.text.contains("<i>") {
+                                        tempText.text.replace("<i>", with: "")
+                                        tempText.text.replace("</i>", with: "")
+                                    } else {
+                                        tempText.text = "<i>\(cue.text)</i>"
+                                    }
+                                    cue.text = tempText.text
+                                    onTextCommit(cue.text)
+                                    isTextFieldFocused = false
+                                    showAddPopover = false
+                                }
+                                    .foregroundStyle(.primary)
+                                    .buttonStyle(.borderless)
                             }
                                 .padding()
                         }
