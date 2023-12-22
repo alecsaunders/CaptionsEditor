@@ -21,6 +21,8 @@ struct ContentView: View {
     @State private var scrollTarget: UUID?
     @State private var searchResults: [Cue] = []
     @State var showTextEditorPopover: Bool = false
+    @State var showJumpToNumberPopover: Bool = false
+    @State var jumpToNumberText: String = ""
 
     var body: some View {
         NavigationSplitView {
@@ -49,6 +51,23 @@ struct ContentView: View {
                             withAnimation {
                                 proxy.scrollTo(target, anchor: .top)
                             }
+                        }
+                    }
+                    .toolbar {
+                        ToolbarItemGroup{
+                            Button {
+                                showJumpToNumberPopover = true
+                            } label: {
+                                Label("", systemImage: "number")
+                            }
+                                .popover(isPresented: $showJumpToNumberPopover, arrowEdge: .bottom, content: {
+                                    TextField("", text: $jumpToNumberText)
+                                        .frame(width: 100)
+                                        .padding()
+                                        .onSubmit {
+                                            showJumpToNumberPopover = false
+                                        }
+                                })
                         }
                     }
                 }
