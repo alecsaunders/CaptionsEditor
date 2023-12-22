@@ -72,7 +72,7 @@ struct CueRow: View {
                                     .foregroundStyle(.primary)
                                     .buttonStyle(.borderless)
                                 Divider()
-                                Button(tempText.text.contains("<i>") ? "Remove Italics" : "Italicize text") {
+                                Button(tempText.text.contains("<i>") ? "Remove italics" : "Italicize text") {
                                     if tempText.text.contains("<i>") {
                                         tempText.text.replace("<i>", with: "")
                                         tempText.text.replace("</i>", with: "")
