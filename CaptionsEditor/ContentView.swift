@@ -40,18 +40,6 @@ struct ContentView: View {
                                     selectedCue = nil
                                 }
                             }
-                            .contextMenu {
-                                Button("Add cue above...") {
-                                    document.addItem(atIndex: cue.cueId - 1, undoManager: undoManager)
-                                }
-                                Button("Add cue below...") {
-                                    document.addItem(atIndex: cue.cueId, undoManager: undoManager)
-                                }
-                                Divider()
-                                Button("Delete cue") {
-                                    document.deleteItem(withID: cue.id, undoManager: undoManager)
-                                }
-                            }
                         }
                     }
                     .frame(minWidth: 310, maxWidth: 400)

@@ -17,6 +17,8 @@ struct TempText: Equatable {
 }
 
 struct CueRow: View {
+    @EnvironmentObject var document: CaptionsEditorDocument
+    @Environment(\.undoManager) var undoManager
     @Binding var cue: Cue
     @Binding var selectedCue: Cue?
     @State var tempText: TempText
@@ -35,6 +37,23 @@ struct CueRow: View {
                 HStack(spacing: 0) {
                     CueIdPlayButton(cue: $cue, selectedCue: $selectedCue)
                     TimestampView(cue: $cue, showPopover: $showPopover, shiftControls: $shiftControls)
+                    Spacer()
+                    Menu("", content: {
+                        Button("Add cue above...") {
+                            document.addItem(atIndex: cue.cueId - 1, undoManager: undoManager)
+                        }
+                        Button("Add cue below...") {
+                            document.addItem(atIndex: cue.cueId, undoManager: undoManager)
+                        }
+                        Divider()
+                        Button("Delete cue") {
+                            document.deleteItem(withID: cue.id, undoManager: undoManager)
+                        }
+                    })
+                    .disabled(cue != selectedCue)
+                    .buttonStyle(.borderless)
+                    
+                    
                 }
                 TextField("", text: $tempText.text, axis: .vertical)
                     .textFieldStyle(.plain)
