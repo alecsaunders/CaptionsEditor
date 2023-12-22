@@ -50,7 +50,7 @@ struct CueRow: View {
                     }
                         .foregroundStyle(cue == selectedCue ? .primary : Color.clear)
                         .buttonStyle(.borderless)
-                        .popover(isPresented: $showAddPopover) {
+                        .popover(isPresented: $showAddPopover, arrowEdge: .bottom) {
                             VStack(alignment: .leading) {
                                 Button("Add cue above...") {
                                     document.addItem(atIndex: cue.cueId - 1, undoManager: undoManager)
