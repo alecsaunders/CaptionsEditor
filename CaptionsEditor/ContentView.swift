@@ -44,7 +44,7 @@ struct ContentView: View {
                             }
                         }
                     }
-                    .frame(minWidth: 310, maxWidth: 400)
+                    .frame(minWidth: 330, maxWidth: 400)
                     .onChange(of: scrollTarget) { target in
                         if let target = target {
                             scrollTarget = nil
@@ -65,6 +65,24 @@ struct ContentView: View {
                                         .frame(width: 100)
                                         .padding()
                                         .onSubmit {
+                                            guard let number = Int(jumpToNumberText) else {
+                                                jumpToNumberText = ""
+                                                return
+                                            }
+                                            if number > 0 && number < document.captions.cues.count + 1 {
+                                                let cueUUID = document.captions.cues[number - 1].id
+                                                withAnimation {
+                                                    proxy.scrollTo(cueUUID, anchor: .top)
+                                                }
+                                            } else if number >= document.captions.cues.count + 1 {
+                                                guard let lastCue = document.captions.cues.last else {
+                                                    jumpToNumberText = ""
+                                                    return
+                                                }
+                                                proxy.scrollTo(lastCue.id, anchor: .top)
+                                            } else {
+                                                jumpToNumberText = ""
+                                            }
                                             showJumpToNumberPopover = false
                                         }
                                 })
