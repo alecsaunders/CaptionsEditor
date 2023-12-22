@@ -63,13 +63,13 @@ extension CaptionsEditorDocument {
             let previousCue = captions.cues[atIndex - 1]
             newCue = Cue(cueId: atIndex, startTimestamp: previousCue.endTimestamp.add(0.1), endTimestamp: previousCue.endTimestamp.add(1.1), text: "new subtitle")
         }
-        captions.cues.insert(newCue, at: atIndex)
-        captions.resetCueIds()
+        withAnimation {
+            self.captions.cues.insert(newCue, at: atIndex)
+            self.captions.resetCueIds()
+        }
         
         undoManager?.registerUndo(withTarget: self) { doc in
-            withAnimation {
-                doc.deleteItem(withID: newCue.id, undoManager: undoManager)
-            }
+            doc.deleteItem(withID: newCue.id, undoManager: undoManager)
         }
     }
     
