@@ -24,6 +24,7 @@ struct CueRow: View {
     @State var tempText: TempText
     @State var showTimePopover: Bool = false
     @State var showPopover: Bool = false
+    @State var showAddPopover: Bool = false
     @State var shiftControls: ShiftControls = ShiftControls()
     @FocusState private var isTextFieldFocused: Bool
     
@@ -38,22 +39,41 @@ struct CueRow: View {
                     CueIdPlayButton(cue: $cue, selectedCue: $selectedCue)
                     TimestampView(cue: $cue, showPopover: $showPopover, shiftControls: $shiftControls)
                     Spacer()
-                    Menu("", content: {
-                        Button("Add cue above...") {
-                            document.addItem(atIndex: cue.cueId - 1, undoManager: undoManager)
+                    // FIXME: Use popover
+                    // Have to use popover instead of a Menu, which looks and acts cleaner
+                    // When using a menu, every time an item is selected get an "AttributeGraph" error
+                    // and the video player gets removed, so that you have to re-select a video
+                    Button {
+                        showAddPopover = true
+                    } label: {
+                        Label("", systemImage: "chevron.down")
+                    }
+                        .foregroundStyle(cue == selectedCue ? .primary : Color.clear)
+                        .buttonStyle(.borderless)
+                        .popover(isPresented: $showAddPopover) {
+                            VStack(alignment: .leading) {
+                                Button("Add cue above...") {
+                                    document.addItem(atIndex: cue.cueId - 1, undoManager: undoManager)
+                                    showAddPopover = false
+                                }
+                                    .foregroundStyle(.primary)
+                                    .buttonStyle(.borderless)
+                                Button("Add cue below...") {
+                                    document.addItem(atIndex: cue.cueId, undoManager: undoManager)
+                                    showAddPopover = false
+                                }
+                                    .foregroundStyle(.primary)
+                                    .buttonStyle(.borderless)
+                                Divider()
+                                Button("Delete cue") {
+                                    document.deleteItem(withID: cue.id, undoManager: undoManager)
+                                    showAddPopover = false
+                                }
+                                    .foregroundStyle(.primary)
+                                    .buttonStyle(.borderless)
+                            }
+                                .padding()
                         }
-                        Button("Add cue below...") {
-                            document.addItem(atIndex: cue.cueId, undoManager: undoManager)
-                        }
-                        Divider()
-                        Button("Delete cue") {
-                            document.deleteItem(withID: cue.id, undoManager: undoManager)
-                        }
-                    })
-                    .disabled(cue != selectedCue)
-                    .buttonStyle(.borderless)
-                    
-                    
                 }
                 TextField("", text: $tempText.text, axis: .vertical)
                     .textFieldStyle(.plain)
@@ -63,6 +83,9 @@ struct CueRow: View {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                             self.isTextFieldFocused = false
                         }
+                    }
+                    .onDisappear() {
+                        self.isTextFieldFocused = false
                     }
                     .focused($isTextFieldFocused)
                     .onChange(of: isTextFieldFocused) { newValue in

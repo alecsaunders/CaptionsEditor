@@ -15,7 +15,6 @@ struct TimeButtonView: View {
     
     var body: some View {
         Button {
-            print(cue.isOverlapPrev)
             showPopover = true
             shiftControls.start = start
         } label: {
