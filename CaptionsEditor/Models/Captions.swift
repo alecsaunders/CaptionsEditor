@@ -18,6 +18,9 @@ struct Cue: Identifiable, Equatable, Hashable {
     var text: String
     var isOverlapPrev: Bool = false
     var validationErrors: [ValidationError] = []
+    var duration: Double {
+        return endTimestamp.value - startTimestamp.value
+    }
     
     static func == (lhs: Cue, rhs: Cue) -> Bool {
         lhs.id == rhs.id

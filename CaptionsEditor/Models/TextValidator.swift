@@ -33,8 +33,18 @@ let lineTreatment = ValidationError(id: "I.10", name: "Line Treatment", descript
     return false
 }
 
+let readingSpeedLimits = ValidationError(id: "I.14", name: "Reading Speed Limits", description: "Up to 20 characters per second") { cue in
+    let numCharacters = cue.text.count
+    let charPerSecond = Double(numCharacters) / cue.duration
+    if charPerSecond > 20 {
+        return true
+    }
+    return false
+}
+
 let cueTextValidationErrors: [ValidationError] = [
     charactureLimitation,
-    lineTreatment
+    lineTreatment,
+    readingSpeedLimits
 ]
 
