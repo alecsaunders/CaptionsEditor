@@ -127,6 +127,7 @@ struct CueRow: View {
                         isTextFieldFocused = false
                         cue.postEditText()
                         tempText.text = cue.text
+                        print(cue.validationErrors)
                     }
                     .onReceive(NotificationCenter.default.publisher(for: NSTextField.textDidEndEditingNotification)) { obj in
                         if cue == selectedCue {
@@ -136,7 +137,7 @@ struct CueRow: View {
             }
                 .padding([.leading, .trailing])
                 .padding([.top, .bottom], 6)
-                .background(cue.isOverlapPrev ? Color.red.opacity(0.25) : cue.id == selectedCue?.id ? Color.secondary.opacity(0.07) : Color.clear)
+                .background(cue.validationErrors.isEmpty ? .clear : Color.red.opacity(0.25))
                 .cornerRadius(7)
                 .padding([.leading, .trailing], 6)
                 .popover(isPresented: $showPopover, attachmentAnchor: .point(UnitPoint(x: shiftControls.start ? 0.32 : 0.67, y: UnitPoint.top.y))) {
@@ -144,6 +145,21 @@ struct CueRow: View {
                 }
             Divider()
         }
+    }
+    
+    func calculateBackground() -> Color {
+        if cue.isOverlapPrev {
+            return Color.red.opacity(0.25)
+        }
+        else if !cue.validationErrors.isEmpty {
+            print("is not emptry")
+            print(cue.validationErrors)
+            return Color.red.opacity(0.25)
+        }
+        else if cue.id == selectedCue?.id {
+            return Color.secondary.opacity(0.07)
+        }
+        return Color.clear
     }
 }
 

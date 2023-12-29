@@ -17,6 +17,7 @@ struct Cue: Identifiable, Equatable, Hashable {
     var endTimestamp: Timestamp
     var text: String
     var isOverlapPrev: Bool = false
+    var validationErrors: [ValidationError] = []
     
     static func == (lhs: Cue, rhs: Cue) -> Bool {
         lhs.id == rhs.id
@@ -31,6 +32,7 @@ struct Cue: Identifiable, Equatable, Hashable {
         self.startTimestamp = startTimestamp
         self.endTimestamp = endTimestamp
         self.text = text
+        self.postEditText()
     }
     
     init() {
@@ -49,6 +51,13 @@ struct Cue: Identifiable, Equatable, Hashable {
             self.text = self.text.replacing("...", with: "…")
         }
         self.text = self.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        self.validationErrors = []
+        for valErr in cueTextValidationErrors {
+            if valErr.validationLogic(self) {
+                self.validationErrors.append(valErr)
+            }
+        }
     }
 }
 

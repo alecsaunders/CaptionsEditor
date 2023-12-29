@@ -6,3 +6,35 @@
 //
 
 import Foundation
+
+
+struct ValidationError {
+    let id: String
+    let name: String
+    let description: String
+    let validationLogic: (_ cue: Cue) -> Bool
+}
+
+
+let charactureLimitation = ValidationError(id: "I.1", name: "Character Limitation", description: "42 characters per line") { cue in
+    for line in cue.text.split(separator: "\n") {
+        if line.count > 42 {
+            return true
+        }
+    }
+    return false
+}
+
+let lineTreatment = ValidationError(id: "I.10", name: "Line Treatment", description: "Maximum two lines.") { cue in
+    let textLines = cue.text.split(separator: "\n")
+    if textLines.count > 2 {
+        return true
+    }
+    return false
+}
+
+let cueTextValidationErrors: [ValidationError] = [
+    charactureLimitation,
+    lineTreatment
+]
+

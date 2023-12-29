@@ -29,6 +29,7 @@
 		70B138972A4F69CF00576273 /* TimeShiftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B138962A4F69CF00576273 /* TimeShiftView.swift */; };
 		70B138992A4F6EEC00576273 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B138982A4F6EEC00576273 /* Extensions.swift */; };
 		70B1389C2A4F71DD00576273 /* ShiftControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B1389B2A4F71DD00576273 /* ShiftControls.swift */; };
+		70CB86182B3E88B8001364E9 /* TextValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CB86172B3E88B8001364E9 /* TextValidator.swift */; };
 		70DC713A2A53D9560048A5EF /* ToolbarSidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DC71392A53D9560048A5EF /* ToolbarSidebarView.swift */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +78,7 @@
 		70B138962A4F69CF00576273 /* TimeShiftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeShiftView.swift; sourceTree = "<group>"; };
 		70B138982A4F6EEC00576273 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		70B1389B2A4F71DD00576273 /* ShiftControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftControls.swift; sourceTree = "<group>"; };
+		70CB86172B3E88B8001364E9 /* TextValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextValidator.swift; sourceTree = "<group>"; };
 		70DC71392A53D9560048A5EF /* ToolbarSidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarSidebarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -172,6 +174,7 @@
 			children = (
 				70401B972A4E0E6600162E6B /* PlayerController.swift */,
 				70A0F2472A4CB2C4004317A5 /* Captions.swift */,
+				70CB86172B3E88B8001364E9 /* TextValidator.swift */,
 				70A0F24A2A4CF31A004317A5 /* Timestamp.swift */,
 				70B1389B2A4F71DD00576273 /* ShiftControls.swift */,
 			);
@@ -364,6 +367,7 @@
 				709D0FD42A4D41CB0036B147 /* CueRow.swift in Sources */,
 				70B138972A4F69CF00576273 /* TimeShiftView.swift in Sources */,
 				70A0F21E2A4CB14A004317A5 /* ContentView.swift in Sources */,
+				70CB86182B3E88B8001364E9 /* TextValidator.swift in Sources */,
 				70401B982A4E0E6600162E6B /* PlayerController.swift in Sources */,
 				70A0F24D2A4D28EE004317A5 /* TimestampView.swift in Sources */,
 				70DC713A2A53D9560048A5EF /* ToolbarSidebarView.swift in Sources */,
