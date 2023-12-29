@@ -127,7 +127,9 @@ struct CueRow: View {
                         isTextFieldFocused = false
                     }
                     .onReceive(NotificationCenter.default.publisher(for: NSTextField.textDidEndEditingNotification)) { obj in
-                        isTextFieldFocused = false
+                        if cue == selectedCue {
+                            isTextFieldFocused = false
+                        }
                     }
             }
                 .padding([.leading, .trailing])
