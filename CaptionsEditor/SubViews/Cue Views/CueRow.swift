@@ -125,6 +125,8 @@ struct CueRow: View {
                         }
                         cue.text = tempText.text
                         isTextFieldFocused = false
+                        cue.postEditText()
+                        tempText.text = cue.text
                     }
                     .onReceive(NotificationCenter.default.publisher(for: NSTextField.textDidEndEditingNotification)) { obj in
                         if cue == selectedCue {

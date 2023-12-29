@@ -43,6 +43,13 @@ struct Cue: Identifiable, Equatable, Hashable {
     mutating func setOverlap(_ isOverlap: Bool = true) {
         self.isOverlapPrev = isOverlap
     }
+    
+    mutating func postEditText() {
+        if self.text.contains("...") {
+            self.text = self.text.replacing("...", with: "…")
+        }
+        self.text = self.text.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
 }
 
 extension Cue {
