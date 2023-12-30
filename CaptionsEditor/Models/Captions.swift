@@ -124,11 +124,6 @@ struct Captions: Identifiable {
         
         let theIndex = self.getIndex(forCueID: cueID)
         for cIdx in theIndex..<cues.count {
-            var previousCue = Cue()
-            if cIdx > 0 {
-                previousCue = cues[cIdx - 1]
-            }
-            
             if cues[cIdx].id == cueID {
                 atOrAfterCue = true
                 self.shiftTimestamp(atIndex: cIdx, withValue: withValue, start: start)
@@ -142,9 +137,6 @@ struct Captions: Identifiable {
             
             if cues[cIdx].id != cueID {
                 self.shiftTimestamp(atIndex: cIdx, withValue: withValue, start: nil)
-                if cues[cIdx].startTimestamp < previousCue.endTimestamp {
-                    cues[cIdx].setOverlap()
-                }
             }
         }
     }
@@ -152,7 +144,6 @@ struct Captions: Identifiable {
     mutating func shiftTimestamp(withValue: Double, atCueWithId cueID: UUID, start: Bool?) {
         let cIdx = self.getIndex(forCueID: cueID)
         self.shiftTimestamp(atIndex: cIdx, withValue: withValue, start: start)
-        self.isEndTimeGreaterThanNextStartTime(atIndex: cIdx)
     }
     
     mutating private func shiftTimestamp(atIndex idx: Int, withValue value: Double, start: Bool?) {
@@ -167,23 +158,6 @@ struct Captions: Identifiable {
         } else {
             cues[idx].startTimestamp = newStartTime
             cues[idx].endTimestamp = newEndTime
-        }
-        self.isTimeOverlapWithSelf(atIndex: idx)
-    }
-    
-    mutating private func isTimeOverlapWithSelf(atIndex idx: Int) {
-        if cues[idx].endTimestamp < cues[idx].startTimestamp {
-            cues[idx].setOverlap()
-        }
-    }
-    
-    mutating func isEndTimeGreaterThanNextStartTime(atIndex idx: Int) {
-        if idx < cues.count - 1 {
-            if cues[idx + 1].startTimestamp < cues[idx].endTimestamp {
-                cues[idx + 1].setOverlap()
-            } else {
-                cues[idx + 1].setOverlap(false)
-            }
         }
     }
 }
@@ -203,22 +177,8 @@ extension Captions {
         
         var cues: [Cue] = []
         cues = cueLinesCollection.map { cue(fromCueLines: $0) }
-        
-        var newCues: [Cue] = []
-        
-        for (cIdx, var cue) in cues.enumerated() {
-            if cIdx > 0 {
-                let prevCue = cues[cIdx - 1]
-                if cue.startTimestamp < prevCue.endTimestamp {
-                    cue.setOverlap()
-                }
-            }
-            if cue.endTimestamp < cue.startTimestamp {
-                cue.setOverlap()
-            }
-            newCues.append(cue)
-        }
-        return newCues
+        // TODO: Check for overlap
+        return cues
     }
     
     private func textToLines(fullText text: String) -> [String] {

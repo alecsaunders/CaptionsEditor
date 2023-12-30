@@ -87,7 +87,6 @@ struct TimeShiftView: View {
                                 let nextIndex = cueIndex + 1
                                 let nextCue = document.captions.cues[nextIndex]
                                 document.shiftTime(withValue: shiftValue, atCueWithId: nextCue.id, start: true, undoManager: undoManager)
-                                document.captions.isEndTimeGreaterThanNextStartTime(atIndex: cueIndex)
                                 showPopover = false
                             }
                         }
