@@ -54,7 +54,10 @@ struct Cue: Identifiable, Equatable, Hashable {
             self.text = self.text.replacing("...", with: "…")
         }
         self.text = self.text.trimmingCharacters(in: .whitespacesAndNewlines)
-        
+        runCueRulesValidation()
+    }
+    
+    mutating func runCueRulesValidation() {
         self.validationErrors = []
         for valErr in cueTextValidationErrors {
             if valErr.validationLogic(self) {
@@ -98,12 +101,12 @@ struct Captions: Identifiable {
         }
         var theCue = cues[0]
         if let time = atTime?.seconds {
-            for (cIdx, cue) in self.cues.enumerated() {
-                if cIdx == 0 {
+            for (cueIdx, cue) in self.cues.enumerated() {
+                if cueIdx == 0 {
                     continue
                 }
                 
-                let prevCue = self.cues[cIdx - 1]
+                let prevCue = self.cues[cueIdx - 1]
                 
                 if time > prevCue.endTimestamp.value && time <= cue.endTimestamp.value {
                     theCue = cue
@@ -114,13 +117,13 @@ struct Captions: Identifiable {
     }
     
     func getIndex(forCueID cueID: UUID) -> Int {
-        var cIdx = 0
-        for (_cIdx, cue) in cues.enumerated() {
+        var cueIdx = 0
+        for (cIdx, cue) in cues.enumerated() {
             if cue.id == cueID {
-                cIdx = _cIdx
+                cueIdx = cIdx
             }
         }
-        return cIdx
+        return cueIdx
     }
     
     mutating func shiftTimestamps(withValue: Double, atCueWithId cueID: UUID, start: Bool) {
@@ -134,21 +137,23 @@ struct Captions: Identifiable {
             // If not `start` shift start only
             self.shiftTimestamp(atIndex: theIndex, withValue: withValue, start: start)
         }
+        cues[theIndex].runCueRulesValidation()
         
         // Shift remaining timestamps
-        for cIdx in (theIndex + 1)..<cues.count {
-            if cues[cIdx].id != cueID {
-                self.shiftTimestamp(atIndex: cIdx, withValue: withValue, start: nil)
+        for cueIdx in (theIndex + 1)..<cues.count {
+            if cues[cueIdx].id != cueID {
+                self.shiftTimestamp(atIndex: cueIdx, withValue: withValue, start: nil)
             }
         }
     }
     
     mutating func shiftTimestamp(withValue: Double, atCueWithId cueID: UUID, start: Bool?) {
-        let cIdx = self.getIndex(forCueID: cueID)
-        self.shiftTimestamp(atIndex: cIdx, withValue: withValue, start: start)
+        let cueIdx = self.getIndex(forCueID: cueID)
+        self.shiftTimestamp(atIndex: cueIdx, withValue: withValue, start: start)
         
         // Check for when the next cue start overlaps with current end
-        checkForOverlap(forCueAtIndex: cIdx + 1)
+        checkForOverlap(forCueAtIndex: cueIdx + 1)
+        cues[cueIdx].runValidation()
     }
     
     mutating private func shiftTimestamp(atIndex idx: Int, withValue value: Double, start: Bool?) {
@@ -319,8 +324,8 @@ extension Captions {
 
 extension Captions {
     mutating func resetCueIds() {
-        for cIdx in 0..<cues.count {
-            cues[cIdx].cueId = cIdx + 1
+        for cueIdx in 0..<cues.count {
+            cues[cueIdx].cueId = cueIdx + 1
         }
     }
 }
