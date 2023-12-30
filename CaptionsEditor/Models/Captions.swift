@@ -85,6 +85,10 @@ struct Captions: Identifiable {
     
     init(fromText text: String) {
         self.cues = self.cues(fromText: text)
+        // Check for overlap
+        for cueIndex in 0..<self.cues.count {
+            checkForOverlap(forCueAtIndex: cueIndex)
+        }
         self.resetCueIds()
     }
     
@@ -123,12 +127,12 @@ struct Captions: Identifiable {
         let theIndex = self.getIndex(forCueID: cueID)
         
         // Shift current cue timestamps
-        
-        // Shift end whether `start` is true or false
-        self.shiftTimestamp(atIndex: theIndex, withValue: withValue, start: start)
         if start {
-            // Shift start if `start` is true
-            self.shiftTimestamp(atIndex: theIndex, withValue: withValue, start: false)
+            // If `start` shift both timestamps
+            self.shiftTimestamp(atIndex: theIndex, withValue: withValue, start: nil)
+        } else {
+            // If not `start` shift start only
+            self.shiftTimestamp(atIndex: theIndex, withValue: withValue, start: start)
         }
         
         // Shift remaining timestamps
@@ -142,6 +146,9 @@ struct Captions: Identifiable {
     mutating func shiftTimestamp(withValue: Double, atCueWithId cueID: UUID, start: Bool?) {
         let cIdx = self.getIndex(forCueID: cueID)
         self.shiftTimestamp(atIndex: cIdx, withValue: withValue, start: start)
+        
+        // Check for when the next cue start overlaps with current end
+        checkForOverlap(forCueAtIndex: cIdx + 1)
     }
     
     mutating private func shiftTimestamp(atIndex idx: Int, withValue value: Double, start: Bool?) {
@@ -157,6 +164,40 @@ struct Captions: Identifiable {
             cues[idx].startTimestamp = newStartTime
             cues[idx].endTimestamp = newEndTime
         }
+        checkForOverlap(forCueAtIndex: idx)
+    }
+    
+    mutating private func checkForOverlap(forCueAtIndex cueIndex: Int) {
+        var theCue = cues[cueIndex]
+        
+        var previousCue: Cue? = nil
+        if cueIndex > 0 {
+            previousCue = cues[cueIndex - 1]
+        }
+        
+        theCue.isOverlapPrev = false
+        if startTimeGreaterThanEndTime(cue: theCue) {
+            theCue.isOverlapPrev = true
+        }
+        if overlapsWithPreviousCue(cue: theCue, previousCue: previousCue) {
+            theCue.isOverlapPrev = true
+        }
+        cues[cueIndex] = theCue
+    }
+    
+    private func startTimeGreaterThanEndTime(cue: Cue) -> Bool {
+        if cue.startTimestamp > cue.endTimestamp {
+            return true
+        }
+        return false
+    }
+    
+    private func overlapsWithPreviousCue(cue: Cue, previousCue: Cue?) -> Bool {
+        guard let previousCue = previousCue else { return false }
+        if cue.startTimestamp < previousCue.endTimestamp {
+            return true
+        }
+        return false
     }
 }
 
@@ -175,7 +216,6 @@ extension Captions {
         
         var cues: [Cue] = []
         cues = cueLinesCollection.map { cue(fromCueLines: $0) }
-        // TODO: Check for overlap
         return cues
     }
     
