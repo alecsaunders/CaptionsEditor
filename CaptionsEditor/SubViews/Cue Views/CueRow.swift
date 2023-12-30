@@ -127,7 +127,6 @@ struct CueRow: View {
                         isTextFieldFocused = false
                         cue.postEditText()
                         tempText.text = cue.text
-                        print(cue.validationErrors)
                     }
                     .onReceive(NotificationCenter.default.publisher(for: NSTextField.textDidEndEditingNotification)) { obj in
                         if cue == selectedCue {
@@ -152,8 +151,6 @@ struct CueRow: View {
             return Color.red.opacity(0.25)
         }
         else if !cue.validationErrors.isEmpty {
-            print("is not emptry")
-            print(cue.validationErrors)
             return Color.red.opacity(0.25)
         }
         else if cue.id == selectedCue?.id {
