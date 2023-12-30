@@ -34,7 +34,9 @@ struct TimeShiftView: View {
             Divider()
             HStack {
                 Button {
-                    if CGKeyCode.optionKeyPressed {
+                    if CGKeyCode.optionKeyPressed && CGKeyCode.commandKeyPressed {
+                        shiftValue -= 60.0
+                    } else if CGKeyCode.optionKeyPressed {
                         shiftValue -= 1.0
                     } else {
                         shiftValue -= 0.1
@@ -46,7 +48,9 @@ struct TimeShiftView: View {
                 Text("\(isPositive ? "+" : "-")\(String(format: "%.2f", abs(shiftValue)))")
                     .font(.system(size: 14).monospacedDigit())
                 Button {
-                    if CGKeyCode.optionKeyPressed {
+                    if CGKeyCode.optionKeyPressed && CGKeyCode.commandKeyPressed {
+                        shiftValue += 60.0
+                    } else if CGKeyCode.optionKeyPressed {
                         shiftValue += 1.0
                     } else {
                         shiftValue += 0.1
