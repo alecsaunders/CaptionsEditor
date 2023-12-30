@@ -74,16 +74,16 @@ extension CaptionsEditorDocument {
     }
     
     /// Replaces the existing items with a new set of items.
-    func replaceItems(with newItems: [Cue], undoManager: UndoManager? = nil, animation: Animation? = .default) {
+    func replaceItems(with newItems: [Cue], undoManager: UndoManager? = nil) {
         let oldItems = captions.cues
 
-        withAnimation(animation) {
+        withAnimation {
             captions.cues = newItems
         }
 
         undoManager?.registerUndo(withTarget: self) { doc in
                 // Because you recurse here, redo support is automatic.
-            doc.replaceItems(with: oldItems, undoManager: undoManager, animation: animation)
+            doc.replaceItems(with: oldItems, undoManager: undoManager)
         }
     }
     
@@ -126,7 +126,7 @@ extension CaptionsEditorDocument {
             // Register the redo action.
             undoManager?.registerUndo(withTarget: self) { doc in
                 // Use the replaceItems symmetric undoable-redoable function.
-                doc.replaceItems(with: newItems, undoManager: undoManager, animation: nil)
+                doc.replaceItems(with: newItems, undoManager: undoManager)
             }
         }
     }
