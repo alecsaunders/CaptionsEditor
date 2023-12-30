@@ -138,7 +138,6 @@ struct CueRow: View {
                 .padding([.top, .bottom], 6)
                 .background(cue.validationErrors.isEmpty ? .clear : Color.red.opacity(0.25))
                 .cornerRadius(7)
-                .padding([.leading, .trailing], 6)
                 .popover(isPresented: $showPopover, attachmentAnchor: .point(UnitPoint(x: shiftControls.start ? 0.32 : 0.67, y: UnitPoint.top.y))) {
                     TimeShiftView(cue: $cue, start: shiftControls.start, showPopover: $showPopover)
                 }
