@@ -153,7 +153,7 @@ struct Captions: Identifiable {
         
         // Check for when the next cue start overlaps with current end
         checkForOverlap(forCueAtIndex: cueIdx + 1)
-        cues[cueIdx].runValidation()
+        cues[cueIdx].runCueRulesValidation()
     }
     
     mutating private func shiftTimestamp(atIndex idx: Int, withValue value: Double, start: Bool?) {
