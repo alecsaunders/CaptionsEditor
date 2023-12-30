@@ -44,6 +44,7 @@ struct CueRow: View {
                     // When using a menu, every time an item is selected get an "AttributeGraph" error
                     // and the video player gets removed, so that you have to re-select a video
                     Button {
+                        cue.runCueRulesValidation()
                         showAddPopover = true
                     } label: {
                         Label("", systemImage: "chevron.down")
@@ -86,6 +87,19 @@ struct CueRow: View {
                                 }
                                     .foregroundStyle(.primary)
                                     .buttonStyle(.borderless)
+                                if !cue.validationErrors.isEmpty {
+                                    Divider()
+                                    Text("Errors:")
+                                        .foregroundStyle(.red)
+                                        .bold()
+                                    ForEach(cue.validationErrors) {valErr in
+                                        HStack {
+                                            Text("-")
+                                            Text(valErr.description)
+                                        }
+                                        
+                                    }
+                                }
                             }
                                 .padding()
                         }

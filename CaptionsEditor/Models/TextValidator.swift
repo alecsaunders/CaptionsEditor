@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct ValidationError {
+struct ValidationError: Identifiable {
     let id: String
     let name: String
     let description: String
