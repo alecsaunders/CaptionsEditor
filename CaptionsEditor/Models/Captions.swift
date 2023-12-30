@@ -120,21 +120,19 @@ struct Captions: Identifiable {
     }
     
     mutating func shiftTimestamps(withValue: Double, atCueWithId cueID: UUID, start: Bool) {
-        var atOrAfterCue = false
-        
         let theIndex = self.getIndex(forCueID: cueID)
-        for cIdx in theIndex..<cues.count {
-            if cues[cIdx].id == cueID {
-                atOrAfterCue = true
-                self.shiftTimestamp(atIndex: cIdx, withValue: withValue, start: start)
-                if start {
-                    self.shiftTimestamp(atIndex: cIdx, withValue: withValue, start: false)
-                }
-            }
-            else if !atOrAfterCue {
-                continue
-            }
-            
+        
+        // Shift current cue timestamps
+        
+        // Shift end whether `start` is true or false
+        self.shiftTimestamp(atIndex: theIndex, withValue: withValue, start: start)
+        if start {
+            // Shift start if `start` is true
+            self.shiftTimestamp(atIndex: theIndex, withValue: withValue, start: false)
+        }
+        
+        // Shift remaining timestamps
+        for cIdx in (theIndex + 1)..<cues.count {
             if cues[cIdx].id != cueID {
                 self.shiftTimestamp(atIndex: cIdx, withValue: withValue, start: nil)
             }
