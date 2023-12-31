@@ -24,6 +24,7 @@ struct SearchView: View {
                  }
                  Divider()
              }
+                .contentShape(Rectangle())
                 .onTapGesture {
                     scrollTarget = searchCue.id
                     dismissSearch()
