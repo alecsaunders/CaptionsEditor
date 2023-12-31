@@ -50,10 +50,6 @@ struct Cue: Identifiable, Equatable, Hashable {
     }
     
     mutating func postEditText() {
-        if self.text.contains("...") {
-            self.text = self.text.replacing("...", with: "…")
-        }
-        self.text = self.text.trimmingCharacters(in: .whitespacesAndNewlines)
         runCueRulesValidation()
     }
     

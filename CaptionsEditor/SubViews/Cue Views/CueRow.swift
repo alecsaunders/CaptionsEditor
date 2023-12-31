@@ -28,8 +28,6 @@ struct CueRow: View {
     @State var shiftControls: ShiftControls = ShiftControls()
     @FocusState private var isTextFieldFocused: Bool
     
-    @State private var oldText: String = ""
-    
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
@@ -78,7 +76,7 @@ struct CueRow: View {
                                     } else {
                                         tempText.text = "<i>\(cue.text)</i>"
                                     }
-                                    cue.text = tempText.text
+//                                    cue.text = tempText.text
                                     isTextFieldFocused = false
                                     showAddPopover = false
                                 }
@@ -115,27 +113,20 @@ struct CueRow: View {
                     .background(isTextFieldFocused ? Color.secondary.opacity(0.1) : Color.clear)
                     .padding([.leading, .trailing], 10)
                     .onAppear {
-                        // Remove focus on appear after 0.1 seconds
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            self.isTextFieldFocused = false
-                        }
+                        self.isTextFieldFocused = false
                     }
                     .onDisappear() {
                         self.isTextFieldFocused = false
-                    }
-                    .onChange(of: isTextFieldFocused) { newValue in
-                        
-                    }
-                    .onChange(of: tempText) { value in
-                        
                     }
                     .onSubmit {
                         isTextFieldFocused = false
                     }
                     .onReceive(
-                        NotificationCenter.default.publisher(
-                            for: NSTextField.textDidEndEditingNotification)) { obj in
-                        
+                        NotificationCenter.default.publisher(for: NSTextField.textDidEndEditingNotification)) { obj in
+                            isTextFieldFocused = false
+                            formatCueText()
+//                            document.registerUndoTextChange(for: cue, oldText: oldText, undoManager: undoManager)
+                            cue.text = tempText.text
                     }
             }
                 .padding([.top, .bottom], 6)
@@ -160,6 +151,13 @@ struct CueRow: View {
         }
         return Color.clear
     }
+    
+    func formatCueText() {
+        if tempText.text.contains("...") {
+            tempText.text = tempText.text.replacing("...", with: "…")
+        }
+        tempText.text = tempText.text.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
 }
 
 struct CueRow_Previews: PreviewProvider {
@@ -169,7 +167,7 @@ struct CueRow_Previews: PreviewProvider {
         @State private var document = CaptionsEditorDocument()
 
         var body: some View {
-            CueRow(cue: .constant(Cue()), selectedCue: .constant(nil), tempText: TempText(text: "temp text"))
+            CueRow(cue: .constant(Cue()), selectedCue: .constant(nil), tempText: TempText(text: ""))
         }
     }
     
