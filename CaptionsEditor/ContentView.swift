@@ -30,9 +30,7 @@ struct ContentView: View {
                 ScrollViewReader { (proxy: ScrollViewProxy) in
                     LazyVStack {
                         ForEach($document.captions.cues, id: \.self) { $cue in
-                            CueRow(cue: $cue, selectedCue: $selectedCue, tempText: TempText(text: cue.text)) { oldText in
-                                document.registerUndoTextChange(for: $cue.wrappedValue, oldText: oldText, undoManager: undoManager)
-                            }
+                            CueRow(cue: $cue, selectedCue: $selectedCue, tempText: TempText(text: cue.text))
                             .id(cue.id)
                             .listStyle(.sidebar)
                             .onHover { isHovering in

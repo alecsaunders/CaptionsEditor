@@ -28,8 +28,6 @@ struct CueRow: View {
     @State var shiftControls: ShiftControls = ShiftControls()
     @FocusState private var isTextFieldFocused: Bool
     
-    var onTextCommit: (_ oldText: String) -> Void
-    
     @State private var oldText: String = ""
     
     var body: some View {
@@ -81,7 +79,6 @@ struct CueRow: View {
                                         tempText.text = "<i>\(cue.text)</i>"
                                     }
                                     cue.text = tempText.text
-                                    onTextCommit(cue.text)
                                     isTextFieldFocused = false
                                     showAddPopover = false
                                 }
@@ -104,9 +101,19 @@ struct CueRow: View {
                                 .padding()
                         }
                 }
+                .padding([.leading, .trailing])
                 TextField("", text: $tempText.text, axis: .vertical)
                     .textFieldStyle(.plain)
                     .lineLimit(3)
+                    .focused($isTextFieldFocused)
+                    .padding([.leading, .trailing], 10)
+                    .padding([.top, .bottom], 1)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 4)
+                            .stroke(isTextFieldFocused ? Color.secondary.opacity(0.5) : Color.clear, lineWidth: 1)
+                    )
+                    .background(isTextFieldFocused ? Color.secondary.opacity(0.1) : Color.clear)
+                    .padding([.leading, .trailing], 10)
                     .onAppear {
                         // Remove focus on appear after 0.1 seconds
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -116,39 +123,21 @@ struct CueRow: View {
                     .onDisappear() {
                         self.isTextFieldFocused = false
                     }
-                    .focused($isTextFieldFocused)
                     .onChange(of: isTextFieldFocused) { newValue in
-                        if isTextFieldFocused {
-                            // The TextField is now focused.
-                            if cue.text != tempText.text {
-                                onTextCommit(cue.text)
-                            }
-                            cue.text = tempText.text
-                        } else {
-                            onTextCommit(cue.text)
-                        }
+                        
                     }
                     .onChange(of: tempText) { value in
-                        cue.text = tempText.text
-                        onTextCommit(cue.text)
+                        
                     }
                     .onSubmit {
-                        // The commit handler registers an undo action using the old title.
-                        if cue.text != tempText.text {
-                            onTextCommit(cue.text)
-                        }
-                        cue.text = tempText.text
                         isTextFieldFocused = false
-                        cue.postEditText()
-                        tempText.text = cue.text
                     }
-                    .onReceive(NotificationCenter.default.publisher(for: NSTextField.textDidEndEditingNotification)) { obj in
-                        if cue == selectedCue {
-                            isTextFieldFocused = false
-                        }
+                    .onReceive(
+                        NotificationCenter.default.publisher(
+                            for: NSTextField.textDidEndEditingNotification)) { obj in
+                        
                     }
             }
-                .padding([.leading, .trailing])
                 .padding([.top, .bottom], 6)
                 .background(cue.validationErrors.isEmpty ? .clear : Color.red.opacity(0.25))
                 .cornerRadius(7)
@@ -180,9 +169,7 @@ struct CueRow_Previews: PreviewProvider {
         @State private var document = CaptionsEditorDocument()
 
         var body: some View {
-            CueRow(cue: .constant(Cue()), selectedCue: .constant(nil), tempText: TempText(text: "temp text")) { oldText in
-
-            }
+            CueRow(cue: .constant(Cue()), selectedCue: .constant(nil), tempText: TempText(text: "temp text"))
         }
     }
     
