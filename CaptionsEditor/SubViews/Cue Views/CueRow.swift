@@ -21,11 +21,11 @@ struct CueRow: View {
     @Environment(\.undoManager) var undoManager
     @Binding var cue: Cue
     @Binding var selectedCue: Cue?
-    @State var tempText: TempText
     @State var showTimePopover: Bool = false
     @State var showPopover: Bool = false
     @State var showAddPopover: Bool = false
     @State var shiftControls: ShiftControls = ShiftControls()
+    @State var oldText: String
     @FocusState private var isTextFieldFocused: Bool
     
     var body: some View {
@@ -69,15 +69,16 @@ struct CueRow: View {
                                     .foregroundStyle(.primary)
                                     .buttonStyle(.borderless)
                                 Divider()
-                                Button(tempText.text.contains("<i>") ? "Remove italics" : "Italicize text") {
-                                    if tempText.text.contains("<i>") {
-                                        tempText.text.replace("<i>", with: "")
-                                        tempText.text.replace("</i>", with: "")
+                                Button(cue.text.contains("<i>") ? "Remove italics" : "Italicize text") {
+                                    if cue.text.contains("<i>") {
+                                        cue.text.replace("<i>", with: "")
+                                        cue.text.replace("</i>", with: "")
                                     } else {
-                                        tempText.text = "<i>\(cue.text)</i>"
+                                        cue.text = "<i>\(cue.text)</i>"
                                     }
-//                                    cue.text = tempText.text
                                     isTextFieldFocused = false
+                                    document.registerUndoTextChange(withOldValue: oldText, atCueWithId: cue.id, undoManager: undoManager)
+                                    oldText = cue.text
                                     showAddPopover = false
                                 }
                                     .foregroundStyle(.primary)
@@ -100,7 +101,7 @@ struct CueRow: View {
                         }
                 }
                 .padding([.leading, .trailing])
-                TextField("", text: $tempText.text, axis: .vertical)
+                TextField("", text: $cue.text, axis: .vertical)
                     .textFieldStyle(.plain)
                     .lineLimit(3)
                     .focused($isTextFieldFocused)
@@ -124,9 +125,11 @@ struct CueRow: View {
                     .onReceive(
                         NotificationCenter.default.publisher(for: NSTextField.textDidEndEditingNotification)) { obj in
                             isTextFieldFocused = false
-                            formatCueText()
-//                            document.registerUndoTextChange(for: cue, oldText: oldText, undoManager: undoManager)
-                            cue.text = tempText.text
+                            if cue.text != oldText {
+                                formatCueText()
+                                document.registerUndoTextChange(withOldValue: oldText, atCueWithId: cue.id, undoManager: undoManager)
+                                oldText = cue.text
+                            }
                     }
             }
                 .padding([.top, .bottom], 6)
@@ -153,10 +156,10 @@ struct CueRow: View {
     }
     
     func formatCueText() {
-        if tempText.text.contains("...") {
-            tempText.text = tempText.text.replacing("...", with: "…")
+        if cue.text.contains("...") {
+            cue.text = cue.text.replacing("...", with: "…")
         }
-        tempText.text = tempText.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        cue.text = cue.text.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
 
@@ -167,7 +170,7 @@ struct CueRow_Previews: PreviewProvider {
         @State private var document = CaptionsEditorDocument()
 
         var body: some View {
-            CueRow(cue: .constant(Cue()), selectedCue: .constant(nil), tempText: TempText(text: ""))
+            CueRow(cue: .constant(Cue()), selectedCue: .constant(nil), oldText: "")
         }
     }
     
