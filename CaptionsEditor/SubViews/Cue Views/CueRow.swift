@@ -115,7 +115,11 @@ struct CueRow: View {
                     .background(isTextFieldFocused ? Color.secondary.opacity(0.1) : Color.clear)
                     .padding([.leading, .trailing], 10)
                     .onAppear {
-                        self.isTextFieldFocused = false
+                        // Remove focus on appear after 0.1 seconds
+                        // Otherwise search field is focused when window appears
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            self.isTextFieldFocused = false
+                        }
                     }
                     .onDisappear() {
                         self.isTextFieldFocused = false
