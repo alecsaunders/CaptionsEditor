@@ -32,7 +32,7 @@ struct ToolbarView: View {
         } label: {
             Label("Slow", systemImage: slowMotion ? "play.fill" : "tortoise.fill")
         }
-            .help("Load movie from file")
+            .help("Play in slow motion")
         Button {
             playerController.chooseVideoURL()
         } label: {
