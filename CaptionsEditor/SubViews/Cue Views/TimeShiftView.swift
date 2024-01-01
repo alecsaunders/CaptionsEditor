@@ -24,7 +24,7 @@ struct TimeShiftView: View {
     }
     
     var shiftOne: String {
-        isPositive ? "circle.grid.2x1.right.filled" : "circle.grid.2x1.left.filled"
+        start ? "circle.grid.2x1.left.filled" : "circle.grid.2x1.right.filled"
     }
     
     var shiftBoth: String {
@@ -33,6 +33,10 @@ struct TimeShiftView: View {
     
     var endAndStart: String {
         "arrow.up.left.and.arrow.down.right"
+    }
+    
+    var shiftToPlayhead: String {
+        "timeline.selection"
     }
     
     /// The undo manager that the environment stores.
@@ -87,6 +91,7 @@ struct TimeShiftView: View {
                         .disabled(Int(shiftValue * 1000) == 0)
                         .buttonStyle(.borderless)
                         .help("Shift \(start ? "start" : "end") of current cue and remaining...")
+                    
                     Divider()
                     
                     // Shift One
@@ -100,6 +105,7 @@ struct TimeShiftView: View {
                         .disabled(Int(shiftValue * 1000) == 0)
                         .buttonStyle(.borderless)
                         .help("Shift \(start ? "start" : "end") of current cue only")
+                    
                     Divider()
                     
                     // Shift Both
@@ -136,6 +142,21 @@ struct TimeShiftView: View {
                         .buttonStyle(.borderless)
                         .help("Shift end of current cue and start of next")
                     }
+                    
+                    Divider()
+                    
+                    // Shift To Playhead
+                    Button {
+                        print("Shift to playhead")
+                    } label: {
+                        HStack {
+                            Image(systemName: shiftToPlayhead)
+                                .padding(0)
+                        }
+                        .padding([.leading, .trailing], buttonPadding)
+                    }
+                        .buttonStyle(.borderless)
+                        .help("Shift to playhead of video")
                 }
                 .overlay(
                     RoundedRectangle(cornerRadius: 4)
