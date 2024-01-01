@@ -18,7 +18,8 @@ struct ValidationError: Identifiable {
 
 let charactureLimitation = ValidationError(id: "I.1", name: "Character Limitation", description: "42 characters per line") { cue in
     for line in cue.text.split(separator: "\n") {
-        if line.count > 42 {
+        let adjustedText = line.replacingOccurrences(of: "<i>", with: "").replacingOccurrences(of: "</i>", with: "")
+        if adjustedText.count > 42 {
             return true
         }
     }
@@ -34,7 +35,8 @@ let lineTreatment = ValidationError(id: "I.10", name: "Line Treatment", descript
 }
 
 let readingSpeedLimits = ValidationError(id: "I.14", name: "Reading Speed Limits", description: "Up to 20 characters per second") { cue in
-    let numCharacters = cue.text.count
+    let adjustedText = cue.text.replacingOccurrences(of: "<i>", with: "").replacingOccurrences(of: "</i>", with: "")
+    let numCharacters = adjustedText.count
     let charPerSecond = Double(numCharacters) / cue.duration
     if charPerSecond > 20 {
         return true
