@@ -152,20 +152,30 @@ struct Captions: Identifiable {
         cues[cueIdx].runCueRulesValidation()
     }
     
-    mutating private func shiftTimestamp(atIndex idx: Int, withValue value: Double, start: Bool?) {
-        let newStartTime = cues[idx].startTimestamp.add(value)
-        let newEndTime = cues[idx].endTimestamp.add(value)
+    mutating private func shiftTimestamp(atIndex cueIdx: Int, withValue value: Double, start: Bool?) {
+        let newStartTime = cues[cueIdx].startTimestamp.add(value)
+        let newEndTime = cues[cueIdx].endTimestamp.add(value)
         if let start = start {
             if start {
-                cues[idx].startTimestamp = newStartTime
+                cues[cueIdx].startTimestamp = newStartTime
             } else {
-                cues[idx].endTimestamp = newEndTime
+                cues[cueIdx].endTimestamp = newEndTime
             }
         } else {
-            cues[idx].startTimestamp = newStartTime
-            cues[idx].endTimestamp = newEndTime
+            cues[cueIdx].startTimestamp = newStartTime
+            cues[cueIdx].endTimestamp = newEndTime
         }
-        checkForOverlap(forCueAtIndex: idx)
+        checkForOverlap(forCueAtIndex: cueIdx)
+    }
+    
+    mutating func setTime(withValue: Double, atCueWithId cueID: UUID, start: Bool) {
+        let cueIdx = self.getIndex(forCueID: cueID)
+        if start {
+            cues[cueIdx].startTimestamp.value = withValue
+        } else {
+            cues[cueIdx].endTimestamp.value = withValue
+        }
+        checkForOverlap(forCueAtIndex: cueIdx)
     }
     
     mutating private func checkForOverlap(forCueAtIndex cueIndex: Int) {

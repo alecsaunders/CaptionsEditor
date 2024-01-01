@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TimeShiftView: View {
     @EnvironmentObject var document: CaptionsEditorDocument
+    @EnvironmentObject var playerController: PlayerController
     @Binding var cue: Cue
     @State var shiftValue: Double = 0.0
     var start: Bool
@@ -147,7 +148,12 @@ struct TimeShiftView: View {
                     
                     // Shift To Playhead
                     Button {
-                        print("Shift to playhead")
+                        guard let currentTime = playerController.player?.currentTime() else {
+                            self.showPopover = false
+                            return
+                        }
+                        document.setTime(withValue: currentTime.seconds, atCueWithId: cue.id, start: start, undoManager: undoManager)
+                        self.showPopover = false
                     } label: {
                         HStack {
                             Image(systemName: shiftToPlayhead)
@@ -155,6 +161,7 @@ struct TimeShiftView: View {
                         }
                         .padding([.leading, .trailing], buttonPadding)
                     }
+                        .disabled(playerController.player == nil)
                         .buttonStyle(.borderless)
                         .help("Shift to playhead of video")
                 }

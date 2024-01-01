@@ -10,11 +10,12 @@ import Foundation
 
 struct Timestamp {
     var value: Double
-    var stringValue: String
+    var stringValue: String {
+        self.value.toTimestampString()
+    }
     
     init(_ initValue: Double = 0.0) {
         self.value = initValue
-        self.stringValue = self.value.toTimestampString()
     }
     
     init(_ initText: String) {
@@ -36,7 +37,6 @@ struct Timestamp {
         } else {
             self.value = 0.0
         }
-        self.stringValue = self.value.toTimestampString()
     }
     
     func add(_ addValue: Double) -> Timestamp {
