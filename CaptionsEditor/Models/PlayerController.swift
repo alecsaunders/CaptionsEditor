@@ -45,11 +45,13 @@ final class PlayerController: ObservableObject {
             }
 
             let playerItem = AVPlayerItem(asset: mix)
-            thePlayer.replaceCurrentItem(with: playerItem)
-
-            self.jumpToPosition(atTimestamp: currentTime.seconds)
-            if isPlaying {
-                thePlayer.play()
+            
+            DispatchQueue.main.async {
+                thePlayer.replaceCurrentItem(with: playerItem)
+                self.jumpToPosition(atTimestamp: currentTime.seconds)
+                if isPlaying {
+                    thePlayer.play()
+                }
             }
         } else {
             guard let videoURL = self.videoURL else { return }

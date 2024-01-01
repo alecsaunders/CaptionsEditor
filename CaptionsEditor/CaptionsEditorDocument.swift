@@ -63,27 +63,27 @@ extension CaptionsEditorDocument {
             let previousCue = captions.cues[atIndex - 1]
             newCue = Cue(cueId: atIndex, startTimestamp: previousCue.endTimestamp.add(0.1), endTimestamp: previousCue.endTimestamp.add(1.1), text: "new subtitle")
         }
-        captions.cues.insert(newCue, at: atIndex)
-        captions.resetCueIds()
+        withAnimation {
+            self.captions.cues.insert(newCue, at: atIndex)
+            self.captions.resetCueIds()
+        }
         
         undoManager?.registerUndo(withTarget: self) { doc in
-            withAnimation {
-                doc.deleteItem(withID: newCue.id, undoManager: undoManager)
-            }
+            doc.deleteItem(withID: newCue.id, undoManager: undoManager)
         }
     }
     
     /// Replaces the existing items with a new set of items.
-    func replaceItems(with newItems: [Cue], undoManager: UndoManager? = nil, animation: Animation? = .default) {
+    func replaceItems(with newItems: [Cue], undoManager: UndoManager? = nil) {
         let oldItems = captions.cues
 
-        withAnimation(animation) {
+        withAnimation {
             captions.cues = newItems
         }
 
         undoManager?.registerUndo(withTarget: self) { doc in
                 // Because you recurse here, redo support is automatic.
-            doc.replaceItems(with: oldItems, undoManager: undoManager, animation: animation)
+            doc.replaceItems(with: oldItems, undoManager: undoManager)
         }
     }
     
@@ -113,21 +113,13 @@ extension CaptionsEditorDocument {
     }
     
     /// Registers an undo action and a redo action for a title change.
-    func registerUndoTextChange(for item: Cue, oldText: String, undoManager: UndoManager?) {
-        let index = captions.cues.firstIndex(of: item)!
+    func registerUndoTextChange(withOldValue: String, atCueWithId cueID: UUID, undoManager: UndoManager? = nil) {
+        let theIndex = captions.getIndex(forCueID: cueID)
+        var oldItems = captions.cues
+        oldItems[theIndex].text = withOldValue
 
-        // The change has already happened, so save the collection of new items.
-        let newItems = captions.cues
-
-        // Register the undo action.
         undoManager?.registerUndo(withTarget: self) { doc in
-            doc.captions.cues[index].text = oldText
-
-            // Register the redo action.
-            undoManager?.registerUndo(withTarget: self) { doc in
-                // Use the replaceItems symmetric undoable-redoable function.
-                doc.replaceItems(with: newItems, undoManager: undoManager, animation: nil)
-            }
+            doc.replaceItems(with: oldItems, undoManager: undoManager)
         }
     }
 

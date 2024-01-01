@@ -21,6 +21,8 @@ struct ContentView: View {
     @State private var scrollTarget: UUID?
     @State private var searchResults: [Cue] = []
     @State var showTextEditorPopover: Bool = false
+    @State var showJumpToNumberPopover: Bool = false
+    @State var jumpToNumberText: String = ""
 
     var body: some View {
         NavigationSplitView {
@@ -28,9 +30,7 @@ struct ContentView: View {
                 ScrollViewReader { (proxy: ScrollViewProxy) in
                     LazyVStack {
                         ForEach($document.captions.cues, id: \.self) { $cue in
-                            CueRow(cue: $cue, selectedCue: $selectedCue, tempText: TempText(text: cue.text)) { oldText in
-                                document.registerUndoTextChange(for: $cue.wrappedValue, oldText: oldText, undoManager: undoManager)
-                            }
+                            CueRow(cue: $cue, selectedCue: $selectedCue, oldText: cue.text)
                             .id(cue.id)
                             .listStyle(.sidebar)
                             .onHover { isHovering in
@@ -40,27 +40,50 @@ struct ContentView: View {
                                     selectedCue = nil
                                 }
                             }
-                            .contextMenu {
-                                Button("Add cue above...") {
-                                    document.addItem(atIndex: cue.cueId - 1, undoManager: undoManager)
-                                }
-                                Button("Add cue below...") {
-                                    document.addItem(atIndex: cue.cueId, undoManager: undoManager)
-                                }
-                                Divider()
-                                Button("Delete cue") {
-                                    document.deleteItem(withID: cue.id, undoManager: undoManager)
-                                }
-                            }
                         }
                     }
-                    .frame(minWidth: 310, maxWidth: 400)
+                    .frame(minWidth: 330, maxWidth: 400)
                     .onChange(of: scrollTarget) { target in
                         if let target = target {
                             scrollTarget = nil
                             withAnimation {
                                 proxy.scrollTo(target, anchor: .top)
                             }
+                        }
+                    }
+                    .toolbar {
+                        ToolbarItemGroup{
+                            Button {
+                                showJumpToNumberPopover = true
+                            } label: {
+                                Label("", systemImage: "number")
+                            }
+                                .popover(isPresented: $showJumpToNumberPopover, arrowEdge: .bottom, content: {
+                                    TextField("", text: $jumpToNumberText)
+                                        .frame(width: 100)
+                                        .padding()
+                                        .onSubmit {
+                                            guard let number = Int(jumpToNumberText) else {
+                                                jumpToNumberText = ""
+                                                return
+                                            }
+                                            if number > 0 && number < document.captions.cues.count + 1 {
+                                                let cueUUID = document.captions.cues[number - 1].id
+                                                withAnimation {
+                                                    proxy.scrollTo(cueUUID, anchor: .top)
+                                                }
+                                            } else if number >= document.captions.cues.count + 1 {
+                                                guard let lastCue = document.captions.cues.last else {
+                                                    jumpToNumberText = ""
+                                                    return
+                                                }
+                                                proxy.scrollTo(lastCue.id, anchor: .top)
+                                            } else {
+                                                jumpToNumberText = ""
+                                            }
+                                            showJumpToNumberPopover = false
+                                        }
+                                })
                         }
                     }
                 }

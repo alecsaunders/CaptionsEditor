@@ -11,10 +11,12 @@ import SwiftUI
 struct CaptionsEditorApp: App {
     @StateObject private var playerController = PlayerController()
     var body: some Scene {
-        DocumentGroup(newDocument: { CaptionsEditorDocument() }) { configuration in
+        DocumentGroup {
+            CaptionsEditorDocument()
+        } editor: { doc in
             ContentView()
                 .onAppear() {
-                    playerController.subsURL = configuration.fileURL
+                    playerController.subsURL = doc.fileURL
                 }
                 .environmentObject(playerController)
         }
