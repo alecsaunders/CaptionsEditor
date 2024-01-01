@@ -79,6 +79,7 @@ struct CueRow: View {
                                     isTextFieldFocused = false
                                     document.registerUndoTextChange(withOldValue: oldText, atCueWithId: cue.id, undoManager: undoManager)
                                     oldText = cue.text
+                                    cue.runCueRulesValidation()
                                     showAddPopover = false
                                 }
                                     .foregroundStyle(.primary)
@@ -129,6 +130,7 @@ struct CueRow: View {
                                 formatCueText()
                                 document.registerUndoTextChange(withOldValue: oldText, atCueWithId: cue.id, undoManager: undoManager)
                                 oldText = cue.text
+                                cue.runCueRulesValidation()
                             }
                     }
             }
