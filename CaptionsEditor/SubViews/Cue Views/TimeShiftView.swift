@@ -64,6 +64,8 @@ struct TimeShiftView: View {
                     } else {
                         timeShiftValue -= 0.1
                     }
+                    let theTimestampValue = start ? cue.startTimestamp.value : cue.endTimestamp.value
+                    playerController.jumpToPosition(atTimestamp: theTimestampValue + timeShiftValue)
                 } label: {
                     Image(systemName: "arrow.left.circle")
                 }
@@ -78,6 +80,8 @@ struct TimeShiftView: View {
                     } else {
                         timeShiftValue += 0.1
                     }
+                    let theTimestampValue = start ? cue.startTimestamp.value : cue.endTimestamp.value
+                    playerController.jumpToPosition(atTimestamp: theTimestampValue + timeShiftValue)
                 } label: {
                     Image(systemName: "arrow.right.circle")
                 }
@@ -164,9 +168,20 @@ struct TimeShiftView: View {
                                 firstFrameShift = false
                             }
                             currentItem.step(byCount: -1)
+                            let theTimestampValue = start ? cue.startTimestamp.value : cue.endTimestamp.value
+                            timeShiftValue = playerController.currentTime!.seconds - theTimestampValue
                         }
                     } label: {
                         Image(systemName: "backward.frame")
+                    }
+                        .buttonStyle(.borderless)
+                    Button {
+                        timeShiftValue = 0.0
+                        let theTimestampValue = start ? cue.startTimestamp.value : cue.endTimestamp.value
+                        playerController.jumpToPosition(atTimestamp: theTimestampValue)
+                        playerController.pause()
+                    } label: {
+                        Image(systemName: "arrow.uturn.down.circle")
                     }
                         .buttonStyle(.borderless)
                     Button {
@@ -177,6 +192,8 @@ struct TimeShiftView: View {
                                 firstFrameShift = false
                             }
                             currentItem.step(byCount: 1)
+                            let theTimestampValue = start ? cue.startTimestamp.value : cue.endTimestamp.value
+                            timeShiftValue = playerController.currentTime!.seconds - theTimestampValue
                         }
                     } label: {
                         Image(systemName: "forward.frame")
@@ -214,8 +231,11 @@ struct TimeShiftView: View {
     }
 }
 
+
 struct TimeShiftView_Previews: PreviewProvider {
     static var previews: some View {
         TimeShiftView(cue: .constant(Cue()), start: true, showPopover: .constant(false))
+            .environmentObject(CaptionsEditorDocument())
+            .environmentObject(PlayerController())
     }
 }
