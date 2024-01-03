@@ -21,7 +21,8 @@ struct CueIdPlayButton: View {
                 .foregroundColor(cue.cueId == selectedCue?.cueId ? Color.blue : Color.clear)
         }
             .onTapGesture {
-                playerController.jumpToPosition(atTimestamp: cue.startTimestamp.value)
+                playerController.jumpToBeforePosition(atTimestamp: cue.startTimestamp.value)
+                playerController.play()
             }
     }
 }

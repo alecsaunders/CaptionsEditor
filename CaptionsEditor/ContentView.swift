@@ -118,7 +118,7 @@ struct ContentView: View {
             FullTextView(showTextEditorPopover: $showTextEditorPopover)
         }
         .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { newValue in
-            playerController.player?.pause()
+            playerController.pause()
             playerController.player = nil
         }
     }

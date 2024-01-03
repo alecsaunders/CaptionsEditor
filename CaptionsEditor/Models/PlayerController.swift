@@ -109,12 +109,29 @@ final class PlayerController: ObservableObject {
         }
     }
 
-    func jumpToPosition(atTimestamp timestampValue: Double) {
+    func jumpToBeforePosition(atTimestamp timestampValue: Double) {
         if let thePlayer = player {
             thePlayer.seek(to:  CMTime(value: Int64(timestampValue * 1000 - 500), timescale: 1000), toleranceBefore: .zero, toleranceAfter: .zero)
+        }
+    }
+    
+    func jumpToPosition(atTimestamp timestampValue: Double) {
+        if let thePlayer = player {
+            thePlayer.seek(to:  CMTime(value: Int64(timestampValue * 1000), timescale: 1000), toleranceBefore: .zero, toleranceAfter: .zero)
+        }
+    }
+    
+    func play() {
+        if let thePlayer = player {
             if thePlayer.rate == 0 {
                 thePlayer.play()
             }
+        }
+    }
+    
+    func pause() {
+        if let thePlayer = player {
+            thePlayer.pause()
         }
     }
 }
