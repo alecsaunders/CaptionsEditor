@@ -146,8 +146,6 @@ struct TimeShiftView: View {
                         .buttonStyle(.borderless)
                         .help("Shift end of current cue and start of next")
                     }
-                    
-                    Divider()
                 }
                 .overlay(
                     RoundedRectangle(cornerRadius: 4)
