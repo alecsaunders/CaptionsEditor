@@ -157,30 +157,26 @@ struct TimeShiftView: View {
                     Image(systemName: "film.fill")
                     Divider()
                     Button {
-                        if let player = playerController.player {
-                            if let currentItem = player.currentItem {
-                                if firstFrameShift {
-                                    playerController.pause()
-                                    playerController.jumpToPosition(atTimestamp: start ? cue.startTimestamp.value : cue.endTimestamp.value)
-                                    firstFrameShift = false
-                                }
-                                currentItem.step(byCount: -1)
+                        if let currentItem = playerController.currentItem {
+                            if firstFrameShift {
+                                playerController.pause()
+                                playerController.jumpToPosition(atTimestamp: start ? cue.startTimestamp.value : cue.endTimestamp.value)
+                                firstFrameShift = false
                             }
+                            currentItem.step(byCount: -1)
                         }
                     } label: {
                         Image(systemName: "backward.frame")
                     }
                         .buttonStyle(.borderless)
                     Button {
-                        if let player = playerController.player {
-                            if let currentItem = player.currentItem {
-                                if firstFrameShift {
-                                    playerController.pause()
-                                    playerController.jumpToPosition(atTimestamp: start ? cue.startTimestamp.value : cue.endTimestamp.value)
-                                    firstFrameShift = false
-                                }
-                                currentItem.step(byCount: 1)
+                        if let currentItem = playerController.currentItem {
+                            if firstFrameShift {
+                                playerController.pause()
+                                playerController.jumpToPosition(atTimestamp: start ? cue.startTimestamp.value : cue.endTimestamp.value)
+                                firstFrameShift = false
                             }
+                            currentItem.step(byCount: 1)
                         }
                     } label: {
                         Image(systemName: "forward.frame")
@@ -190,7 +186,7 @@ struct TimeShiftView: View {
                     HStack(spacing: 0)  {
                         // Shift To Playhead
                         Button {
-                            guard let currentTime = playerController.player?.currentTime() else {
+                            guard let currentTime = playerController.currentTime else {
                                 self.showPopover = false
                                 return
                             }

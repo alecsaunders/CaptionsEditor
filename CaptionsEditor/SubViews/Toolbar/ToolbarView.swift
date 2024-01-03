@@ -15,7 +15,7 @@ struct ToolbarView: View {
     
     var body: some View {
         Button {
-            if let targetCue = captions.cue(atTime: playerController.player?.currentItem?.currentTime()) {
+            if let targetCue = captions.cue(atTime: playerController.currentTime) {
                 scrollTarget = targetCue.id
             }
         } label: {
@@ -25,9 +25,9 @@ struct ToolbarView: View {
         Button {
             slowMotion.toggle()
             if slowMotion {
-                playerController.player?.rate = 0.4
+                playerController.playerRate = 0.4
             } else {
-                playerController.player?.rate = 1.0
+                playerController.playerRate = 1.0
             }
         } label: {
             Label("Slow", systemImage: slowMotion ? "play.fill" : "tortoise.fill")

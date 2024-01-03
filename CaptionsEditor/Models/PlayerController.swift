@@ -14,6 +14,24 @@ final class PlayerController: ObservableObject {
     var videoURL: URL?
     var subsURL: URL?
     private var mix: AVMutableComposition = AVMutableComposition()
+    
+    var currentItem: AVPlayerItem? {
+        player?.currentItem
+    }
+    
+    var currentTime: CMTime? {
+        self.currentItem?.currentTime()
+    }
+    
+    var playerRate: Float? {
+        get {
+            return player?.rate
+        }
+        set {
+            player?.rate = newValue!
+        }
+        
+    }
 
     func chooseVideoURL() {
         let panel = NSOpenPanel()
@@ -121,9 +139,17 @@ final class PlayerController: ObservableObject {
         }
     }
     
+    func isPlaying() -> Bool {
+        if let thePlayer = player {
+            return thePlayer.rate == 0 ? false : true
+        } else {
+            return false
+        }
+    }
+    
     func play() {
         if let thePlayer = player {
-            if thePlayer.rate == 0 {
+            if !self.isPlaying() {
                 thePlayer.play()
             }
         }
