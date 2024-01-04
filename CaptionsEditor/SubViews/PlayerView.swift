@@ -12,8 +12,12 @@ struct PlayerView: View {
     @EnvironmentObject var playerController: PlayerController
     
     var body: some View {
-        VStack {
-            VideoPlayer(player: playerController.player != nil ? playerController.player! : AVPlayer())
+        return VStack {
+            if let player = playerController.player {
+                VideoPlayer(player: player)
+            } else {
+                Color.black
+            }
         }
     }
 }

@@ -23,7 +23,6 @@ struct CueRow: View {
     @Binding var selectedCue: Cue?
     @State var showTimePopover: Bool = false
     @State var showPopover: Bool = false
-    @State var showAddPopover: Bool = false
     @State var shiftControls: ShiftControls = ShiftControls()
     @State var oldText: String
     @FocusState private var isTextFieldFocused: Bool
@@ -35,71 +34,51 @@ struct CueRow: View {
                     CueIdPlayButton(cue: $cue, selectedCue: $selectedCue)
                     TimestampView(cue: $cue, showPopover: $showPopover, shiftControls: $shiftControls)
                     Spacer()
-                    // FIXME: Use popover
-                    // Have to use popover instead of a Menu, which looks and acts cleaner
-                    // When using a menu, every time an item is selected get an "AttributeGraph" error
-                    // and the video player gets removed, so that you have to re-select a video
-                    Button {
-                        cue.runCueRulesValidation()
-                        showAddPopover = true
-                    } label: {
-                        Label("", systemImage: "chevron.down")
-                    }
-                        .foregroundStyle(cue == selectedCue ? .primary : Color.clear)
-                        .buttonStyle(.borderless)
-                        .popover(isPresented: $showAddPopover, arrowEdge: .bottom) {
-                            VStack(alignment: .leading) {
-                                Button("Add cue above...") {
-                                    document.addItem(atIndex: cue.cueId - 1, undoManager: undoManager)
-                                    showAddPopover = false
+                    Menu {
+                        Section {
+                            Button("Add cue above...") {
+                                document.addItem(atIndex: cue.cueId - 1, undoManager: undoManager)
+                            }
+                            Button("Add cue below...") {
+                                document.addItem(atIndex: cue.cueId, undoManager: undoManager)
+                            }
+                        }
+
+                        Section {
+                            Button("Delete cue") {
+                                document.deleteItem(withID: cue.id, undoManager: undoManager)
+                            }
+                        }
+
+                        Section {
+                            Button(cue.text.contains("<i>") ? "Remove italics" : "Italicize text") {
+                                if cue.text.contains("<i>") {
+                                    cue.text.replace("<i>", with: "")
+                                    cue.text.replace("</i>", with: "")
+                                } else {
+                                    cue.text = "<i>\(cue.text)</i>"
                                 }
-                                    .foregroundStyle(.primary)
-                                    .buttonStyle(.borderless)
-                                Button("Add cue below...") {
-                                    document.addItem(atIndex: cue.cueId, undoManager: undoManager)
-                                    showAddPopover = false
-                                }
-                                    .foregroundStyle(.primary)
-                                    .buttonStyle(.borderless)
-                                Divider()
-                                Button("Delete cue") {
-                                    document.deleteItem(withID: cue.id, undoManager: undoManager)
-                                    showAddPopover = false
-                                }
-                                    .foregroundStyle(.primary)
-                                    .buttonStyle(.borderless)
-                                Divider()
-                                Button(cue.text.contains("<i>") ? "Remove italics" : "Italicize text") {
-                                    if cue.text.contains("<i>") {
-                                        cue.text.replace("<i>", with: "")
-                                        cue.text.replace("</i>", with: "")
-                                    } else {
-                                        cue.text = "<i>\(cue.text)</i>"
-                                    }
-                                    isTextFieldFocused = false
-                                    document.registerUndoTextChange(withOldValue: oldText, atCueWithId: cue.id, undoManager: undoManager)
-                                    oldText = cue.text
-                                    cue.runCueRulesValidation()
-                                    showAddPopover = false
-                                }
-                                    .foregroundStyle(.primary)
-                                    .buttonStyle(.borderless)
-                                if !cue.validationErrors.isEmpty {
-                                    Divider()
-                                    Text("Errors:")
-                                        .foregroundStyle(.red)
-                                        .bold()
-                                    ForEach(cue.validationErrors) {valErr in
-                                        HStack {
-                                            Text("-")
-                                            Text(valErr.description)
-                                        }
-                                        
-                                    }
+                                isTextFieldFocused = false
+                                document.registerUndoTextChange(withOldValue: oldText, atCueWithId: cue.id, undoManager: undoManager)
+                                oldText = cue.text
+                                cue.runCueRulesValidation()
+                            }
+                        }
+
+                        if !cue.validationErrors.isEmpty {
+                            Section {
+                                Text("Errors:")
+                                    .foregroundStyle(.red)
+                                    .bold()
+                                ForEach(cue.validationErrors) {valErr in
+                                    Text("- \(valErr.description)")
                                 }
                             }
-                                .padding()
                         }
+                    } label: {
+                        EmptyView()
+                    }
+                    .buttonStyle(.borderless)
                 }
                 .padding([.leading, .trailing])
                 TextField("", text: $cue.text, axis: .vertical)

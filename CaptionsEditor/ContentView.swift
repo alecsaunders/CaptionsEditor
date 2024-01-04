@@ -118,8 +118,14 @@ struct ContentView: View {
             FullTextView(showTextEditorPopover: $showTextEditorPopover)
         }
         .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { newValue in
-            playerController.pause()
-            playerController.player = nil
+            if let closedObj = newValue.object as? NSWindow {
+                if closedObj.className == "SwiftUI.AppKitWindow" {
+                    playerController.pause()
+                    playerController.player = nil
+                } else {
+                    print("Window class name: \(closedObj.className)")
+                }
+            }
         }
     }
 }
